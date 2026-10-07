@@ -6,10 +6,25 @@ export const PORTAL_URL = "https://daksong-daknong.vnasw.vn/";
 
 export const isInZalo = () => /zalo/i.test(navigator.userAgent);
 
+// Mỗi trình duyệt một mã riêng để "Lịch của tôi" không bị lẫn giữa người dùng thử
+function browserUserId() {
+  const KEY = "web-user-id";
+  try {
+    let id = localStorage.getItem(KEY);
+    if (!id) {
+      id = crypto.randomUUID();
+      localStorage.setItem(KEY, id);
+    }
+    return id;
+  } catch {
+    return "anonymous";
+  }
+}
+
 export async function authHeaders(): Promise<Record<string, string>> {
   if (!isInZalo()) {
     // Chỉ dùng được khi backend chạy AUTH_MODE=dev
-    return { "X-Dev-User": "web-dev" };
+    return { "X-Dev-User": `web-${browserUserId()}` };
   }
   const token = await getAccessToken();
   return { Authorization: `Bearer ${token}` };

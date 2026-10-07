@@ -10,12 +10,15 @@
     "typecheck": "tsc --noEmit",
     "preview": "vite preview",
     "deploy:dev": "zmp-cli deploy --existing",
-    "deploy:testing": "zmp-cli deploy --existing --testing"
+    "deploy:testing": "zmp-cli deploy --existing --testing",
+    "build:web": "tsc --noEmit && BUILD_TARGET=web vite build",
+    "start:web": "serve -s www -l ${PORT:-3000}"
   },
   "dependencies": {
     "html-to-image": "^1.11.13",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "serve": "^14.2.6",
     "zmp-sdk": "^2.53.0",
     "zmp-ui": "^1.11.14"
   },
