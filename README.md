@@ -5,8 +5,35 @@ Zalo Mini App giúp khách tạo lịch trình du lịch Đắk Song, phục v�
 ```
 ├── backend/   API Node.js + TypeScript + Prisma (Postgres), deploy Railway
 ├── docs/      api.md: hợp đồng API giữa mini app và backend
-└── miniapp/   (sẽ thêm) Zalo Mini App tạo bằng zmp-cli
+└── miniapp/   Zalo Mini App (React + zmp-ui + zmp-sdk, Vite)
 ```
+
+## Mini app: chạy và deploy
+
+Yêu cầu: Node 20+, `zmp-cli` (`npm i -g zmp-cli`), tài khoản Zalo Developer có quyền với mini app.
+
+```bash
+cd miniapp
+cp .env.example .env     # VITE_API_BASE_URL = URL backend Railway
+npm install
+npm start                # http://localhost:5173, xem trên trình duyệt (để kiểu điện thoại)
+```
+
+- `VITE_USE_MOCK=true` chạy hoàn toàn bằng dữ liệu giả, không cần backend.
+- Chạy ngoài app Zalo thì "Lưu ảnh" tải file `.png` xuống, "Chia sẻ" dùng chia sẻ của trình duyệt, và đăng nhập dùng header `X-Dev-User`. Vì vậy backend phải đang chạy `AUTH_MODE=dev`.
+- Trong app Zalo, app dùng `getAccessToken`, `saveImageToGallery`, `openShareSheet`, `openWebview` của `zmp-sdk`. **Lưu ảnh chỉ chạy trên điện thoại thật.**
+
+Deploy lên Zalo:
+```bash
+zmp login                # đăng nhập tài khoản Zalo Developer
+npm run deploy:testing   # bản Testing, chỉ tester thấy
+npm run deploy:dev       # bản Development
+```
+Lần đầu `zmp-cli` sẽ hỏi App ID của mini app. Nếu lệnh trên báo lỗi với project có sẵn, chạy `zmp deploy` và làm theo hướng dẫn.
+
+Màn hình: Trang chủ → Tạo lịch (số ngày, sở thích, nhịp độ) → Chỉnh lịch (↑↓, xoá, thêm điểm, thêm ngày, Lưu) → Ảnh lịch trình (Lưu ảnh / Chia sẻ). Thêm "Lịch của tôi", "Điểm đến", chi tiết điểm đến.
+
+Đổi màu: `miniapp/src/theme.css` (biến `--green-*` và `--zaui-light-*`) và `app-config.json` (`headerColor`).
 
 ## Backend: chạy local
 

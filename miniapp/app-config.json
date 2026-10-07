@@ -1,0 +1,16 @@
+{
+  "app": {
+    "title": "Lịch trình Đắk Song",
+    "headerTitle": "Lịch trình Đắk Song",
+    "headerColor": "#2E7D32",
+    "textColor": "white",
+    "leftButton": "back",
+    "statusBar": "normal",
+    "actionBarHidden": true,
+    "hideAndroidBottomNavigationBar": false,
+    "hideIOSSafeAreaBottom": false
+  },
+  "listCSS": [],
+  "listSyncJS": [],
+  "listAsyncJS": []
+}
