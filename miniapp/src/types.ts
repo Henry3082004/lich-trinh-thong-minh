@@ -18,6 +18,7 @@ export type Place = {
   sourceUrl: string | null;
   phone: string | null;
   mapLink: string | null;
+  approxLocation: boolean; // chưa có vị trí chính xác: chỉ đường theo tên, di chuyển ước lượng
   kind: "place" | "dish" | "festival";
   season: string | null; // lễ hội: vd "Tháng 3 âm lịch"
   months: number[]; // lễ hội: tháng dương lịch thường diễn ra

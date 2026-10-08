@@ -11,7 +11,10 @@ function haversineKm(a: Place, b: Place) {
   return 2 * 6371 * Math.asin(Math.sqrt(h));
 }
 
-export const travelMinutes = (a: Place, b: Place) => Math.round((haversineKm(a, b) / AVG_SPEED_KMH) * 60);
+// Điểm chưa có vị trí chính xác thì dùng thời gian ước lượng chung (cùng quy tắc với backend)
+const APPROX_TRAVEL_MIN = 15;
+export const travelMinutes = (a: Place, b: Place) =>
+  a.approxLocation || b.approxLocation ? APPROX_TRAVEL_MIN : Math.round((haversineKm(a, b) / AVG_SPEED_KMH) * 60);
 
 export const formatTime = (m: number) =>
   `${String(Math.floor(m / 60) % 24).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;

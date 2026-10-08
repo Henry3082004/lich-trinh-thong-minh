@@ -15,7 +15,7 @@ planRouter.use(
   rateLimit({ windowMs: 60 * 60 * 1000, max: config.planPerHour, key: (req) => req.user?.id ?? req.ip ?? "?" }),
 );
 
-const select = { id: true, name: true, category: true, kind: true, description: true, address: true, lat: true, lng: true, durationMin: true, months: true, season: true } as const;
+const select = { id: true, name: true, category: true, kind: true, description: true, address: true, lat: true, lng: true, approxLocation: true, durationMin: true, months: true, season: true } as const;
 
 async function load(userId: string) {
   const [all, cartRows] = await Promise.all([

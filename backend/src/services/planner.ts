@@ -26,6 +26,7 @@ export type PlanPlace = {
   address: string | null;
   lat: number;
   lng: number;
+  approxLocation: boolean;
   durationMin: number;
   months: number[];
   season: string | null;

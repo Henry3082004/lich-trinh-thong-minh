@@ -18,30 +18,32 @@ model User {
 }
 
 model Place {
-  id           String          @id @default(cuid())
-  slug         String          @unique
-  name         String
-  category     String
-  description  String
-  images       String[]
-  lat          Float
-  lng          Float
-  address      String?
-  tags         String[]
-  durationMin  Int             @default(60)
-  openHours    String?
-  sourceUrl    String?
-  phone        String?
-  mapLink      String?
+  id             String          @id @default(cuid())
+  slug           String          @unique
+  name           String
+  category       String
+  description    String
+  images         String[]
+  lat            Float
+  lng            Float
+  address        String?
+  tags           String[]
+  durationMin    Int             @default(60)
+  openHours      String?
+  sourceUrl      String?
+  phone          String?
+  mapLink        String?
+  // Vị trí chưa chính xác (mới có tên, toạ độ là tạm): chỉ đường theo tên, thời gian di chuyển ước lượng chung
+  approxLocation Boolean         @default(false)
   // Phân loại nội dung: "place" (điểm đến), "dish" (đặc sản/món ăn), "festival" (lễ hội)
-  kind         String          @default("place")
-  season       String? // vd "Tháng 3 âm lịch" (lễ hội)
-  months       Int[] // tháng dương lịch lễ hội thường diễn ra
-  priceNote    String?
-  imageCredits String[] // ghi công ảnh: "Tác giả — giấy phép — link"
-  sourceUrls   String[]
-  items        ItineraryItem[]
-  cartItems    CartItem[]
+  kind           String          @default("place")
+  season         String? // vd "Tháng 3 âm lịch" (lễ hội)
+  months         Int[] // tháng dương lịch lễ hội thường diễn ra
+  priceNote      String?
+  imageCredits   String[] // ghi công ảnh: "Tác giả — giấy phép — link"
+  sourceUrls     String[]
+  items          ItineraryItem[]
+  cartItems      CartItem[]
 
   @@index([category])
 }

@@ -40,6 +40,106 @@
     "mapLink": "https://goo.gl/maps/2iCoG39vAcDm29BP7"
   },
   {
+    "slug": "ca-phe-san-vuon-may-coffee",
+    "name": "Cà Phê Sân Vườn Mây Coffee",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=C%C3%A0%20Ph%C3%AA%20S%C3%A2n%20V%C6%B0%E1%BB%9Dn%20M%C3%A2y%20Coffee%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "coffee-hong-nhien",
+    "name": "Coffee Hồng Nhiên",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Coffee%20H%E1%BB%93ng%20Nhi%C3%AAn%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "doans-cafe",
+    "name": "DOANS Cafe",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=DOANS%20Cafe%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "h2k-coffee",
+    "name": "H2K Coffee",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=H2K%20Coffee%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
     "slug": "higg-farm-glamping-coffee",
     "name": "HIGG Farm - Glamping & Coffee",
     "category": "trai-nghiem",
@@ -62,6 +162,31 @@
     "mapLink": "https://goo.gl/maps/vRDhvQNwzCB12BKt5"
   },
   {
+    "slug": "hill-coffee-farm",
+    "name": "Hill Coffee Farm",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Hill%20Coffee%20Farm%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
     "slug": "khu-bao-ton-thien-nhien-nam-nung",
     "name": "Khu bảo tồn thiên nhiên Nâm Nung",
     "category": "thien-nhien",
@@ -81,6 +206,31 @@
     "sourceUrl": null,
     "phone": null,
     "mapLink": "https://goo.gl/maps/sbCCjLGsjPCQcWFV8"
+  },
+  {
+    "slug": "monsoon-coffeeshop",
+    "name": "Monsoon Coffeeshop",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Monsoon%20Coffeeshop%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
   },
   {
     "slug": "nha-hang-gun",
@@ -203,6 +353,31 @@
     "mapLink": "https://goo.gl/maps/7W52hrMF1Fqpo3WaA"
   },
   {
+    "slug": "pando-coffee-tea-hotdogs",
+    "name": "Pando Coffee, Tea & Hotdogs",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Pando%20Coffee%2C%20Tea%20%26%20Hotdogs%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
     "slug": "pho-bo-bac-hai",
     "name": "Phở bò Bắc Hải",
     "category": "am-thuc",
@@ -221,6 +396,56 @@
     "sourceUrl": null,
     "phone": null,
     "mapLink": "https://goo.gl/maps/NdmKh3Z8F2JS9fgH8"
+  },
+  {
+    "slug": "star-coffee",
+    "name": "Star Coffee",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Star%20Coffee%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "th-coffee-milk-tea",
+    "name": "TH Coffee & Milk Tea",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=TH%20Coffee%20%26%20Milk%20Tea%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
   },
   {
     "slug": "thac-luu-ly",
@@ -262,5 +487,30 @@
     "sourceUrl": null,
     "phone": null,
     "mapLink": "https://goo.gl/maps/eCSKAUMYAq1a9m1aA"
+  },
+  {
+    "slug": "tiem-nha-sim",
+    "name": "Tiệm Nhà Sim",
+    "category": "ca-phe",
+    "description": "Quán cà phê ở Đắk Song.",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "ca-phe"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Ti%E1%BB%87m%20Nh%C3%A0%20Sim%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
   }
 ]

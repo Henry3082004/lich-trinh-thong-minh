@@ -8,7 +8,7 @@ import { travelMinutes } from "../src/services/travel";
 
 const mk = (id: string, over: Partial<PlanPlace> = {}): PlanPlace => ({
   id, name: `Điểm ${id}`, category: "thien-nhien", kind: "place", description: "", address: null,
-  lat: 12.2, lng: 107.6, durationMin: 60, months: [], season: null, ...over,
+  lat: 12.2, lng: 107.6, approxLocation: false, durationMin: 60, months: [], season: null, ...over,
 });
 const A = mk("a"), B = mk("b", { lat: 12.25, lng: 107.65 }), FOOD = mk("food", { category: "am-thuc", durationMin: 60 });
 const FEST = mk("fest", { category: "le-hoi", kind: "festival", months: [3], season: "Tháng 3 âm lịch", durationMin: 180 });
@@ -38,6 +38,15 @@ describe("buildPlan", () => {
     const [h, m] = s2.startTime.split(":").map(Number);
     expect(h * 60 + m).toBe(8 * 60 + 60 + travel);
     expect(plan.days[1].date).toBe("2027-03-11");
+  });
+
+  it("điểm chưa có vị trí chính xác dùng thời gian ước lượng chung, không dựa vào khoảng cách", () => {
+    const X = mk("x", { approxLocation: true });
+    expect(travelMinutes(A, X, "o-to")).toBe(15);
+    expect(travelMinutes(X, A, "xe-khach")).toBe(30);
+    expect(travelMinutes(X, X, "xe-may")).toBe(15);
+    const plan = buildPlan({ ...prefs, days: 1 }, [A, X], [A, X], { days: [{ placeIds: [{ id: "a" }, { id: "x" }] }] }, NOW);
+    expect(plan.days[0].stops[1].travelMinFromPrev).toBe(15);
   });
 
   it("xe khách đi lâu hơn ô tô; xe máy chậm hơn ô tô", () => {
