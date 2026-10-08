@@ -3,6 +3,8 @@ import { Button, useNavigate, useSearchParams, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
 import { PlaceCard } from "../components/place-card";
 import { api } from "../lib/api";
+import { directionsUrl } from "../lib/maps";
+import { openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { PLACE_CATEGORIES, type Place } from "../types";
 
@@ -75,14 +77,26 @@ export default function PlacesPage() {
             <PlaceCard
               key={p.id}
               place={p}
-              onClick={() => navigate(`/place/${p.id}${day ? `?day=${day}` : ""}`)}
+              // Đang xem danh sách: chạm vào điểm là mở chỉ đường Google Maps; đang chọn điểm để thêm vào lịch thì mở chi tiết
+              onClick={() => (day ? navigate(`/place/${p.id}?day=${day}`) : openLink(directionsUrl(p)))}
               action={
-                day && (
+                day ? (
                   <div onClick={(e) => e.stopPropagation()} style={{ alignSelf: "center" }}>
                     <Button size="small" variant={inDraft.has(p.id) ? "tertiary" : "primary"} onClick={() => add(p)}>
                       {inDraft.has(p.id) ? "Đã có" : "Thêm"}
                     </Button>
                   </div>
+                ) : (
+                  <button
+                    className="btn-round"
+                    aria-label={`Chi tiết ${p.name}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/place/${p.id}`);
+                    }}
+                  >
+                    ⓘ
+                  </button>
                 )
               }
             />
