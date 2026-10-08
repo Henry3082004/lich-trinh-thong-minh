@@ -13,6 +13,16 @@ export function createApp() {
   app.use(cors({ origin: origins.includes("*") ? true : origins }));
   app.use(express.json({ limit: "200kb" }));
 
+  // Log ngắn mỗi request để xem trên Railway có request tới không (bỏ qua health check)
+  if (process.env.NODE_ENV !== "test" && !process.env.VITEST) {
+    app.use((req, res, next) => {
+      if (req.path === "/health") return next();
+      const started = Date.now();
+      res.on("finish", () => console.log(`${req.method} ${req.originalUrl} ${res.statusCode} ${Date.now() - started}ms`));
+      next();
+    });
+  }
+
   app.get("/health", (_req, res) => {
     res.json({ status: "ok" });
   });

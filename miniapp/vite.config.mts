@@ -12,6 +12,7 @@ export default () =>
     root: "./src",
     base: isWeb ? "/" : "",
     envDir: "..",
+    define: { __WEB_DEMO__: JSON.stringify(isWeb) },
     plugins: isWeb ? [react()] : [react(), zaloMiniApp()],
     build: {
       outDir: "../www",

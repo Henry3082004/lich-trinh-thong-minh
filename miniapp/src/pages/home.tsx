@@ -3,7 +3,7 @@ import { Button, useNavigate } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { useDraft } from "../state/draft";
 import { openPortal } from "../lib/zalo";
-import { USE_MOCK } from "../lib/api";
+import { API_BASE, USE_MOCK } from "../lib/api";
 import { CATEGORIES } from "../types";
 
 export default function HomePage() {
@@ -64,6 +64,10 @@ export default function HomePage() {
         <Button fullWidth variant="tertiary" onClick={() => openPortal()}>
           Xem thêm trên cổng du lịch Đắk Song ↗
         </Button>
+
+        <div className="muted" style={{ textAlign: "center", fontSize: 11 }}>
+          {USE_MOCK ? "Dữ liệu mẫu" : `API: ${API_BASE}`}
+        </div>
       </div>
     </Screen>
   );

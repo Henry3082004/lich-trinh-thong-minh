@@ -1,5 +1,6 @@
 // Bọc zmp-sdk. Khi chạy ngoài app Zalo (trình duyệt, giả lập) thì dùng cách thay thế
 // để vẫn test được toàn bộ luồng.
+import { randomId } from "./id";
 import { getAccessToken, openShareSheet, openWebview, saveImageToGallery } from "zmp-sdk/apis";
 
 export const PORTAL_URL = "https://daksong-daknong.vnasw.vn/";
@@ -12,7 +13,7 @@ function browserUserId() {
   try {
     let id = localStorage.getItem(KEY);
     if (!id) {
-      id = crypto.randomUUID();
+      id = randomId();
       localStorage.setItem(KEY, id);
     }
     return id;

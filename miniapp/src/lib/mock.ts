@@ -1,4 +1,5 @@
 // Dữ liệu giả theo đúng JSON của docs/api.md, dùng khi VITE_USE_MOCK=true hoặc chưa có backend
+import { randomId } from "./id";
 import type { Itinerary, Place, SuggestInput, SuggestResponse } from "../types";
 import rawPlaces from "./mock-places.json";
 import { retime } from "./schedule";
@@ -56,7 +57,7 @@ export const mockApi = {
     const existing = id ? list.find((i) => i.id === id) : undefined;
     const saved: Itinerary = existing
       ? { ...existing, ...data, updatedAt: now }
-      : { ...data, id: crypto.randomUUID(), shareId: crypto.randomUUID().slice(0, 8), createdAt: now, updatedAt: now };
+      : { ...data, id: randomId(), shareId: randomId().slice(0, 8), createdAt: now, updatedAt: now };
     store([saved, ...list.filter((i) => i.id !== saved.id)]);
     return saved;
   },

@@ -3,6 +3,7 @@ import { mockApi, mockPlaces, mockSuggest } from "./mock";
 import { authHeaders } from "./zalo";
 
 const BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "";
+export const API_BASE = BASE;
 export const USE_MOCK = import.meta.env.VITE_USE_MOCK === "true" || !BASE;
 
 async function request<T>(path: string, init: RequestInit = {}, auth = false): Promise<T> {
