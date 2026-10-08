@@ -20,6 +20,17 @@ export type Place = {
   mapLink: string | null;
 };
 
+// Điểm sao + vài review từ Google Maps (backend gọi Places API; có thể không có)
+export type GoogleReview = { author: string; rating: number; text: string; when: string };
+export type GoogleInfo = {
+  rating: number | null;
+  ratingCount: number;
+  reviews: GoogleReview[];
+  mapsUrl: string;
+  reviewsUrl: string;
+  source: string;
+};
+
 export type SuggestInput = { days: number; interests: string[]; pace: Pace };
 
 export type SuggestResponse = SuggestInput & {

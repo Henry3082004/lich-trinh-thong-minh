@@ -81,6 +81,10 @@ Quy tắc chuyển đổi nằm ở `backend/src/services/portal-import.ts` (có
 
 Các trường quan trọng cho thuật toán gợi ý: `category`, `tags`, `lat`, `lng`, `durationMin` (phút tham quan).
 
+## Đánh giá Google Maps (tuỳ chọn)
+
+Trang chi tiết điểm đến hiện điểm sao và tối đa 5 review của Google nếu backend có `GOOGLE_MAPS_API_KEY` (Places API (New)). Không có khoá thì phần này tự ẩn, các phần khác không ảnh hưởng. Backend chỉ gọi Google khi khách xem điểm đó, giữ bộ nhớ đệm 6 giờ và không lưu review vào database. Khoá đặt thành biến môi trường trên Railway, không đưa vào repo.
+
 ## Deploy Railway
 
 `backend/railway.json` đã cấu hình build/start. Trên Railway:

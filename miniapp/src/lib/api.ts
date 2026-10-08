@@ -1,4 +1,4 @@
-import type { Draft, Itinerary, Place, SuggestInput, SuggestResponse } from "../types";
+import type { Draft, GoogleInfo, Itinerary, Place, SuggestInput, SuggestResponse } from "../types";
 import { mockApi, mockPlaces, mockSuggest } from "./mock";
 import { authHeaders } from "./zalo";
 
@@ -63,6 +63,16 @@ export const api = {
       return p;
     }
     return request(`/api/places/${encodeURIComponent(id)}`);
+  },
+
+  // Đánh giá Google của điểm đến; chưa cấu hình, không tìm thấy hoặc lỗi thì trả null (không làm hỏng trang)
+  placeGoogle: async (id: string): Promise<GoogleInfo | null> => {
+    if (USE_MOCK) return null;
+    try {
+      return await request<GoogleInfo>(`/api/places/${encodeURIComponent(id)}/google`);
+    } catch {
+      return null;
+    }
   },
 
   suggest: async (input: SuggestInput): Promise<SuggestResponse> => {
