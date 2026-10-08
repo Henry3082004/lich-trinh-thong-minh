@@ -74,8 +74,8 @@ Quy tắc chuyển đổi nằm ở `backend/src/services/portal-import.ts` (có
 - "Ăn Uống" và "Nhà hàng" → `am-thuc`; "Nhà nghỉ, khách sạn" → `luu-tru`; "Địa điểm du lịch" → `trai-nghiem`; "Di tích" → `thien-nhien` (thác, suối, núi, bảo tồn...) hoặc `van-hoa`.
 - Bỏ qua nhóm "Y tế, bệnh viện" và "Cây giống" (không phải điểm du lịch).
 - `durationMin` là **ước lượng theo loại**, cổng không có dữ liệu này.
-- Ảnh: đường dẫn `360/xxx.jpg` được ghép với `https://static.dggv.edu.vn` (đổi bằng biến `PORTAL_IMAGE_BASE`). Cách ghép này **chưa được kiểm chứng**.
-- `npm run import` gọi mạng nên chưa được chạy thử trực tiếp trong môi trường phát triển (bị chặn mạng), chỉ test bằng file dữ liệu đã lưu.
+- Ảnh: đường dẫn `360/xxx.jpg` được ghép với `https://static.dggv.edu.vn` (đổi bằng biến `PORTAL_IMAGE_BASE`). Đã kiểm chứng ngày 8/10/2026: cả 13 ảnh đều tải được và đúng là ảnh.
+- `npm run import` đã được chạy thật với API của cổng ngày 8/10/2026 và cho đúng dữ liệu đang dùng. File xuất ra luôn sắp theo `slug` vì API không đảm bảo thứ tự. (Trong môi trường có proxy, Node có thể cần `NODE_USE_ENV_PROXY=1`.)
 
 Các trường quan trọng cho thuật toán gợi ý: `category`, `tags`, `lat`, `lng`, `durationMin` (phút tham quan).
 

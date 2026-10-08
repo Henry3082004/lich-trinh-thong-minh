@@ -144,5 +144,8 @@ export function convertPortalCategories(
     }
   }
 
+  // API không đảm bảo thứ tự: sắp theo slug để file dữ liệu ổn định giữa các lần nạp
+  places.sort((a, b) => a.slug.localeCompare(b.slug));
+
   return { places, skipped };
 }

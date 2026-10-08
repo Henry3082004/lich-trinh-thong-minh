@@ -76,3 +76,10 @@ describe("slugify", () => {
     expect(slugify("Đắk Song")).toBe("dak-song");
   });
 });
+
+describe("thứ tự đầu ra", () => {
+  it("không phụ thuộc thứ tự mà API trả về", () => {
+    const reversed = [...data].reverse().map((c) => ({ ...c, travelLocations: [...c.travelLocations].reverse() }));
+    expect(convertPortalCategories(reversed).places).toEqual(convertPortalCategories(data).places);
+  });
+});
