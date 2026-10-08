@@ -17,6 +17,7 @@ export const config = {
   geminiModel: process.env.GEMINI_MODEL ?? "gemini-2.5-flash",
   // Model dự phòng khi model chính quá tải (503/429/500)
   geminiFallbackModel: process.env.GEMINI_FALLBACK_MODEL ?? "gemini-flash-lite-latest",
+  planPerHour: Number(process.env.PLAN_PER_HOUR ?? 30),
   chatPerHour: Number(process.env.CHAT_PER_HOUR ?? 40),
   zaloGraphUrl: process.env.ZALO_GRAPH_URL ?? "https://graph.zalo.me/v2.0/me",
 };
