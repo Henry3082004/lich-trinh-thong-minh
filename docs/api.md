@@ -33,10 +33,12 @@ Khi test chưa có mini app (backend chạy `AUTH_MODE=dev`), dùng header `X-De
   "tags": ["thien-nhien", "check-in"],
   "durationMin": 120,
   "openHours": null,
-  "sourceUrl": null
+  "sourceUrl": null,
+  "phone": "0981302444",
+  "mapLink": "https://goo.gl/maps/..."
 }
 ```
-Danh mục `category`: `thien-nhien`, `van-hoa`, `am-thuc`, `trai-nghiem`, `luu-tru`.
+`phone` và `mapLink` có thể là `null`. Danh mục `category`: `thien-nhien`, `van-hoa`, `am-thuc`, `trai-nghiem`, `luu-tru`.
 
 ## Endpoint
 

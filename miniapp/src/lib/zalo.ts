@@ -1,7 +1,7 @@
 // Bọc zmp-sdk. Khi chạy ngoài app Zalo (trình duyệt, giả lập) thì dùng cách thay thế
 // để vẫn test được toàn bộ luồng.
 import { randomId } from "./id";
-import { getAccessToken, openShareSheet, openWebview, saveImageToGallery } from "zmp-sdk/apis";
+import { getAccessToken, openOutApp, openPhone, openShareSheet, openWebview, saveImageToGallery } from "zmp-sdk/apis";
 
 export const PORTAL_URL = "https://daksong-daknong.vnasw.vn/";
 
@@ -60,4 +60,15 @@ export async function openPortal() {
   } else {
     window.open(PORTAL_URL, "_blank");
   }
+}
+
+export async function callPhone(phoneNumber: string) {
+  if (isInZalo()) await openPhone({ phoneNumber });
+  else window.location.href = `tel:${phoneNumber}`;
+}
+
+// Link Google Maps / Facebook của điểm đến: mở trình duyệt ngoài Zalo
+export async function openLink(url: string) {
+  if (isInZalo()) await openOutApp({ url });
+  else window.open(url, "_blank");
 }

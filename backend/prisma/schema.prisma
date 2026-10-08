@@ -30,6 +30,8 @@ model Place {
   durationMin Int             @default(60)
   openHours   String?
   sourceUrl   String?
+  phone       String?
+  mapLink     String?
   items       ItineraryItem[]
 
   @@index([category])

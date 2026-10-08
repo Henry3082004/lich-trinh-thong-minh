@@ -60,7 +60,21 @@ Test: `npm test` (cần database `daksong_test`, hoặc đặt `TEST_DATABASE_UR
 
 ## Nội dung điểm đến
 
-`backend/data/places.json` hiện chỉ có **dữ liệu mẫu** (tên `[Mẫu] ...`, toạ độ giả). Thay bằng nội dung thật từ cổng du lịch Đắk Song rồi chạy `npm run seed`. Seed cập nhật theo `slug`. Điểm mẫu cũ không tự bị xoá, nên phải xoá thủ công khi chuyển sang dữ liệu thật.
+Dữ liệu điểm đến lấy từ API của cổng du lịch Đắk Song (`https://core-360.vnaapi.com/travel-category/all/DAKNONG-2-29`) và được lưu thành `backend/data/places.json`, sau đó `npm run seed` nạp vào database (seed cũng tự xoá điểm mẫu cũ có slug `mau-*`).
+
+```bash
+cd backend
+npm run import                                   # gọi API của cổng, ghi lại data/places.json
+npm run import -- --from-file x.json             # hoặc dùng file JSON đã lưu sẵn (cùng định dạng API)
+npm run seed                                     # nạp vào database
+```
+
+Quy tắc chuyển đổi nằm ở `backend/src/services/portal-import.ts` (có test với dữ liệu thật ở `backend/tests/fixtures/`):
+- "Ăn Uống" và "Nhà hàng" → `am-thuc`; "Nhà nghỉ, khách sạn" → `luu-tru`; "Địa điểm du lịch" → `trai-nghiem`; "Di tích" → `thien-nhien` (thác, suối, núi, bảo tồn...) hoặc `van-hoa`.
+- Bỏ qua nhóm "Y tế, bệnh viện" và "Cây giống" (không phải điểm du lịch).
+- `durationMin` là **ước lượng theo loại**, cổng không có dữ liệu này.
+- Ảnh: đường dẫn `360/xxx.jpg` được ghép với `https://static.dggv.edu.vn` (đổi bằng biến `PORTAL_IMAGE_BASE`). Cách ghép này **chưa được kiểm chứng**.
+- `npm run import` gọi mạng nên chưa được chạy thử trực tiếp trong môi trường phát triển (bị chặn mạng), chỉ test bằng file dữ liệu đã lưu.
 
 Các trường quan trọng cho thuật toán gợi ý: `category`, `tags`, `lat`, `lng`, `durationMin` (phút tham quan).
 

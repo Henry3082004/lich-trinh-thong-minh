@@ -4,6 +4,7 @@ import { Loading, Screen } from "../components/layout";
 import { PlaceThumb } from "../components/place-card";
 import { api } from "../lib/api";
 import { formatDuration } from "../lib/schedule";
+import { callPhone, openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { categoryName, type Place } from "../types";
 
@@ -15,9 +16,11 @@ export default function PlaceDetailPage() {
   const { draft, addStop } = useDraft();
   const [place, setPlace] = useState<Place | null>(null);
   const [error, setError] = useState("");
+  const [imageFailed, setImageFailed] = useState(false);
   const presetDay = Number(params.get("day")) || undefined;
 
   useEffect(() => {
+    setImageFailed(false);
     api.place(id).then(setPlace).catch((e) => setError((e as Error).message));
   }, [id]);
 
@@ -36,8 +39,13 @@ export default function PlaceDetailPage() {
       {!place && !error && <Loading />}
       {place && (
         <div className="content stack">
-          {place.images.length > 0 ? (
-            <img src={place.images[0]} alt={place.name} style={{ width: "100%", borderRadius: 14, objectFit: "cover", maxHeight: 240 }} />
+          {place.images.length > 0 && !imageFailed ? (
+            <img
+              src={place.images[0]}
+              alt={place.name}
+              onError={() => setImageFailed(true)}
+              style={{ width: "100%", borderRadius: 14, objectFit: "cover", maxHeight: 240 }}
+            />
           ) : (
             <div style={{ display: "flex", justifyContent: "center" }}>
               <PlaceThumb place={place} />
@@ -53,6 +61,20 @@ export default function PlaceDetailPage() {
           <div className="card" style={{ lineHeight: 1.6 }}>
             {place.description}
           </div>
+          {(place.phone || place.mapLink) && (
+            <div className="row" style={{ gap: 12 }}>
+              {place.phone && (
+                <Button fullWidth variant="secondary" onClick={() => callPhone(place.phone!)}>
+                  📞 Gọi {place.phone}
+                </Button>
+              )}
+              {place.mapLink && (
+                <Button fullWidth variant="secondary" onClick={() => openLink(place.mapLink!)}>
+                  🗺️ Chỉ đường
+                </Button>
+              )}
+            </div>
+          )}
           {(place.address || place.openHours) && (
             <div className="card stack" style={{ gap: 6 }}>
               {place.address && <div>📍 {place.address}</div>}

@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Place } from "../types";
 import { categoryIcon, categoryName } from "../types";
 import { formatDuration } from "../lib/schedule";
 
 export function PlaceThumb({ place }: { place: Place }) {
-  return <div className="thumb">{place.images[0] ? <img src={place.images[0]} alt="" /> : categoryIcon(place.category)}</div>;
+  // Ảnh lấy từ CDN của cổng: nếu tải lỗi thì hiện biểu tượng thay thế
+  const [failed, setFailed] = useState(false);
+  const src = place.images[0];
+  return (
+    <div className="thumb">
+      {src && !failed ? <img src={src} alt="" loading="lazy" onError={() => setFailed(true)} /> : categoryIcon(place.category)}
+    </div>
+  );
 }
 
 export function PlaceCard({ place, onClick, action }: { place: Place; onClick?: () => void; action?: React.ReactNode }) {

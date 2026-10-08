@@ -1,276 +1,266 @@
 [
   {
-    "slug": "mau-thien-nhien-1",
-    "name": "[Mẫu] Thiên nhiên 1",
+    "slug": "bun-cha-quat",
+    "name": "Bún chả quạt",
+    "category": "am-thuc",
+    "description": "Quán ăn gia đình",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682415906138_2023-03-09.jpg"
+    ],
+    "lat": 12.284783257659528,
+    "lng": 107.59647422345435,
+    "address": "Thôn 10, xã Nam Bình, huyện Đắk Song",
+    "tags": [
+      "am-thuc"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": "0981302444",
+    "mapLink": "https://goo.gl/maps/2iCoG39vAcDm29BP7"
+  },
+  {
+    "slug": "am-thuc-hong-nhien",
+    "name": "Ẩm thực Hồng Nhiên",
+    "category": "am-thuc",
+    "description": "Nhà hàng",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682415746498_2022-04-21.jpg"
+    ],
+    "lat": 12.265875534650656,
+    "lng": 107.60901103072162,
+    "address": "7J85+9JM, Thị trấn Đức An, Đắk Song, Đắk Nông, Vietnam",
+    "tags": [
+      "am-thuc"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": "0989376179",
+    "mapLink": "https://goo.gl/maps/a84No5vk5NjdQLwN8"
+  },
+  {
+    "slug": "pho-bo-bac-hai",
+    "name": "Phở bò Bắc Hải",
+    "category": "am-thuc",
+    "description": "Quán ăn",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682416351270_2023-01-14.jpg"
+    ],
+    "lat": 12.25267705655884,
+    "lng": 107.61090040195386,
+    "address": "7J36+396, QL14, Thị trấn Đức An, Đắk Song, Đắk Nông, Vietnam",
+    "tags": [
+      "am-thuc"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://goo.gl/maps/NdmKh3Z8F2JS9fgH8"
+  },
+  {
+    "slug": "higg-farm-glamping-coffee",
+    "name": "HIGG Farm - Glamping & Coffee",
+    "category": "trai-nghiem",
+    "description": "Bạn có từng cùng người mình thương ngắm hoàng hôn trong lòng núi, một ngày ươm nắng cùng nhau chèo thuyền lãng mạn thả trôi trên mặt hồ xanh biếc. \nĐó là ngày ta được ở bên cạnh nhau tận hưởng từng giây phút an yên, những mảnh ký ức đẹp đẽ nhất… 💕\n🎉 Cả Nhà Hãy Đến Với HIGG Farm Để Tận Hưởng Thư Giãn Bên Gia Đình & Người Thương Nhé!\n⛺️⛺️⛺️ Higg Farm 🌲🌲🌲\n🔸 Thôn 4, Xã Nâm N Jang, Đắk Song Tỉnh Đắk Nông ( Cách HCM Chỉ Hơn 4H)",
+    "images": [
+      "https://static.dggv.edu.vn/360/1681379418700_330464010_1349343925899736_2201816785743800654_n.jpg"
+    ],
+    "lat": 12.188943343503798,
+    "lng": 107.62813277301623,
+    "address": "Thôn 4, Đắk Song, Đắk Nông 640000, Việt Nam",
+    "tags": [
+      "trai-nghiem",
+      "gia-dinh",
+      "check-in"
+    ],
+    "durationMin": 180,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": "0796567879",
+    "mapLink": "https://goo.gl/maps/vRDhvQNwzCB12BKt5"
+  },
+  {
+    "slug": "khu-bao-ton-thien-nhien-nam-nung",
+    "name": "Khu bảo tồn thiên nhiên Nâm Nung",
     "category": "thien-nhien",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.25081,
-    "lng": 107.6082,
-    "address": null,
+    "description": "Ẩn sâu trong khu bảo tồn thiên nhiên Nâm Nung, tỉnh Đắk Nông, là một hệ thống suối và thác dày đặc cùng đỉnh núi Nâm Nung cao hơn 1.500m. Du khách đừng bỏ qua cơ hội đến đây để cảm nhận không khí trong lành và vẻ hoang sơ của cảnh quan.",
+    "images": [
+      "https://static.dggv.edu.vn/360/1679365017974_123201-nam-nung-4.jpg"
+    ],
+    "lat": 12.250514021821568,
+    "lng": 107.81115241600715,
+    "address": "TL 686, Xã Nâm N'Jang, Huyện Đắk Song, Tỉnh Đắk Nông",
     "tags": [
       "thien-nhien",
       "check-in"
     ],
     "durationMin": 120,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://goo.gl/maps/sbCCjLGsjPCQcWFV8"
   },
   {
-    "slug": "mau-thien-nhien-2",
-    "name": "[Mẫu] Thiên nhiên 2",
-    "category": "thien-nhien",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.21808,
-    "lng": 107.62192,
-    "address": null,
-    "tags": [
-      "thien-nhien",
-      "check-in",
-      "gia-dinh"
+    "slug": "thien-vien-truc-lam-dao-nguyen",
+    "name": "Thiền Viện Trúc Lâm Đạo Nguyên",
+    "category": "van-hoa",
+    "description": "Nhắc tới các điểm đến linh thiêng ở Đắk Nông thì không ai là không biết tới Thiền Viện Trúc Lâm Đạo Nguyên - một cơ sở Phật giáo nổi tiếng, không chỉ sở hữu lối kiến trúc độc đáo, phong cách ấn tượng, mà còn có khu bảo tồn thiên nhiên vô cùng tuyệt vời. Tới đây, bạn sẽ có cơ hội hòa mình vào bầu không khí trong lành, dễ chịu, tận hưởng cảm giác an yên, mang tới sự thoải mái đến lạ thường.",
+    "images": [
+      "https://static.dggv.edu.vn/360/1679364818513_thien-vien-truc-lam-dao-nguyen-5.jpg"
     ],
-    "durationMin": 120,
+    "lat": 12.206906767809688,
+    "lng": 107.70470029448451,
+    "address": "huyện Đắk Song, Tỉnh Đắk Nông",
+    "tags": [
+      "van-hoa"
+    ],
+    "durationMin": 90,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://goo.gl/maps/eCSKAUMYAq1a9m1aA"
   },
   {
-    "slug": "mau-thien-nhien-3",
-    "name": "[Mẫu] Thiên nhiên 3",
+    "slug": "thac-luu-ly",
+    "name": "Thác Lưu Ly",
     "category": "thien-nhien",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.26222,
-    "lng": 107.63703,
-    "address": null,
+    "description": "Không chỉ có thác Liêng Nung, Dray Nu, Dray Sáp, Gia Long mà bản đồ check-in tại Đắk Nông còn có một thác nước khác đẹp không kém, đó là thác Lưu Ly. Thác nước mang vẻ đẹp trời phú đang cực kỳ thu hút các tín đồ sống ảo đến check-in.",
+    "images": [
+      "https://static.dggv.edu.vn/360/1679365135640_daknong-thac-luu-ly.jpg"
+    ],
+    "lat": 12.22541127316886,
+    "lng": 107.68479586875392,
+    "address": "Đường Tỉnh Lộ 686 Nâm N'Jang Đắk Nông",
     "tags": [
       "thien-nhien",
       "check-in"
     ],
     "durationMin": 120,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://goo.gl/maps/ki4kgsm85QMp2UY28"
   },
   {
-    "slug": "mau-thien-nhien-4",
-    "name": "[Mẫu] Thiên nhiên 4",
-    "category": "thien-nhien",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.23407,
-    "lng": 107.58652,
-    "address": null,
-    "tags": [
-      "thien-nhien",
-      "check-in",
-      "gia-dinh"
-    ],
-    "durationMin": 120,
-    "openHours": null,
-    "sourceUrl": null
-  },
-  {
-    "slug": "mau-van-hoa-1",
-    "name": "[Mẫu] Văn hóa 1",
-    "category": "van-hoa",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.21854,
-    "lng": 107.65375,
-    "address": null,
-    "tags": [
-      "van-hoa",
-      "lich-su"
-    ],
-    "durationMin": 90,
-    "openHours": null,
-    "sourceUrl": null
-  },
-  {
-    "slug": "mau-van-hoa-2",
-    "name": "[Mẫu] Văn hóa 2",
-    "category": "van-hoa",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.28442,
-    "lng": 107.60805,
-    "address": null,
-    "tags": [
-      "van-hoa",
-      "lich-su",
-      "gia-dinh"
-    ],
-    "durationMin": 90,
-    "openHours": null,
-    "sourceUrl": null
-  },
-  {
-    "slug": "mau-van-hoa-3",
-    "name": "[Mẫu] Văn hóa 3",
-    "category": "van-hoa",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.19385,
-    "lng": 107.59604,
-    "address": null,
-    "tags": [
-      "van-hoa",
-      "lich-su"
-    ],
-    "durationMin": 90,
-    "openHours": null,
-    "sourceUrl": null
-  },
-  {
-    "slug": "mau-van-hoa-4",
-    "name": "[Mẫu] Văn hóa 4",
-    "category": "van-hoa",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.25991,
-    "lng": 107.67447,
-    "address": null,
-    "tags": [
-      "van-hoa",
-      "lich-su",
-      "gia-dinh"
-    ],
-    "durationMin": 90,
-    "openHours": null,
-    "sourceUrl": null
-  },
-  {
-    "slug": "mau-am-thuc-1",
-    "name": "[Mẫu] Ẩm thực 1",
+    "slug": "nha-hang-hai-san-tung",
+    "name": "Nhà hàng Hải Sản Tùng",
     "category": "am-thuc",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.2644,
-    "lng": 107.56083,
-    "address": null,
+    "description": "Nhà hàng tại Đắk Song",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682416110004_2021-05-03.jpg"
+    ],
+    "lat": 12.252357245921743,
+    "lng": 107.61404828805571,
+    "address": "7J27+WJM, Thị trấn Đức An, Đắk Song, Đắk Nông, Vietnam",
     "tags": [
       "am-thuc"
     ],
     "durationMin": 60,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": "0976413633",
+    "mapLink": "https://goo.gl/maps/wo7h9QtyAbfWmkZU8"
   },
   {
-    "slug": "mau-am-thuc-2",
-    "name": "[Mẫu] Ẩm thực 2",
+    "slug": "nha-hang-gun",
+    "name": "Nhà hàng Gun",
     "category": "am-thuc",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.17661,
-    "lng": 107.64969,
-    "address": null,
-    "tags": [
-      "am-thuc",
-      "gia-dinh"
+    "description": "ẨM THỰC GUN - Ăn là mê - Phê quên lối\nCOFFEE GUN - Uống là mê - Phê quên lối",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682416024611_z3521274985805_e8d16a2bed051d7f25a13620a4ebfab3.jpg"
     ],
-    "durationMin": 60,
-    "openHours": null,
-    "sourceUrl": null
-  },
-  {
-    "slug": "mau-am-thuc-3",
-    "name": "[Mẫu] Ẩm thực 3",
-    "category": "am-thuc",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.31253,
-    "lng": 107.64272,
-    "address": null,
+    "lat": 12.264173197814051,
+    "lng": 107.60828139303516,
+    "address": "Tổ 1, Đăk Song District, Dak Nong, Vietnam",
     "tags": [
       "am-thuc"
     ],
     "durationMin": 60,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": "0347504750",
+    "mapLink": "https://www.facebook.com/amthucgun/?ref=pages_you_manage"
   },
   {
-    "slug": "mau-am-thuc-4",
-    "name": "[Mẫu] Ẩm thực 4",
+    "slug": "nha-hang-trieu-dat",
+    "name": "Nhà hàng Triệu Đạt",
     "category": "am-thuc",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.19885,
-    "lng": 107.54907,
-    "address": null,
+    "description": "Nhà hàng",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682416169105_2023-03-09-(1).jpg"
+    ],
+    "lat": 12.252032170253218,
+    "lng": 107.61214554548968,
+    "address": "7J26+RV6, Thị trấn Đức An, Đắk Song, Đắk Nông, Vietnam",
     "tags": [
-      "am-thuc",
-      "gia-dinh"
+      "am-thuc"
     ],
     "durationMin": 60,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": "0944747089",
+    "mapLink": "https://goo.gl/maps/MQAdwRgqXHdHLTcY6"
   },
   {
-    "slug": "mau-trai-nghiem-1",
-    "name": "[Mẫu] Trải nghiệm 1",
-    "category": "trai-nghiem",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.22115,
-    "lng": 107.70596,
-    "address": null,
-    "tags": [
-      "trai-nghiem",
-      "gia-dinh"
+    "slug": "nha-nghi-thien-huong",
+    "name": "Nhà Nghỉ Thiên Hương",
+    "category": "luu-tru",
+    "description": "Nhà nghỉ bình dân",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682416310365_20211130_074225.jpg"
     ],
-    "durationMin": 120,
+    "lat": 12.252691407104999,
+    "lng": 107.61015255866883,
+    "address": "7J36+33M, QL14, Thị trấn Đức An, Đắk Song, Đắk Nông, Vietnam",
+    "tags": [
+      "luu-tru"
+    ],
+    "durationMin": 60,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": "02613714499",
+    "mapLink": "https://goo.gl/maps/7W52hrMF1Fqpo3WaA"
   },
   {
-    "slug": "mau-trai-nghiem-2",
-    "name": "[Mẫu] Trải nghiệm 2",
-    "category": "trai-nghiem",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.31687,
-    "lng": 107.5659,
-    "address": null,
-    "tags": [
-      "trai-nghiem",
-      "gia-dinh"
+    "slug": "nha-nghi-hong-nhien",
+    "name": "Nhà nghỉ Hồng Nhiên",
+    "category": "luu-tru",
+    "description": "Nhà nghỉ bình dân",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682416227780_2023-01-30.jpg"
     ],
-    "durationMin": 120,
+    "lat": 12.253246872573776,
+    "lng": 107.61008059511025,
+    "address": "7J36+72W, QL14, Thị trấn Đức An, Đắk Song, Đắk Nông, Vietnam",
+    "tags": [
+      "luu-tru"
+    ],
+    "durationMin": 60,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": "0945902519",
+    "mapLink": "https://goo.gl/maps/GyHFo9xunwnzXAHz7"
   },
   {
-    "slug": "mau-trai-nghiem-3",
-    "name": "[Mẫu] Trải nghiệm 3",
-    "category": "trai-nghiem",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.14082,
-    "lng": 107.6072,
-    "address": null,
-    "tags": [
-      "trai-nghiem",
-      "gia-dinh"
+    "slug": "nha-nghi-ngoc-sang",
+    "name": "Nhà nghỉ Ngọc Sáng",
+    "category": "luu-tru",
+    "description": "Nhà nghỉ bình dân",
+    "images": [
+      "https://static.dggv.edu.vn/360/1682416281765_IMG20190809101005.jpg"
     ],
-    "durationMin": 120,
-    "openHours": null,
-    "sourceUrl": null
-  },
-  {
-    "slug": "mau-trai-nghiem-4",
-    "name": "[Mẫu] Trải nghiệm 4",
-    "category": "trai-nghiem",
-    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
-    "images": [],
-    "lat": 12.30836,
-    "lng": 107.70101,
-    "address": null,
+    "lat": 12.25193616459991,
+    "lng": 107.61049686360523,
+    "address": "7J26+Q5Q, QL14, Thị trấn Đức An, Đắk Song, Đắk Nông, Vietnam",
     "tags": [
-      "trai-nghiem",
-      "gia-dinh"
+      "luu-tru"
     ],
-    "durationMin": 120,
+    "durationMin": 60,
     "openHours": null,
-    "sourceUrl": null
+    "sourceUrl": null,
+    "phone": "0963800506",
+    "mapLink": "https://goo.gl/maps/Y9qX6tPAnLgDEct99"
   }
 ]

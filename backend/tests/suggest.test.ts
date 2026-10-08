@@ -74,4 +74,19 @@ describe("suggestItinerary", () => {
     const input = { days: 2, interests: ["thien-nhien"], pace: "normal" as const };
     expect(suggestItinerary(PLACES, input)).toEqual(suggestItinerary(PLACES, input));
   });
+
+  it("ngày kín lịch tham quan vẫn chừa chỗ cho bữa ăn", () => {
+    // 3 điểm tham quan dài 150 phút: nếu xếp hết thì không còn chỗ cho bữa ăn
+    const long = [
+      place("a", "thien-nhien", ["thien-nhien"], 12.24, 107.62, 150),
+      place("b", "thien-nhien", ["thien-nhien"], 12.241, 107.621, 150),
+      place("c", "thien-nhien", ["thien-nhien"], 12.242, 107.622, 150),
+      place("d", "thien-nhien", ["thien-nhien"], 12.243, 107.623, 150),
+      place("quan", "am-thuc", ["am-thuc"], 12.2405, 107.6205, 60),
+    ];
+    const [day1] = suggestItinerary(long, { days: 1, interests: [], pace: "relaxed" });
+    expect(day1.stops.some((s) => s.placeId === "quan")).toBe(true);
+    expect(day1.totalMinutes).toBeLessThanOrEqual(6 * 60);
+  });
 });
+
