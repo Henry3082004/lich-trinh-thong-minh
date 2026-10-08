@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, useNavigate, useParams, useSearchParams, useSnackbar } from "zmp-ui";
+import { useNavigate, useParams, useSearchParams, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
 import { PlaceThumb } from "../components/place-card";
 import { api } from "../lib/api";
@@ -34,75 +34,61 @@ export default function PlaceDetailPage() {
     else navigate("/editor");
   };
 
+  const heroOk = !!place && place.images.length > 0 && !imageFailed;
+
   return (
-    <Screen title={place?.name ?? "Điểm đến"}>
+    <Screen
+      bottom={
+        place && draft ? (
+          <div className="bottom-stack">
+            <div className="chips" style={{ justifyContent: "center" }}>
+              {draft.schedule.map((d) => (
+                <button key={d.day} className={`chip ${presetDay === d.day ? "active" : ""}`} onClick={() => add(d.day)}>
+                  Thêm vào ngày {d.day}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : undefined
+      }
+    >
+      <button className="round-back" aria-label="Quay lại" onClick={() => navigate(-1)}>
+        ‹
+      </button>
       {error && <div className="empty">{error}</div>}
       {!place && !error && <Loading />}
       {place && (
-        <div className="content narrow stack">
-          {place.images.length > 0 && !imageFailed ? (
-            <img
-              src={place.images[0]}
-              alt={place.name}
-              onError={() => setImageFailed(true)}
-              style={{ width: "100%", borderRadius: 14, objectFit: "cover", maxHeight: 240 }}
-            />
-          ) : (
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <PlaceThumb place={place} />
-            </div>
-          )}
-          <div>
-            <h2 style={{ margin: "4px 0 8px" }}>{place.name}</h2>
-            <div className="row" style={{ gap: 6 }}>
-              <span className="badge">{categoryName(place.category)}</span>
-              <span className="muted">Tham quan ~{formatDuration(place.durationMin)}</span>
-            </div>
+        <div className="detail">
+          <div className="detail-hero">
+            {heroOk ? <img src={place.images[0]} alt={place.name} onError={() => setImageFailed(true)} /> : <PlaceThumb place={place} />}
+            <div className="detail-hero-shade" />
           </div>
-          <div className="card" style={{ lineHeight: 1.6 }}>
-            {place.description}
-          </div>
-          <div className="row" style={{ gap: 12 }}>
-            {place.phone && (
-              <Button fullWidth variant="secondary" onClick={() => callPhone(place.phone!)}>
-                📞 Gọi {place.phone}
-              </Button>
-            )}
-            <Button fullWidth variant="secondary" onClick={() => openLink(directionsUrl(place))}>
-              🧭 Chỉ đường
-            </Button>
-          </div>
-          {place.mapLink && (
-            <Button fullWidth variant="tertiary" onClick={() => openLink(place.mapLink!)}>
-              Xem địa điểm trên Google Maps ↗
-            </Button>
-          )}
-          {(place.address || place.openHours) && (
-            <div className="card stack" style={{ gap: 6 }}>
-              {place.address && <div>📍 {place.address}</div>}
-              {place.openHours && <div>🕒 {place.openHours}</div>}
+          <div className="detail-sheet content narrow stack">
+            <div>
+              <span className="badge-green">
+                {categoryName(place.category)} · ~{formatDuration(place.durationMin)}
+              </span>
+              <h2 className="detail-name">{place.name}</h2>
+              {place.address && <div className="detail-addr">{place.address}</div>}
             </div>
-          )}
-
-          {draft && (
-            <>
-              <div className="section-title" style={{ marginBottom: 0 }}>
-                Thêm vào lịch “{draft.title}”
-              </div>
-              <div className="chips">
-                {draft.schedule.map((d) => (
-                  <Button
-                    key={d.day}
-                    size="small"
-                    variant={presetDay === d.day ? "primary" : "secondary"}
-                    onClick={() => add(d.day)}
-                  >
-                    Ngày {d.day}
-                  </Button>
-                ))}
-              </div>
-            </>
-          )}
+            <div className="detail-desc">{place.description}</div>
+            <div className="detail-actions">
+              {place.phone && (
+                <button className="btn-outline" onClick={() => callPhone(place.phone!)}>
+                  Gọi {place.phone}
+                </button>
+              )}
+              <button className="btn-outline" onClick={() => openLink(directionsUrl(place))}>
+                Chỉ đường
+              </button>
+              {place.mapLink && (
+                <button className="btn-outline brown" onClick={() => openLink(place.mapLink!)}>
+                  Xem địa điểm trên Google Maps ↗
+                </button>
+              )}
+            </div>
+            {place.openHours && <div className="muted">🕒 {place.openHours}</div>}
+          </div>
         </div>
       )}
     </Screen>

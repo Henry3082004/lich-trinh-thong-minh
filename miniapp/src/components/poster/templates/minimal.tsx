@@ -1,16 +1,16 @@
 import React, { forwardRef } from "react";
 import { POSTER_MIN_HEIGHT, POSTER_WIDTH, posterFooterUrl, type PosterData } from "../poster-data";
-import { FONT, titleSize } from "./shared";
+import { FONT, subtitleOf, Thumb, titleSize } from "./shared";
 
-// Mẫu "Tối giản": nền trắng, chữ lớn, đường kẻ mảnh, dải ảnh ngang. Gọn nên chứa được lịch dài.
-const INK = "#111111";
-const MUTED = "#757575";
-const ACCENT = "#1b4d20";
+// Mẫu "Tối giản": nền kem, chữ lớn, ảnh bìa bo góc, các ngày chia hai cột (1 ngày thì một cột)
+const GREEN_DARK = "#1b4d20";
+const GREEN = "#2e7d32";
+const BROWN = "#6d4c41";
 
 export const MinimalPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({ data }, ref) => {
-  // Dải ảnh: tối đa 3 ảnh khác nhau
-  const strip = [...new Set(data.days.flatMap((d) => d.stops.map((s) => s.photo)).filter((p): p is string => !!p))].slice(0, 3);
-  let index = 0;
+  const twoCols = data.days.length > 1;
+  // Hai cột hẹp nên thu gọn thêm khi nhiều điểm; một cột thì có chỗ cho ảnh nhỏ
+  const showThumb = !data.compact;
 
   return (
     <div
@@ -18,64 +18,48 @@ export const MinimalPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({
       style={{
         width: POSTER_WIDTH,
         minHeight: POSTER_MIN_HEIGHT,
-        background: "#fff",
+        background: "#faf7f0",
         fontFamily: FONT,
-        color: INK,
+        color: GREEN_DARK,
+        padding: 72,
+        boxSizing: "border-box",
         display: "flex",
         flexDirection: "column",
-        padding: "68px 72px 0",
-        boxSizing: "border-box",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 22, letterSpacing: 6, fontWeight: 700, textTransform: "uppercase" }}>
-        <span>Du lịch Đắk Song</span>
-        <span style={{ color: ACCENT }}>● {data.days.length} ngày</span>
+      <div style={{ display: "flex", justifyContent: "space-between", fontSize: 26, fontWeight: 600, color: BROWN, letterSpacing: 3, textTransform: "uppercase" }}>
+        <div>Đắk Song</div>
+        <div>{subtitleOf(data)}</div>
+      </div>
+      <div style={{ fontSize: titleSize(data.title, 96), fontWeight: 800, lineHeight: 1.06, letterSpacing: -2, marginTop: 40 }}>{data.title}</div>
+      <div style={{ width: "100%", height: data.compact ? 420 : 560, marginTop: 48, borderRadius: 48, overflow: "hidden", background: `linear-gradient(135deg, ${GREEN_DARK}, ${GREEN} 60%, #66bb6a)`, flexShrink: 0 }}>
+        {data.heroPhoto && <img src={data.heroPhoto} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />}
       </div>
 
-      <div style={{ marginTop: 44, fontSize: titleSize(data.title, 96), fontWeight: 800, lineHeight: 1.02, letterSpacing: -3 }}>{data.title}</div>
-      <div style={{ marginTop: 20, fontSize: 28, color: MUTED }}>
-        {data.days.length} ngày · {data.totalStops} điểm đến
-      </div>
-
-      {strip.length > 0 && (
-        <div style={{ display: "flex", gap: 10, marginTop: 40, height: data.compact ? 170 : 230 }}>
-          {strip.map((src, i) => (
-            <img key={i} src={src} alt="" style={{ flex: 1, minWidth: 0, height: "100%", objectFit: "cover", borderRadius: 18 }} />
-          ))}
-        </div>
-      )}
-
-      <div style={{ marginTop: 44, flex: 1 }}>
+      <div style={{ display: "grid", gridTemplateColumns: twoCols ? "repeat(2, minmax(0, 1fr))" : "1fr", gap: "56px 48px", marginTop: 64, alignItems: "start" }}>
         {data.days.map((d) => (
-          <div key={d.day} style={{ marginBottom: 34 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 20, fontSize: 22, letterSpacing: 5, fontWeight: 800 }}>
-              <span>NGÀY {String(d.day).padStart(2, "0")}</span>
-              <span style={{ flex: 1, height: 3, background: INK }} />
-              <span style={{ fontWeight: 600, letterSpacing: 1, color: MUTED }}>{d.totalLabel}</span>
+          <div key={d.day}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 16, paddingBottom: 18, borderBottom: `4px solid ${GREEN}` }}>
+              <div style={{ fontSize: 44, fontWeight: 800 }}>Ngày {d.day}</div>
+              <div style={{ fontSize: 24, color: BROWN, fontWeight: 500 }}>{d.totalLabel}</div>
             </div>
-            {d.stops.length === 0 && <div style={{ fontSize: 28, color: MUTED, padding: "18px 0" }}>Tự do khám phá</div>}
-            {d.stops.map((s, i) => {
-              index += 1;
-              return (
-                <div key={i} style={{ display: "flex", alignItems: "baseline", gap: 24, padding: "18px 0", borderBottom: "1px solid #e6e6e6" }}>
-                  <span style={{ width: 46, fontSize: 22, color: ACCENT, fontWeight: 800 }}>{String(index).padStart(2, "0")}</span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontSize: 33, fontWeight: 700, lineHeight: 1.15 }}>{s.name}</div>
-                    <div style={{ marginTop: 4, fontSize: 21, color: MUTED }}>
-                      {s.categoryLabel} · {s.duration}
-                    </div>
-                  </div>
-                  <span style={{ fontSize: 30, fontWeight: 800 }}>{s.time}</span>
+            {d.stops.length === 0 && <div style={{ fontSize: 28, color: BROWN, padding: "20px 0" }}>Tự do khám phá</div>}
+            {d.stops.map((s, i) => (
+              <div key={i} style={{ display: "flex", gap: 20, alignItems: "center", padding: "20px 0", borderBottom: "2px solid #e6e0d2" }}>
+                {showThumb && <Thumb stop={s} size={96} radius={24} tint="#e6f2e6" />}
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <div style={{ fontSize: 26, fontWeight: 700, color: "#43a047" }}>{s.time}</div>
+                  <div style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.2, color: "#1f2a1f" }}>{s.name}</div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         ))}
       </div>
 
-      <div style={{ borderTop: `3px solid ${INK}`, height: 84, display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: 22, color: MUTED }}>
-        <span style={{ fontWeight: 700, letterSpacing: 2, color: INK }}>CỔNG DU LỊCH ĐẮK SONG</span>
-        <span>{posterFooterUrl()}</span>
+      <div style={{ marginTop: "auto", paddingTop: 56, display: "flex", justifyContent: "space-between", fontSize: 26, color: BROWN }}>
+        <div style={{ fontWeight: 700, color: GREEN }}>Lịch trình Đắk Song</div>
+        <div>{posterFooterUrl()}</div>
       </div>
     </div>
   );
