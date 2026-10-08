@@ -419,3 +419,69 @@ body {
     flex: 0 1 320px;
   }
 }
+
+/* ---------- Màn ảnh lịch trình ---------- */
+.template-row {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.template-chip {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 4px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.template-chip.active {
+  border-color: var(--green-700);
+  background: var(--green-100);
+  color: var(--green-900);
+}
+
+.template-chip .swatch {
+  width: 100%;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.poster-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 22px rgba(27, 77, 32, 0.18);
+  background: #fff;
+}
+
+.poster-loading {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--green-700);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 0 4px;
+  cursor: pointer;
+}

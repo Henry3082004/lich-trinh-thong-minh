@@ -23,7 +23,7 @@ export default function MyItinerariesPage() {
 
   const open = (it: Itinerary) => {
     fromItinerary(it);
-    navigate("/editor");
+    navigate("/poster");
   };
 
   const remove = async (it: Itinerary) => {

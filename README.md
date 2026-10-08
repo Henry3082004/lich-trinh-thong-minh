@@ -32,7 +32,9 @@ npm run deploy:dev       # bản Development
 ```
 Lần đầu `zmp-cli` sẽ hỏi App ID của mini app. Nếu lệnh trên báo lỗi với project có sẵn, chạy `zmp deploy` và làm theo hướng dẫn.
 
-Màn hình: Trang chủ → Tạo lịch (số ngày, sở thích, nhịp độ) → Chỉnh lịch (↑↓, xoá, thêm điểm, thêm ngày, Lưu) → Ảnh lịch trình (Lưu ảnh / Chia sẻ). Thêm "Lịch của tôi", "Điểm đến", chi tiết điểm đến.
+Luồng chính (2 chạm là ra ảnh): Trang chủ → **Tạo ảnh lịch trình** → chọn số ngày (có sẵn mặc định, sở thích là tuỳ chọn) → **Tạo ảnh** → màn ảnh (`/poster`): đổi tên chuyến đi, đổi giữa 3 mẫu (Rừng xanh, Hoàng hôn, Tối giản), **Lưu ảnh** hoặc **Gửi qua Zalo**. Từ màn ảnh có thể vào "Chỉnh lịch" (↑↓, xoá, thêm điểm, thêm ngày) rồi quay lại. Ngoài ra có "Lịch của tôi", "Điểm đến", chi tiết điểm đến (Gọi, Chỉ đường).
+
+Poster (`miniapp/src/components/poster/`): khổ 1080 px rộng, tối thiểu 4:5, lịch dài thì cao hơn và tự chuyển sang kiểu thu gọn. Ảnh địa điểm lấy qua `GET /api/img` của backend (máy chủ ảnh của cổng không có CORS). **Lưu ảnh** xuất PNG 2160 px; **Gửi** xuất JPEG 1080 px, tải lên `POST /api/posters` để có link công khai rồi mở bảng chia sẻ ảnh của Zalo (`openShareSheet` chỉ nhận link ảnh). Ngoài Zalo thì dùng Web Share, không có thì tải file.
 
 Đổi màu: `miniapp/src/theme.css` (biến `--green-*` và `--zaui-light-*`) và `app-config.json` (`headerColor`).
 

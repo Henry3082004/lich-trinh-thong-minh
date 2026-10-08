@@ -36,6 +36,21 @@ function toBody(draft: Draft) {
 }
 
 export const api = {
+  // Lưu ảnh poster để Zalo có link công khai khi chia sẻ. Trả về địa chỉ ảnh.
+  uploadPoster: async (blob: Blob): Promise<string> => {
+    if (USE_MOCK) throw new Error("Chưa kết nối backend");
+    const res = await fetch(`${BASE}/api/posters`, {
+      method: "POST",
+      headers: { ...(await authHeaders()), "Content-Type": blob.type },
+      body: blob,
+    });
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error ?? `Lỗi ${res.status}`);
+    }
+    return (await res.json()).url as string;
+  },
+
   places: async (category?: string): Promise<Place[]> => {
     if (USE_MOCK) return mockPlaces.filter((p) => !category || p.category === category);
     return request(`/api/places${category ? `?category=${encodeURIComponent(category)}` : ""}`);

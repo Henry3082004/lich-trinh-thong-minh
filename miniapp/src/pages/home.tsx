@@ -17,8 +17,8 @@ export default function HomePage() {
         <div style={{ fontSize: 13, letterSpacing: 2, textTransform: "uppercase", opacity: 0.8, marginBottom: 10 }}>
           Cổng du lịch Đắk Song
         </div>
-        <h1>Lên lịch trình khám phá Đắk Song trong 1 phút</h1>
-        <p>Chọn số ngày và sở thích, app gợi ý tuyến đi hợp lý. Chỉnh theo ý bạn rồi lưu ảnh lịch trình về máy.</p>
+        <h1>Tạo ảnh lịch trình Đắk Song trong 1 phút</h1>
+        <p>Chọn số ngày, app lên lịch và làm sẵn một tấm ảnh đẹp để bạn lưu về hoặc gửi cho gia đình, bạn bè.</p>
         </div>
       </div>
 
@@ -26,11 +26,11 @@ export default function HomePage() {
         {USE_MOCK && <div className="notice">Đang dùng dữ liệu mẫu (chưa kết nối backend).</div>}
 
         <Button fullWidth size="large" onClick={() => navigate("/create")}>
-          ✨ Tạo lịch trình mới
+          ✨ Tạo ảnh lịch trình
         </Button>
 
         {draft && (
-          <div className="card row" style={{ justifyContent: "space-between" }} onClick={() => navigate("/editor")}>
+          <div className="card row" style={{ justifyContent: "space-between" }} onClick={() => navigate("/poster")}>
             <div>
               <div style={{ fontWeight: 600 }}>Tiếp tục: {draft.title}</div>
               <div className="muted">{draft.schedule.length} ngày · chưa xong thì làm tiếp</div>

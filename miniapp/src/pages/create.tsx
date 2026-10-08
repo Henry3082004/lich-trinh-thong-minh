@@ -16,13 +16,15 @@ const PACES: { id: Pace; name: string; hint: string }[] = [
   { id: "packed", name: "Khám phá tối đa", hint: "≤ 5 điểm/ngày" },
 ];
 
+// Một màn hình duy nhất: chọn số ngày (có sẵn mặc định) rồi "Tạo ảnh" là ra poster ngay
 export default function CreatePage() {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
-  const { fromSuggest } = useDraft();
+  const { fromSuggest, setNotice } = useDraft();
   const [days, setDays] = useState(2);
   const [interests, setInterests] = useState<string[]>([]);
   const [pace, setPace] = useState<Pace>("normal");
+  const [showPace, setShowPace] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const toggle = (id: string) =>
@@ -34,7 +36,12 @@ export default function CreatePage() {
       const res = await api.suggest({ days, interests, pace });
       if (res.schedule.length === 0) throw new Error("Chưa có điểm đến phù hợp");
       fromSuggest(res);
-      navigate("/editor", { replace: true });
+      setNotice(
+        res.schedule.length < days
+          ? `Hiện chỉ đủ điểm đến cho ${res.schedule.length} ngày. Bạn có thể thêm điểm ở bước "Chỉnh lịch".`
+          : null,
+      );
+      navigate("/poster", { replace: true });
     } catch (e) {
       openSnackbar({ text: (e as Error).message, type: "error" });
     } finally {
@@ -44,26 +51,30 @@ export default function CreatePage() {
 
   return (
     <Screen
-      title="Tạo lịch trình"
+      title="Tạo ảnh lịch trình"
       bottom={
         <Button fullWidth size="large" loading={loading} onClick={submit}>
-          Gợi ý lịch trình
+          ✨ Tạo ảnh
         </Button>
       }
     >
       <div className="content narrow">
-        <div className="section-title">Bạn đi mấy ngày?</div>
+        <div className="section-title" style={{ marginTop: 4 }}>
+          Bạn đi mấy ngày?
+        </div>
         <div className="card stepper" style={{ justifyContent: "center" }}>
           <button aria-label="Bớt ngày" onClick={() => setDays((d) => Math.max(1, d - 1))}>
             −
           </button>
           <div className="value">{days} ngày</div>
-          <button aria-label="Thêm ngày" onClick={() => setDays((d) => Math.min(7, d + 1))}>
+          <button aria-label="Thêm ngày" onClick={() => setDays((d) => Math.min(5, d + 1))}>
             +
           </button>
         </div>
 
-        <div className="section-title">Bạn thích gì?</div>
+        <div className="section-title">
+          Bạn thích gì? <span className="muted">(không chọn cũng được)</span>
+        </div>
         <div className="chips">
           {[...CATEGORIES.filter((c) => c.id !== "am-thuc"), ...EXTRA_INTERESTS].map((c) => (
             <button key={c.id} className={`chip ${interests.includes(c.id) ? "active" : ""}`} onClick={() => toggle(c.id)}>
@@ -71,24 +82,25 @@ export default function CreatePage() {
             </button>
           ))}
         </div>
-        <div className="muted" style={{ marginTop: 8 }}>
-          Không chọn gì = gợi ý đa dạng. Mỗi ngày luôn có một điểm ăn uống.
-        </div>
 
-        <div className="section-title">Nhịp độ</div>
-        <div className="stack">
-          {PACES.map((p) => (
-            <button
-              key={p.id}
-              className={`chip ${pace === p.id ? "active" : ""}`}
-              style={{ display: "flex", justifyContent: "space-between", borderRadius: 12, padding: "12px 14px" }}
-              onClick={() => setPace(p.id)}
-            >
-              <span>{p.name}</span>
-              <span className="muted">{p.hint}</span>
-            </button>
-          ))}
-        </div>
+        <button className="link-btn" onClick={() => setShowPace((v) => !v)}>
+          {showPace ? "Ẩn tuỳ chọn ▲" : "Tuỳ chọn nhịp độ ▼"}
+        </button>
+        {showPace && (
+          <div className="stack" style={{ marginTop: 8 }}>
+            {PACES.map((p) => (
+              <button
+                key={p.id}
+                className={`chip ${pace === p.id ? "active" : ""}`}
+                style={{ display: "flex", justifyContent: "space-between", borderRadius: 12, padding: "12px 14px" }}
+                onClick={() => setPace(p.id)}
+              >
+                <span>{p.name}</span>
+                <span className="muted">{p.hint}</span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </Screen>
   );

@@ -47,8 +47,8 @@ export default function EditorPage() {
           <Button variant="secondary" loading={saving} disabled={isEmpty} onClick={save}>
             {draft.id ? "Cập nhật" : "Lưu"}
           </Button>
-          <Button disabled={isEmpty} onClick={() => navigate("/export")}>
-            Xuất ảnh
+          <Button disabled={isEmpty} onClick={() => navigate("/poster")}>
+            Xem ảnh
           </Button>
         </>
       }
