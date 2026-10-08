@@ -1,0 +1,33 @@
+{
+  "name": "daksong-itinerary-miniapp",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite dev",
+    "dev": "vite dev",
+    "build": "tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview",
+    "deploy:dev": "zmp-cli deploy --existing",
+    "deploy:testing": "zmp-cli deploy --existing --testing",
+    "build:web": "tsc --noEmit && BUILD_TARGET=web vite build",
+    "start:web": "serve -s www -l ${PORT:-3000}"
+  },
+  "dependencies": {
+    "html-to-image": "^1.11.13",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "serve": "^14.2.6",
+    "zmp-sdk": "^2.53.0",
+    "zmp-ui": "^1.11.14"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.21",
+    "zmp-vite-plugin": "^1.1.6"
+  }
+}

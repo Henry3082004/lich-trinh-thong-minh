@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String      @id @default(cuid())
+  zaloId      String      @unique
+  name        String?
+  avatar      String?
+  createdAt   DateTime    @default(now())
+  itineraries Itinerary[]
+}
+
+model Place {
+  id          String          @id @default(cuid())
+  slug        String          @unique
+  name        String
+  category    String
+  description String
+  images      String[]
+  lat         Float
+  lng         Float
+  address     String?
+  tags        String[]
+  durationMin Int             @default(60)
+  openHours   String?
+  sourceUrl   String?
+  items       ItineraryItem[]
+
+  @@index([category])
+}
+
+model Itinerary {
+  id        String          @id @default(cuid())
+  userId    String
+  user      User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  days      Int
+  interests String[]
+  shareId   String          @unique
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  items     ItineraryItem[]
+
+  @@index([userId])
+}
+
+model ItineraryItem {
+  id          String    @id @default(cuid())
+  itineraryId String
+  itinerary   Itinerary @relation(fields: [itineraryId], references: [id], onDelete: Cascade)
+  day         Int
+  order       Int
+  placeId     String
+  place       Place     @relation(fields: [placeId], references: [id], onDelete: Restrict)
+  startTime   String?
+  note        String?
+
+  @@index([itineraryId])
+}

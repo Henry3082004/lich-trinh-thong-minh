@@ -1,0 +1,276 @@
+[
+  {
+    "slug": "mau-thien-nhien-1",
+    "name": "[Mẫu] Thiên nhiên 1",
+    "category": "thien-nhien",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.25081,
+    "lng": 107.6082,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-thien-nhien-2",
+    "name": "[Mẫu] Thiên nhiên 2",
+    "category": "thien-nhien",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.21808,
+    "lng": 107.62192,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in",
+      "gia-dinh"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-thien-nhien-3",
+    "name": "[Mẫu] Thiên nhiên 3",
+    "category": "thien-nhien",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.26222,
+    "lng": 107.63703,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-thien-nhien-4",
+    "name": "[Mẫu] Thiên nhiên 4",
+    "category": "thien-nhien",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.23407,
+    "lng": 107.58652,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in",
+      "gia-dinh"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-van-hoa-1",
+    "name": "[Mẫu] Văn hóa 1",
+    "category": "van-hoa",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.21854,
+    "lng": 107.65375,
+    "address": null,
+    "tags": [
+      "van-hoa",
+      "lich-su"
+    ],
+    "durationMin": 90,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-van-hoa-2",
+    "name": "[Mẫu] Văn hóa 2",
+    "category": "van-hoa",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.28442,
+    "lng": 107.60805,
+    "address": null,
+    "tags": [
+      "van-hoa",
+      "lich-su",
+      "gia-dinh"
+    ],
+    "durationMin": 90,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-van-hoa-3",
+    "name": "[Mẫu] Văn hóa 3",
+    "category": "van-hoa",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.19385,
+    "lng": 107.59604,
+    "address": null,
+    "tags": [
+      "van-hoa",
+      "lich-su"
+    ],
+    "durationMin": 90,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-van-hoa-4",
+    "name": "[Mẫu] Văn hóa 4",
+    "category": "van-hoa",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.25991,
+    "lng": 107.67447,
+    "address": null,
+    "tags": [
+      "van-hoa",
+      "lich-su",
+      "gia-dinh"
+    ],
+    "durationMin": 90,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-am-thuc-1",
+    "name": "[Mẫu] Ẩm thực 1",
+    "category": "am-thuc",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.2644,
+    "lng": 107.56083,
+    "address": null,
+    "tags": [
+      "am-thuc"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-am-thuc-2",
+    "name": "[Mẫu] Ẩm thực 2",
+    "category": "am-thuc",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.17661,
+    "lng": 107.64969,
+    "address": null,
+    "tags": [
+      "am-thuc",
+      "gia-dinh"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-am-thuc-3",
+    "name": "[Mẫu] Ẩm thực 3",
+    "category": "am-thuc",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.31253,
+    "lng": 107.64272,
+    "address": null,
+    "tags": [
+      "am-thuc"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-am-thuc-4",
+    "name": "[Mẫu] Ẩm thực 4",
+    "category": "am-thuc",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.19885,
+    "lng": 107.54907,
+    "address": null,
+    "tags": [
+      "am-thuc",
+      "gia-dinh"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-trai-nghiem-1",
+    "name": "[Mẫu] Trải nghiệm 1",
+    "category": "trai-nghiem",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.22115,
+    "lng": 107.70596,
+    "address": null,
+    "tags": [
+      "trai-nghiem",
+      "gia-dinh"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-trai-nghiem-2",
+    "name": "[Mẫu] Trải nghiệm 2",
+    "category": "trai-nghiem",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.31687,
+    "lng": 107.5659,
+    "address": null,
+    "tags": [
+      "trai-nghiem",
+      "gia-dinh"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-trai-nghiem-3",
+    "name": "[Mẫu] Trải nghiệm 3",
+    "category": "trai-nghiem",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.14082,
+    "lng": 107.6072,
+    "address": null,
+    "tags": [
+      "trai-nghiem",
+      "gia-dinh"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  },
+  {
+    "slug": "mau-trai-nghiem-4",
+    "name": "[Mẫu] Trải nghiệm 4",
+    "category": "trai-nghiem",
+    "description": "PLACEHOLDER – thay bằng nội dung thật từ cổng du lịch Đắk Song.",
+    "images": [],
+    "lat": 12.30836,
+    "lng": 107.70101,
+    "address": null,
+    "tags": [
+      "trai-nghiem",
+      "gia-dinh"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null
+  }
+]
