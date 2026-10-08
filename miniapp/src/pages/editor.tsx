@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, useNavigate, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { api } from "../lib/api";
+import { dayRouteUrl, MAX_WAYPOINTS } from "../lib/maps";
+import { openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { categoryIcon } from "../types";
 
@@ -108,6 +110,18 @@ export default function EditorPage() {
               <Button size="small" variant="tertiary" onClick={() => navigate(`/places?day=${d.day}`)}>
                 + Thêm điểm vào ngày {d.day}
               </Button>
+              {d.stops.length > 0 && (
+                <Button
+                  size="small"
+                  variant="tertiary"
+                  onClick={() => openLink(dayRouteUrl(d.stops.map((s) => s.place))!)}
+                >
+                  🧭 Chỉ đường cả ngày {d.day}
+                </Button>
+              )}
+              {d.stops.length > MAX_WAYPOINTS + 1 && (
+                <div className="muted">Google Maps chỉ nhận tối đa {MAX_WAYPOINTS} điểm dừng chen giữa, nên một số điểm sẽ không có trong lộ trình.</div>
+              )}
             </div>
           </div>
         ))}
