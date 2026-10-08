@@ -32,8 +32,9 @@ export type SuggestedDay = {
 };
 
 export const FOOD_CATEGORY = "am-thuc";
-// Lưu trú không phải điểm tham quan nên không đưa vào tuyến
-const EXCLUDED_CATEGORIES = new Set(["luu-tru"]);
+// Không đưa vào tuyến tự động: lưu trú không phải điểm tham quan; cà phê, đặc sản (món ăn) và lễ hội
+// (có mùa riêng) chỉ vào lịch khi khách tự thêm vào giỏ (xem planner)
+const EXCLUDED_CATEGORIES = new Set(["luu-tru", "ca-phe", "dac-san", "le-hoi"]);
 
 const PACE_RULES: Record<Pace, { maxStops: number; maxMinutes: number }> = {
   relaxed: { maxStops: 3, maxMinutes: 6 * 60 },

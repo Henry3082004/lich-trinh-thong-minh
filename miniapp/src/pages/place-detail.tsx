@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
+import { AddButton } from "../components/add-button";
 import { PlaceThumb } from "../components/place-card";
 import { api } from "../lib/api";
 import { formatDuration } from "../lib/schedule";
@@ -41,17 +42,24 @@ export default function PlaceDetailPage() {
 
   return (
     <Screen
+      cart={!presetDay}
       bottom={
-        place && draft ? (
-          <div className="bottom-stack">
-            <div className="chips" style={{ justifyContent: "center" }}>
-              {draft.schedule.map((d) => (
-                <button key={d.day} className={`chip ${presetDay === d.day ? "active" : ""}`} onClick={() => add(d.day)}>
-                  Thêm vào ngày {d.day}
-                </button>
-              ))}
+        place ? (
+          presetDay && draft ? (
+            <div className="bottom-stack">
+              <div className="chips" style={{ justifyContent: "center" }}>
+                {draft.schedule.map((d) => (
+                  <button key={d.day} className={`chip ${presetDay === d.day ? "active" : ""}`} onClick={() => add(d.day)}>
+                    Thêm vào ngày {d.day}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="bottom-stack">
+              <AddButton place={place} size="lg" />
+            </div>
+          )
         ) : undefined
       }
     >
@@ -74,6 +82,12 @@ export default function PlaceDetailPage() {
               <h2 className="detail-name">{place.name}</h2>
               {place.address && <div className="detail-addr">{place.address}</div>}
             </div>
+            {(place.season || place.months.length > 0 || place.priceNote) && (
+              <div className="card stack" style={{ gap: 6 }}>
+                {(place.season || place.months.length > 0) && <div>🎊 Diễn ra: {place.season || `tháng ${place.months.join(", ")}`}</div>}
+                {place.priceNote && <div>💰 {place.priceNote}</div>}
+              </div>
+            )}
             <div className="detail-desc">{place.description}</div>
             <div className="detail-actions">
               {place.phone && (
@@ -91,6 +105,7 @@ export default function PlaceDetailPage() {
               )}
             </div>
             {place.openHours && <div className="muted">🕒 {place.openHours}</div>}
+            {place.imageCredits.length > 0 && <div className="muted" style={{ fontSize: 12 }}>Ảnh: {place.imageCredits.join("; ")}</div>}
 
             {google && (google.rating !== null || google.reviews.length > 0) && (
               <div className="g-reviews">

@@ -1,5 +1,5 @@
-import type { Draft, GoogleInfo, Itinerary, Place, SuggestInput, SuggestResponse } from "../types";
-import { mockApi, mockPlaces, mockSuggest } from "./mock";
+import type { Draft, GoogleInfo, Itinerary, Place, PlanResponse, SuggestInput, SuggestResponse, TripPrefs } from "../types";
+import { mockApi, mockCart, mockPlaces, mockSuggest } from "./mock";
 import { authHeaders } from "./zalo";
 
 const BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/$/, "") ?? "";
@@ -87,6 +87,25 @@ export const api = {
 
   chat: async (messages: { role: "user" | "model"; text: string }[]): Promise<{ reply: string; placeIds: string[] }> =>
     request("/api/chat", { method: "POST", body: JSON.stringify({ messages }) }, true),
+
+  // Giỏ lịch trình (lưu theo tài khoản)
+  cart: async (): Promise<Place[]> => (USE_MOCK ? mockCart.get() : request("/api/cart", {}, true)),
+  addToCart: async (placeId: string): Promise<Place[]> =>
+    USE_MOCK ? mockCart.add(placeId) : request("/api/cart", { method: "POST", body: JSON.stringify({ placeId }) }, true),
+  removeFromCart: async (placeId: string): Promise<Place[]> =>
+    USE_MOCK ? mockCart.remove(placeId) : request(`/api/cart/${encodeURIComponent(placeId)}`, { method: "DELETE" }, true),
+  clearCart: async (): Promise<Place[]> => (USE_MOCK ? mockCart.clear() : request("/api/cart", { method: "DELETE" }, true)),
+
+  // AI lên lịch và chỉnh lịch theo lời khách
+  plan: async (prefs: TripPrefs): Promise<PlanResponse> => {
+    if (USE_MOCK) throw new Error("Chưa kết nối backend");
+    return request("/api/plan", { method: "POST", body: JSON.stringify({ prefs }) }, true);
+  },
+  revisePlan: async (prefs: TripPrefs, plan: PlanResponse, message: string): Promise<PlanResponse> => {
+    if (USE_MOCK) throw new Error("Chưa kết nối backend");
+    const body = { prefs, message, plan: { days: plan.days.map((d) => ({ stops: d.stops.map((s) => ({ placeId: s.placeId })) })) } };
+    return request("/api/plan/revise", { method: "POST", body: JSON.stringify(body) }, true);
+  },
 
   suggest: async (input: SuggestInput): Promise<SuggestResponse> => {
     if (USE_MOCK) return mockSuggest(input);

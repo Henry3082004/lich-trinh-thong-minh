@@ -1,10 +1,9 @@
 import { config } from "../config";
 import { HttpError } from "../lib/http";
+import { generate } from "./gemini";
 import { prisma } from "../lib/prisma";
 
 // Chatbot hỏi đáp về Đắk Song: Gemini chỉ được trả lời dựa trên dữ liệu điểm đến của app.
-const ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models";
-const TIMEOUT_MS = 20000;
 const MAX_DESC_CHARS = 300;
 const CONTEXT_TTL_MS = 5 * 60 * 1000;
 
@@ -101,37 +100,12 @@ export async function chat(messages: ChatMessage[]): Promise<{ reply: string; pl
   if (!config.geminiApiKey) throw new HttpError(503, "Trợ lý chưa được bật");
   const ctx = await loadContext();
 
-  const payload = JSON.stringify({
-    systemInstruction: { parts: [{ text: systemPrompt(ctx.text) }] },
+  const text = await generate({
+    system: systemPrompt(ctx.text),
     contents: messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
-    generationConfig: { temperature: 0.4, maxOutputTokens: 1024 },
+    generationConfig: { maxOutputTokens: 1024 },
   });
-  // Model chính quá tải thì thử model dự phòng một lần
-  const models = [config.geminiModel, config.geminiFallbackModel].filter((m, i, a) => m && a.indexOf(m) === i);
-  let res: Response | null = null;
-  for (const model of models) {
-    try {
-      res = await fetch(`${ENDPOINT}/${encodeURIComponent(model)}:generateContent`, {
-        method: "POST",
-        headers: { "content-type": "application/json", "x-goog-api-key": config.geminiApiKey },
-        body: payload,
-        signal: AbortSignal.timeout(TIMEOUT_MS),
-      });
-    } catch {
-      res = null;
-      continue;
-    }
-    if (res.ok || ![429, 500, 503].includes(res.status)) break;
-  }
-  if (!res) throw new HttpError(502, "Không kết nối được trợ lý, bạn thử lại sau nhé");
-  if (!res.ok) throw new HttpError(502, "Trợ lý đang bận, bạn thử lại sau nhé");
-
-  const body = (await res.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
-  const reply = cleanReply(
-    (body.candidates?.[0]?.content?.parts ?? [])
-      .map((p) => p.text ?? "")
-      .join(""),
-  );
+  const reply = cleanReply(text);
   if (!reply) return { reply: "Mình chưa trả lời được câu này. Bạn thử hỏi theo cách khác nhé.", placeIds: [] };
   return { reply, placeIds: mentionedPlaces(reply, ctx.places) };
 }

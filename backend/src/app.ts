@@ -2,10 +2,12 @@ import cors from "cors";
 import express from "express";
 import { config } from "./config";
 import { errorHandler } from "./lib/http";
+import { cartRouter } from "./routes/cart";
 import { chatRouter } from "./routes/chat";
 import { imagesRouter } from "./routes/images";
 import { itinerariesRouter } from "./routes/itineraries";
 import { placesRouter } from "./routes/places";
+import { planRouter } from "./routes/plan";
 import { postersRouter } from "./routes/posters";
 import { suggestRouter } from "./routes/suggest";
 
@@ -38,6 +40,8 @@ export function createApp() {
   app.use("/api", imagesRouter);
   app.use("/api", postersRouter);
   app.use("/api", chatRouter);
+  app.use("/api", cartRouter);
+  app.use("/api", planRouter);
 
   app.use((_req, res) => {
     res.status(404).json({ error: "Không tìm thấy" });

@@ -18,6 +18,12 @@ export type Place = {
   sourceUrl: string | null;
   phone: string | null;
   mapLink: string | null;
+  kind: "place" | "dish" | "festival";
+  season: string | null; // lễ hội: vd "Tháng 3 âm lịch"
+  months: number[]; // lễ hội: tháng dương lịch thường diễn ra
+  priceNote: string | null;
+  imageCredits: string[]; // ghi công ảnh (tác giả, giấy phép)
+  sourceUrls: string[];
 };
 
 // Điểm sao + vài review từ Google Maps (backend gọi Places API; có thể không có)
@@ -80,8 +86,38 @@ export const CATEGORIES = [
   { id: "trai-nghiem", name: "Trải nghiệm", icon: "🏕️" },
 ] as const;
 
+// Nhóm nội dung hiển thị khi khám phá và lọc (có thêm lưu trú, cà phê, đặc sản, lễ hội; không dùng làm "sở thích" khi tạo nhanh)
+
 // Nhóm hiển thị khi lọc danh sách điểm đến (có thêm Lưu trú, nhưng không dùng làm "sở thích" khi tạo lịch)
-export const PLACE_CATEGORIES = [...CATEGORIES, { id: "luu-tru", name: "Lưu trú", icon: "🛏️" }] as const;
+export const PLACE_CATEGORIES = [
+  ...CATEGORIES,
+  { id: "ca-phe", name: "Cà phê", icon: "☕" },
+  { id: "dac-san", name: "Đặc sản", icon: "🍜" },
+  { id: "le-hoi", name: "Lễ hội", icon: "🎊" },
+  { id: "luu-tru", name: "Lưu trú", icon: "🛏️" },
+] as const;
+
+// Chuyến đi do AI lên lịch
+export type Transport = "o-to" | "xe-may" | "xe-khach";
+export type TripPrefs = {
+  people: number;
+  kids: number;
+  startDate: string; // YYYY-MM-DD
+  startTime: string; // HH:mm
+  days: number;
+  transport: Transport;
+  pace: Pace;
+};
+export type PlanStop = { placeId: string; startTime: string; travelMinFromPrev: number; note: string | null; suggested: boolean };
+export type PlanResponse = {
+  days: { day: number; date: string; stops: PlanStop[] }[];
+  lodgingIds: string[];
+  warnings: string[];
+  summary: string;
+  questions: string[];
+  places: Place[];
+  usedAi?: boolean;
+};
 
 export const categoryName = (id: string) => PLACE_CATEGORIES.find((c) => c.id === id)?.name ?? id;
 export const categoryIcon = (id: string) => PLACE_CATEGORIES.find((c) => c.id === id)?.icon ?? "📍";

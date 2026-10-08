@@ -85,6 +85,10 @@ Các trường quan trọng cho thuật toán gợi ý: `category`, `tags`, `lat
 
 Trang chi tiết điểm đến hiện điểm sao và tối đa 5 review của Google nếu backend có `GOOGLE_MAPS_API_KEY` (Places API (New)). Không có khoá thì phần này tự ẩn, các phần khác không ảnh hưởng. Backend chỉ gọi Google khi khách xem điểm đó, giữ bộ nhớ đệm 6 giờ và không lưu review vào database. Khoá đặt thành biến môi trường trên Railway, không đưa vào repo.
 
+## Giỏ lịch trình và AI lên lịch
+
+Khách lướt trang chủ / Điểm đến, bấm "+ Thêm" vào **giỏ lịch trình** (lưu theo tài khoản), rồi "Để AI lên lịch trình": nhập số người, ngày đi, số ngày/đêm, phương tiện (ô tô / xe máy / xe khách), AI xếp lịch từ giỏ, khách chat để chỉnh hoặc "Sửa tay", rồi "Chốt & tạo ảnh". Cần `GEMINI_API_KEY` (không có thì dùng lịch dự phòng theo khoảng cách). Thời gian di chuyển hiện là **ước tính** (đường chim bay × hệ số, tốc độ theo phương tiện) ở `backend/src/services/travel.ts`; đó là chỗ duy nhất cần thay khi dùng dữ liệu đường đi thật.
+
 ## Chatbot hỏi đáp (tuỳ chọn)
 
 Nút "Hỏi đáp Đắk Song" ở trang chủ chỉ hiện khi backend có `GEMINI_API_KEY` (tạo ở Google AI Studio). Backend gửi danh sách điểm đến cho Gemini làm ngữ cảnh và yêu cầu chỉ trả lời theo dữ liệu đó. Model đổi bằng `GEMINI_MODEL` (mặc định `gemini-2.5-flash`, quá tải thì tự thử `GEMINI_FALLBACK_MODEL`), số câu hỏi mỗi người mỗi giờ bằng `CHAT_PER_HOUR`. Khoá đặt trên Railway, không đưa vào repo.

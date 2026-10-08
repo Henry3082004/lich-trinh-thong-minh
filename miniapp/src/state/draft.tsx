@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
-import type { Draft, DraftDay, Itinerary, Place, SuggestResponse } from "../types";
+import type { Draft, DraftDay, Itinerary, Place, PlanResponse, SuggestResponse } from "../types";
 import { retime } from "../lib/schedule";
 import { isTemplateId } from "../components/poster/PosterCanvas";
 import type { TemplateId } from "../components/poster/poster-data";
@@ -34,6 +34,8 @@ type DraftActions = {
   setNotice: (text: string | null) => void;
   fromSuggest: (res: SuggestResponse) => void;
   fromItinerary: (it: Itinerary) => void;
+  // Chốt lịch do AI đề xuất thành lịch đang chỉnh (giữ nguyên giờ AI đã tính)
+  fromPlan: (plan: PlanResponse, title?: string) => void;
   setTitle: (title: string) => void;
   moveStop: (day: number, index: number, delta: -1 | 1) => void;
   removeStop: (day: number, index: number) => void;
@@ -108,6 +110,21 @@ export function DraftProvider({ children }: { children: React.ReactNode }) {
             })),
           ),
         }),
+      fromPlan: (plan, title) => {
+        const byId = new Map(plan.places.map((p) => [p.id, p]));
+        setDraft({
+          title: title ?? `Đắk Song ${plan.days.length} ngày`,
+          interests: [],
+          pace: "normal",
+          schedule: plan.days.map((d) => ({
+            day: d.day,
+            stops: d.stops
+              .filter((s) => byId.has(s.placeId))
+              .map((s) => ({ place: byId.get(s.placeId)!, startTime: s.startTime, note: s.note ?? undefined })),
+          })),
+        });
+        setNotice(null);
+      },
       setTitle: (title) => setDraft((d) => (d ? { ...d, title } : d)),
       moveStop: (day, index, delta) =>
         updateDay(day, (stops) => {

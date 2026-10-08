@@ -62,6 +62,24 @@ Cả hai tham số đều tuỳ chọn. → `Place[]`
 ```
 `reviewsUrl` là link thẳng tới phần đánh giá nếu Google trả về, không thì bằng `mapsUrl`. Lỗi: 503 (chưa có khoá), 404 (không tìm thấy trên Google hoặc quá xa toạ độ điểm đến), 502 (Google lỗi).
 
+### Giỏ lịch trình (cần đăng nhập, lưu theo tài khoản)
+- `GET /api/cart` → `Place[]` (theo thứ tự thêm)
+- `POST /api/cart` body `{ "placeId": "id hoặc slug" }` → `Place[]` mới (201; thêm trùng thì 200, không nhân đôi; tối đa 40 mục, vượt thì 409)
+- `DELETE /api/cart/:placeId` → `Place[]` mới
+- `DELETE /api/cart` → `[]`
+
+`Place` có thêm: `kind` (`place`/`dish`/`festival`), `season`, `months` (tháng dương lịch), `priceNote`, `imageCredits`, `sourceUrls`. Nhóm `category` có thêm `ca-phe`, `dac-san`, `le-hoi`.
+
+### `POST /api/plan`: AI lên lịch từ giỏ (cần đăng nhập)
+Body: `{ "prefs": { "people": 4, "kids": 1, "startDate": "2026-10-20", "startTime": "08:00", "days": 2, "transport": "o-to" | "xe-may" | "xe-khach", "pace": "relaxed" | "normal" | "packed" } }`
+→ `{ days: [{ day, date, stops: [{ placeId, startTime, travelMinFromPrev, note, suggested }] }], lodgingIds, warnings, summary, questions, places: Place[], usedAi }`
+- Gemini chọn thứ tự/ngày cho các mục trong giỏ và có thể chèn thêm điểm (đánh dấu `suggested: true`, thường là bữa ăn). **Giờ do backend tính** (thời lượng + thời gian di chuyển theo phương tiện), AI không quyết định giờ.
+- Backend kiểm tra lại: bỏ `placeId` không tồn tại/trùng, mục trong giỏ AI bỏ sót vẫn được thêm, lễ hội không trùng tháng đi thì không xếp (có `warnings`), lưu trú vào `lodgingIds`, quán ăn được đặt gần 12:00, đi hôm nay thì bắt đầu từ giờ hiện tại (giờ VN).
+- AI lỗi/chưa có khoá thì dùng lịch dự phòng (`usedAi: false`). Giới hạn `PLAN_PER_HOUR` lượt/người/giờ.
+
+### `POST /api/plan/revise`: chỉnh lịch theo lời khách
+Body: `{ prefs, message, plan: { days: [{ stops: [{ placeId }] }] } }` → cùng dạng với `/api/plan` (không có `usedAi`). Lỗi: 400, 429, 502 (AI không chỉnh được), 503 (chưa có khoá).
+
 ### `GET /api/chat/status`
 → `{ "enabled": true }` khi backend có `GEMINI_API_KEY`. App dùng để ẩn/hiện nút chatbot.
 
