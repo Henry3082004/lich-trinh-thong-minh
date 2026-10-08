@@ -1,18 +1,6 @@
 import React from "react";
 import { Page, Spinner, useNavigate } from "zmp-ui";
 
-const headerStyle: React.CSSProperties = {
-  position: "sticky",
-  top: 0,
-  zIndex: 20,
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  padding: "calc(10px + env(safe-area-inset-top)) 12px 10px",
-  background: "var(--green-700)",
-  color: "#fff",
-};
-
 export function Screen({
   title,
   back = true,
@@ -28,7 +16,8 @@ export function Screen({
   return (
     <Page className="page">
       {title && (
-        <div style={headerStyle}>
+        <div className="app-header">
+          <div className="app-header-inner">
           {back && (
             <button
               aria-label="Quay lại"
@@ -39,6 +28,7 @@ export function Screen({
             </button>
           )}
           <div style={{ fontSize: 17, fontWeight: 700 }}>{title}</div>
+          </div>
         </div>
       )}
       {children}

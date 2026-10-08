@@ -4,7 +4,7 @@ import { Loading, Screen } from "../components/layout";
 import { PlaceCard } from "../components/place-card";
 import { api } from "../lib/api";
 import { useDraft } from "../state/draft";
-import { CATEGORIES, type Place } from "../types";
+import { PLACE_CATEGORIES, type Place } from "../types";
 
 export default function PlacesPage() {
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function PlacesPage() {
           <button className={`chip ${!category ? "active" : ""}`} onClick={() => setCategory("")}>
             Tất cả
           </button>
-          {CATEGORIES.map((c) => (
+          {PLACE_CATEGORIES.map((c) => (
             <button key={c.id} className={`chip ${category === c.id ? "active" : ""}`} onClick={() => setCategory(c.id)}>
               {c.icon} {c.name}
             </button>
@@ -59,7 +59,7 @@ export default function PlacesPage() {
 
         {!places && <Loading />}
         {places?.length === 0 && <div className="empty">Chưa có điểm đến nào.</div>}
-        <div className="stack">
+        <div className="stack card-grid">
           {places?.map((p) => (
             <PlaceCard
               key={p.id}

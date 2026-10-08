@@ -42,6 +42,9 @@ const PACE_RULES: Record<Pace, { maxStops: number; maxMinutes: number }> = {
 };
 
 const DAY_START_MIN = 8 * 60;
+// Thời gian chừa lại cho bữa ăn (ăn + di chuyển) khi còn điểm ẩm thực,
+// để ngày kín lịch tham quan vẫn có chỗ chèn bữa ăn
+const FOOD_RESERVE_MIN = 90;
 const AVG_SPEED_KMH = 30; // đường đồi núi, ước lượng thận trọng
 // 1 điểm sở thích = đáng đi thêm bao nhiêu km
 const KM_PER_SCORE = 10;
@@ -103,6 +106,7 @@ export function suggestItinerary(places: SuggestPlace[], input: SuggestInput): S
     // Chừa 1 chỗ cho bữa ăn nếu còn điểm ẩm thực
     const foodAvailable = foods.some((f) => !used.has(f.id));
     const sightSlots = rules.maxStops - (foodAvailable ? 1 : 0);
+    const sightMinutesCap = rules.maxMinutes - (foodAvailable ? FOOD_RESERVE_MIN : 0);
 
     // Tham lam: từ điểm hiện tại, chọn điểm có (sở thích cao, gần) tốt nhất mà vẫn vừa thời gian
     while (route.length < sightSlots) {
@@ -111,7 +115,7 @@ export function suggestItinerary(places: SuggestPlace[], input: SuggestInput): S
       let bestUtility = -Infinity;
       for (const p of sights) {
         if (used.has(p.id)) continue;
-        if (routeMinutes([...route, p]) > rules.maxMinutes) continue;
+        if (routeMinutes([...route, p]) > sightMinutesCap) continue;
         const utility = score.get(p.id)! * KM_PER_SCORE - haversineKm(current, p);
         if (utility > bestUtility) {
           best = p;

@@ -9,6 +9,19 @@
     <meta name="theme-color" content="#2E7D32" />
     <meta name="format-detection" content="telephone=no" />
     <title>Lịch trình Đắk Song</title>
+    <script>
+      // Máy cảm ứng (điện thoại, tablet) -> giao diện điện thoại; máy tính -> giao diện rộng.
+      // Có thể ép thử bằng ?layout=phone hoặc ?layout=desktop.
+      (function () {
+        var layout = "phone";
+        try {
+          var q = new URLSearchParams(location.search).get("layout");
+          if (q === "phone" || q === "desktop") layout = q;
+          else layout = matchMedia("(pointer: coarse)").matches || innerWidth <= 700 ? "phone" : "desktop";
+        } catch (e) {}
+        document.documentElement.setAttribute("data-layout", layout);
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>

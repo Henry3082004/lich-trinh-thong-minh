@@ -281,3 +281,207 @@ body {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
+
+/* ---------- Thanh tiêu đề ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: calc(10px + env(safe-area-inset-top)) 12px 10px;
+  background: var(--green-700);
+  color: #fff;
+}
+
+.app-header-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ---------- Máy cảm ứng rộng (tablet): giao diện điện thoại, một cột ở giữa ---------- */
+@media (min-width: 701px) {
+  html:not([data-layout="desktop"]),
+  html:not([data-layout="desktop"]) body {
+    background: #cfe3cf;
+  }
+
+  html:not([data-layout="desktop"]) #app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: var(--cream);
+    box-shadow: 0 0 48px rgba(27, 77, 32, 0.22);
+    position: relative;
+    overflow: hidden;
+  }
+
+  html:not([data-layout="desktop"]) .bottom-bar {
+    left: 50%;
+    right: auto;
+    width: 480px;
+    max-width: 100%;
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Máy tính: giao diện rộng ---------- */
+@media (min-width: 701px) {
+  html[data-layout="desktop"] {
+    --page-max: 1120px;
+  }
+
+  html[data-layout="desktop"] .app-header {
+    padding: 14px 24px;
+  }
+  html[data-layout="desktop"] .app-header-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+
+  html[data-layout="desktop"] .hero {
+    padding: 72px 24px 56px;
+    border-radius: 0 0 40px 40px;
+  }
+  html[data-layout="desktop"] .hero-inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+  }
+  html[data-layout="desktop"] .hero h1 {
+    font-size: 42px;
+    max-width: 760px;
+  }
+  html[data-layout="desktop"] .hero p {
+    font-size: 18px;
+    max-width: 640px;
+  }
+
+  html[data-layout="desktop"] .content {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 28px 24px;
+  }
+  html[data-layout="desktop"] .content.narrow {
+    max-width: 680px;
+  }
+
+  html[data-layout="desktop"] .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Danh sách thẻ: nhiều cột */
+  html[data-layout="desktop"] .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 16px;
+  }
+  html[data-layout="desktop"] .card-grid > .empty,
+  html[data-layout="desktop"] .card-grid > .zaui-spinner {
+    grid-column: 1 / -1;
+  }
+
+  /* Chỉnh lịch: các ngày xếp cạnh nhau */
+  html[data-layout="desktop"] .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+  html[data-layout="desktop"] .day-block {
+    margin-bottom: 0;
+  }
+  html[data-layout="desktop"] .editor-head {
+    max-width: 680px;
+  }
+  html[data-layout="desktop"] .add-day {
+    margin-top: 20px;
+    max-width: 320px;
+  }
+
+  html[data-layout="desktop"] .place-card:hover,
+  html[data-layout="desktop"] .card[onclick]:hover {
+    box-shadow: 0 4px 16px rgba(27, 77, 32, 0.16);
+  }
+  html[data-layout="desktop"] .chip:hover {
+    border-color: var(--green-500);
+  }
+
+  /* Thanh nút dưới: không kéo dài hết chiều ngang */
+  html[data-layout="desktop"] .bottom-bar {
+    justify-content: center;
+  }
+  html[data-layout="desktop"] .bottom-bar > * {
+    flex: 0 1 320px;
+  }
+}
+
+/* ---------- Màn ảnh lịch trình ---------- */
+.template-row {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.template-chip {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 4px;
+  border: 2px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.template-chip.active {
+  border-color: var(--green-700);
+  background: var(--green-100);
+  color: var(--green-900);
+}
+
+.template-chip .swatch {
+  width: 100%;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.poster-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: 0 6px 22px rgba(27, 77, 32, 0.18);
+  background: #fff;
+}
+
+.poster-loading {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.62);
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--green-700);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 0 4px;
+  cursor: pointer;
+}

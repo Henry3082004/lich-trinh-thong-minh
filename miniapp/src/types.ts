@@ -16,6 +16,8 @@ export type Place = {
   durationMin: number;
   openHours: string | null;
   sourceUrl: string | null;
+  phone: string | null;
+  mapLink: string | null;
 };
 
 export type SuggestInput = { days: number; interests: string[]; pace: Pace };
@@ -67,5 +69,8 @@ export const CATEGORIES = [
   { id: "trai-nghiem", name: "Trải nghiệm", icon: "🏕️" },
 ] as const;
 
-export const categoryName = (id: string) => CATEGORIES.find((c) => c.id === id)?.name ?? id;
-export const categoryIcon = (id: string) => CATEGORIES.find((c) => c.id === id)?.icon ?? "📍";
+// Nhóm hiển thị khi lọc danh sách điểm đến (có thêm Lưu trú, nhưng không dùng làm "sở thích" khi tạo lịch)
+export const PLACE_CATEGORIES = [...CATEGORIES, { id: "luu-tru", name: "Lưu trú", icon: "🛏️" }] as const;
+
+export const categoryName = (id: string) => PLACE_CATEGORIES.find((c) => c.id === id)?.name ?? id;
+export const categoryIcon = (id: string) => PLACE_CATEGORIES.find((c) => c.id === id)?.icon ?? "📍";

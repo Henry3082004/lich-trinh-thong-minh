@@ -23,7 +23,7 @@ export default function MyItinerariesPage() {
 
   const open = (it: Itinerary) => {
     fromItinerary(it);
-    navigate("/editor");
+    navigate("/poster");
   };
 
   const remove = async (it: Itinerary) => {
@@ -39,7 +39,7 @@ export default function MyItinerariesPage() {
 
   return (
     <Screen title="Lịch của tôi">
-      <div className="content stack">
+      <div className="content stack card-grid">
         {!list && <Loading />}
         {list?.length === 0 && (
           <div className="empty">

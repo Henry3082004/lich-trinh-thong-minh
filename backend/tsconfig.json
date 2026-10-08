@@ -13,5 +13,5 @@
     "forceConsistentCasingInFileNames": true,
     "types": ["node"]
   },
-  "include": ["src", "prisma", "tests", "vitest.config.mts"]
+  "include": ["src", "prisma", "scripts", "tests", "vitest.config.mts"]
 }

@@ -1,9 +1,10 @@
 // Bọc zmp-sdk. Khi chạy ngoài app Zalo (trình duyệt, giả lập) thì dùng cách thay thế
 // để vẫn test được toàn bộ luồng.
 import { randomId } from "./id";
-import { getAccessToken, openShareSheet, openWebview, saveImageToGallery } from "zmp-sdk/apis";
+import { getAccessToken, openOutApp, openPhone, openShareSheet, openWebview, saveImageToGallery } from "zmp-sdk/apis";
 
-export const PORTAL_URL = "https://daksong-daknong.vnasw.vn/";
+// Trang chủ cổng du lịch Đắk Song, đổi được bằng biến VITE_PORTAL_URL
+export const PORTAL_URL = (import.meta.env.VITE_PORTAL_URL as string | undefined) || "https://dulichdaksong.vnasw.vn";
 
 export const isInZalo = () => /zalo/i.test(navigator.userAgent);
 
@@ -60,4 +61,47 @@ export async function openPortal() {
   } else {
     window.open(PORTAL_URL, "_blank");
   }
+}
+
+export async function callPhone(phoneNumber: string) {
+  if (isInZalo()) await openPhone({ phoneNumber });
+  else window.location.href = `tel:${phoneNumber}`;
+}
+
+// Link Google Maps / Facebook của điểm đến: mở trình duyệt ngoài Zalo
+export async function openLink(url: string) {
+  if (isInZalo()) await openOutApp({ url });
+  else window.open(url, "_blank");
+}
+
+export type ShareResult = "shared" | "saved" | "downloaded";
+
+// Gửi ảnh lịch trình cho người khác.
+// Trong Zalo: tải ảnh lên backend để có link công khai rồi mở bảng chia sẻ ảnh của Zalo
+// (openShareSheet chỉ nhận link ảnh). Lỗi thì lưu ảnh vào thư viện để người dùng tự gửi.
+// Ngoài Zalo: chia sẻ tệp bằng Web Share nếu trình duyệt hỗ trợ, không thì tải về.
+export async function shareImage(
+  blob: Blob,
+  fileName: string,
+  dataUrlForSave: string,
+  upload: (blob: Blob) => Promise<string>,
+): Promise<ShareResult> {
+  if (isInZalo()) {
+    try {
+      const url = await upload(blob);
+      await openShareSheet({ type: "image", data: { imageUrls: [url] } });
+      return "shared";
+    } catch {
+      await saveImage(dataUrlForSave, fileName);
+      return "saved";
+    }
+  }
+
+  const file = new File([blob], fileName, { type: blob.type });
+  if (navigator.canShare?.({ files: [file] })) {
+    await navigator.share({ files: [file], title: "Lịch trình Đắk Song" });
+    return "shared";
+  }
+  await saveImage(dataUrlForSave, fileName);
+  return "downloaded";
 }

@@ -1,8 +1,20 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type { Draft, DraftDay, Itinerary, Place, SuggestResponse } from "../types";
 import { retime } from "../lib/schedule";
+import { isTemplateId } from "../components/poster/PosterCanvas";
+import type { TemplateId } from "../components/poster/poster-data";
 
 const STORAGE_KEY = "draft-itinerary";
+const TEMPLATE_KEY = "poster-template";
+
+function loadTemplate(): TemplateId {
+  try {
+    const v = localStorage.getItem(TEMPLATE_KEY);
+    return isTemplateId(v) ? v : "forest";
+  } catch {
+    return "forest";
+  }
+}
 
 function loadDraft(): Draft | null {
   try {
@@ -15,6 +27,11 @@ function loadDraft(): Draft | null {
 
 type DraftActions = {
   draft: Draft | null;
+  template: TemplateId;
+  setTemplate: (t: TemplateId) => void;
+  // Ghi chú tạm hiện trên màn ảnh (ví dụ "chỉ đủ điểm cho 2 ngày"), không lưu vào máy
+  notice: string | null;
+  setNotice: (text: string | null) => void;
   fromSuggest: (res: SuggestResponse) => void;
   fromItinerary: (it: Itinerary) => void;
   setTitle: (title: string) => void;
@@ -34,6 +51,8 @@ const normalize = (days: DraftDay[]) => retime(days.map((d, i) => ({ ...d, day: 
 
 export function DraftProvider({ children }: { children: React.ReactNode }) {
   const [draft, setDraft] = useState<Draft | null>(loadDraft);
+  const [template, setTemplateState] = useState<TemplateId>(loadTemplate);
+  const [notice, setNotice] = useState<string | null>(null);
 
   useEffect(() => {
     try {
@@ -52,6 +71,17 @@ export function DraftProvider({ children }: { children: React.ReactNode }) {
 
     return {
       draft,
+      template,
+      notice,
+      setNotice,
+      setTemplate: (t) => {
+        setTemplateState(t);
+        try {
+          localStorage.setItem(TEMPLATE_KEY, t);
+        } catch {
+          // không lưu được thì lần sau về mẫu mặc định
+        }
+      },
       fromSuggest: (res) =>
         setDraft({
           title: `Đắk Song ${res.schedule.length} ngày`,
@@ -93,7 +123,7 @@ export function DraftProvider({ children }: { children: React.ReactNode }) {
       markSaved: (id) => setDraft((d) => (d ? { ...d, id } : d)),
       clear: () => setDraft(null),
     };
-  }, [draft]);
+  }, [draft, template, notice]);
 
   return <DraftContext.Provider value={actions}>{children}</DraftContext.Provider>;
 }

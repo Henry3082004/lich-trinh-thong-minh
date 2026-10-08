@@ -1,5 +1,5 @@
-import React from "react";
-import { AnimationRoutes, App, Route, SnackbarProvider, ZMPRouter } from "zmp-ui";
+import React, { useEffect } from "react";
+import { AnimationRoutes, App, Route, SnackbarProvider, useNavigate, ZMPRouter } from "zmp-ui";
 import { ErrorBoundary } from "./components/error-boundary";
 import { DraftProvider } from "./state/draft";
 import HomePage from "./pages/home";
@@ -7,8 +7,15 @@ import CreatePage from "./pages/create";
 import EditorPage from "./pages/editor";
 import PlacesPage from "./pages/places";
 import PlaceDetailPage from "./pages/place-detail";
-import ExportPage from "./pages/export";
+import PosterPage from "./pages/poster";
 import MyItinerariesPage from "./pages/my-itineraries";
+
+// Đường dẫn cũ /export (trang xuất ảnh) giờ là /poster
+function LegacyExport() {
+  const navigate = useNavigate();
+  useEffect(() => navigate("/poster", { replace: true }), []);
+  return null;
+}
 
 export default function MyApp() {
   return (
@@ -25,7 +32,8 @@ export default function MyApp() {
               <Route path="/editor" element={<EditorPage />} />
               <Route path="/places" element={<PlacesPage />} />
               <Route path="/place/:id" element={<PlaceDetailPage />} />
-              <Route path="/export" element={<ExportPage />} />
+              <Route path="/poster" element={<PosterPage />} />
+              <Route path="/export" element={<LegacyExport />} />
               <Route path="/my" element={<MyItinerariesPage />} />
             </AnimationRoutes>
           </ZMPRouter>

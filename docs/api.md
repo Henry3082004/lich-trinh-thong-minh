@@ -33,10 +33,12 @@ Khi test chưa có mini app (backend chạy `AUTH_MODE=dev`), dùng header `X-De
   "tags": ["thien-nhien", "check-in"],
   "durationMin": 120,
   "openHours": null,
-  "sourceUrl": null
+  "sourceUrl": null,
+  "phone": "0981302444",
+  "mapLink": "https://goo.gl/maps/..."
 }
 ```
-Danh mục `category`: `thien-nhien`, `van-hoa`, `am-thuc`, `trai-nghiem`, `luu-tru`.
+`phone` và `mapLink` có thể là `null`. Danh mục `category`: `thien-nhien`, `van-hoa`, `am-thuc`, `trai-nghiem`, `luu-tru`.
 
 ## Endpoint
 
@@ -127,6 +129,24 @@ Body giống POST, **thay toàn bộ** tiêu đề và danh sách điểm. → I
 
 ### `GET /api/share/:shareId`: xem lịch được chia sẻ (công khai, chỉ đọc)
 → Itinerary, không có `userId`.
+
+### `GET /api/img?u=<địa chỉ ảnh>`: proxy ảnh
+Máy chủ ảnh của cổng (`static.dggv.edu.vn`) không có CORS nên trình duyệt không cho vẽ ảnh đó vào poster. Backend lấy ảnh rồi trả lại kèm CORS.
+- Chỉ nhận địa chỉ `https` thuộc các máy chủ trong `IMAGE_HOSTS` (mặc định `static.dggv.edu.vn`). Địa chỉ IP, cổng lạ, địa chỉ có tài khoản, chuyển hướng đều bị từ chối.
+- → ảnh (`image/jpeg`, `image/png`, `image/webp` hoặc `image/gif`, nhận dạng bằng byte đầu của file), `Cache-Control: public, max-age=86400`.
+- Lỗi: 400 địa chỉ sai, 403 máy chủ không được phép, 413 ảnh quá 5 MB, 415 không phải ảnh, 429 gọi quá nhanh (240 lần/phút/IP), 502 máy chủ ảnh lỗi.
+
+### `POST /api/posters` 🔒: lưu ảnh lịch trình để chia sẻ
+Body là **ảnh thô** (không phải JSON), `Content-Type: image/jpeg` hoặc `image/png`, từ 1 KB đến 2 MB. Loại ảnh được kiểm tra bằng byte đầu của file chứ không tin header.
+→ 201
+```json
+{ "id": "NfS5LHeJmmikZLoU", "url": "https://<api>/api/posters/NfS5LHeJmmikZLoU.jpg" }
+```
+Giới hạn mặc định 30 lần/giờ/người dùng. Ảnh tự xoá sau 30 ngày (`POSTER_TTL_DAYS`). Lỗi: 401, 413, 415, 429.
+
+### `GET /api/posters/:id.jpg|png`: mở ảnh đã lưu (công khai)
+Trả ảnh. `id` dài, không đoán được nên chỉ người có link mới xem được. 404 nếu không có, đã hết hạn hoặc sai đuôi file.
+Link này được dùng cho `openShareSheet({ type: "image", data: { imageUrls: [url] } })` của `zmp-sdk`.
 
 ## Ví dụ gọi từ mini app
 

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Button, useNavigate, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { api } from "../lib/api";
+import { dayRouteUrl, MAX_WAYPOINTS } from "../lib/maps";
+import { openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { categoryIcon } from "../types";
 
@@ -45,13 +47,14 @@ export default function EditorPage() {
           <Button variant="secondary" loading={saving} disabled={isEmpty} onClick={save}>
             {draft.id ? "Cập nhật" : "Lưu"}
           </Button>
-          <Button disabled={isEmpty} onClick={() => navigate("/export")}>
-            Xuất ảnh
+          <Button disabled={isEmpty} onClick={() => navigate("/poster")}>
+            Xem ảnh
           </Button>
         </>
       }
     >
       <div className="content">
+        <div className="editor-head">
         <input
           className="title-input"
           value={draft.title}
@@ -62,7 +65,9 @@ export default function EditorPage() {
         <div className="muted" style={{ margin: "6px 0 16px" }}>
           Giờ được tính tự động từ 08:00, gồm thời gian tham quan và di chuyển.
         </div>
+        </div>
 
+        <div className="days-grid">
         {draft.schedule.map((d) => (
           <div key={d.day} className="day-block">
             <div className="day-header">
@@ -105,12 +110,25 @@ export default function EditorPage() {
               <Button size="small" variant="tertiary" onClick={() => navigate(`/places?day=${d.day}`)}>
                 + Thêm điểm vào ngày {d.day}
               </Button>
+              {d.stops.length > 0 && (
+                <Button
+                  size="small"
+                  variant="tertiary"
+                  onClick={() => openLink(dayRouteUrl(d.stops.map((s) => s.place))!)}
+                >
+                  🧭 Chỉ đường cả ngày {d.day}
+                </Button>
+              )}
+              {d.stops.length > MAX_WAYPOINTS + 1 && (
+                <div className="muted">Google Maps chỉ nhận tối đa {MAX_WAYPOINTS} điểm dừng chen giữa, nên một số điểm sẽ không có trong lộ trình.</div>
+              )}
             </div>
           </div>
         ))}
+        </div>
 
         {draft.schedule.length < 7 && (
-          <Button fullWidth variant="secondary" onClick={addDay}>
+          <Button className="add-day" fullWidth variant="secondary" onClick={addDay}>
             + Thêm ngày
           </Button>
         )}

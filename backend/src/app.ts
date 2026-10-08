@@ -2,12 +2,16 @@ import cors from "cors";
 import express from "express";
 import { config } from "./config";
 import { errorHandler } from "./lib/http";
+import { imagesRouter } from "./routes/images";
 import { itinerariesRouter } from "./routes/itineraries";
 import { placesRouter } from "./routes/places";
+import { postersRouter } from "./routes/posters";
 import { suggestRouter } from "./routes/suggest";
 
 export function createApp() {
   const app = express();
+  // Chạy sau proxy của Railway: lấy đúng IP và giao thức (https) của người gọi
+  app.set("trust proxy", 1);
 
   const origins = config.corsOrigin.split(",").map((o) => o.trim());
   app.use(cors({ origin: origins.includes("*") ? true : origins }));
@@ -30,6 +34,8 @@ export function createApp() {
   app.use("/api", placesRouter);
   app.use("/api", suggestRouter);
   app.use("/api", itinerariesRouter);
+  app.use("/api", imagesRouter);
+  app.use("/api", postersRouter);
 
   app.use((_req, res) => {
     res.status(404).json({ error: "Không tìm thấy" });
