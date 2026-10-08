@@ -19,6 +19,7 @@ npm install
 npm start                # http://localhost:5173, xem trên trình duyệt (để kiểu điện thoại)
 ```
 
+- **Giao diện theo thiết bị** (`src/index.html` + `src/theme.css`, thuộc tính `html[data-layout]`, tự cập nhật khi xoay máy hoặc mở/gập điện thoại gập): `phone` (điện thoại, màn hình ngoài của điện thoại gập), `tablet` (máy tính bảng, điện thoại gập khi mở ra, cạnh ngắn ≥ 600px; hai cột, màn ảnh poster chia đôi), `desktop` (máy tính dùng chuột, cửa sổ ≥ 900px). Ép thử bằng `?layout=phone|tablet|desktop`.
 - `VITE_USE_MOCK=true` chạy hoàn toàn bằng dữ liệu giả, không cần backend.
 - Chạy ngoài app Zalo thì "Lưu ảnh" tải file `.png` xuống, "Chia sẻ" dùng chia sẻ của trình duyệt, và đăng nhập dùng header `X-Dev-User`. Vì vậy backend phải đang chạy `AUTH_MODE=dev`.
 - Nút "Xem thêm trên cổng du lịch" mở `https://dulichdaksong.vnasw.vn` (đổi bằng `VITE_PORTAL_URL`). Trong app Zalo nó mở bằng `openWebview`, nên tên miền này có thể cần được khai báo trong cài đặt mini app.

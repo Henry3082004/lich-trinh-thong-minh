@@ -165,45 +165,49 @@ export default function PosterPage() {
         </div>
       }
     >
-      <div className="content narrow">
-        <label className="title-field">
-          <input value={draft.title} maxLength={60} onChange={(e) => setTitle(e.target.value)} aria-label="Tên chuyến đi" />
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-            <path d="M12 20h9" />
-            <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />
-          </svg>
-        </label>
+      <div className="content poster-wrap">
+        <div className="poster-controls">
+          <label className="title-field">
+            <input value={draft.title} maxLength={60} onChange={(e) => setTitle(e.target.value)} aria-label="Tên chuyến đi" />
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />
+            </svg>
+          </label>
 
-        {notice && (
-          <div className="notice" style={{ marginTop: 10 }}>
-            {notice}
+          {notice && (
+            <div className="notice" style={{ marginTop: 10 }}>
+              {notice}
+            </div>
+          )}
+
+          <div className="template-row" role="radiogroup" aria-label="Mẫu ảnh">
+            {TEMPLATES.map((t) => (
+              <button
+                key={t.id}
+                role="radio"
+                aria-checked={template === t.id}
+                className={`template-chip ${template === t.id ? "active" : ""}`}
+                onClick={() => setTemplate(t.id)}
+              >
+                <span className="swatch" style={{ background: `linear-gradient(135deg, ${t.swatch[0]}, ${t.swatch[1]})` }} />
+                {t.name}
+              </button>
+            ))}
           </div>
-        )}
 
-        <div className="template-row" role="radiogroup" aria-label="Mẫu ảnh">
-          {TEMPLATES.map((t) => (
-            <button
-              key={t.id}
-              role="radio"
-              aria-checked={template === t.id}
-              className={`template-chip ${template === t.id ? "active" : ""}`}
-              onClick={() => setTemplate(t.id)}
-            >
-              <span className="swatch" style={{ background: `linear-gradient(135deg, ${t.swatch[0]}, ${t.swatch[1]})` }} />
-              {t.name}
-            </button>
-          ))}
         </div>
-
-        <div ref={frameRef} className="poster-preview" style={{ height: posterHeight * scale }}>
-          <div style={{ width: POSTER_WIDTH, transform: `scale(${scale})`, transformOrigin: "top left" }}>
-            <PosterCanvas ref={posterRef} data={data} template={template} />
+        <div className="poster-stage">
+          <div ref={frameRef} className="poster-preview" style={{ height: posterHeight * scale }}>
+            <div style={{ width: POSTER_WIDTH, transform: `scale(${scale})`, transformOrigin: "top left" }}>
+              <PosterCanvas ref={posterRef} data={data} template={template} />
+            </div>
+            {loadingPhotos && <div className="poster-loading">Đang tải ảnh địa điểm…</div>}
           </div>
-          {loadingPhotos && <div className="poster-loading">Đang tải ảnh địa điểm…</div>}
-        </div>
 
-        <div className="muted" style={{ textAlign: "center", marginTop: 10 }}>
-          Ảnh xuất ra rộng 1080 px · cuộn để xem hết
+          <div className="muted" style={{ textAlign: "center", marginTop: 10 }}>
+            Ảnh xuất ra rộng 1080 px · cuộn để xem hết
+          </div>
         </div>
       </div>
     </Screen>

@@ -91,7 +91,7 @@ export default function PlanPage() {
         </div>
       }
     >
-      <div className="content narrow stack" style={{ paddingBottom: 90 }}>
+      <div className="content plan-wrap stack" style={{ paddingBottom: 90 }}>
         <div className="bubble-row model">
           <div className="bubble model">{plan.summary || "Đây là lịch trình mình đề xuất cho bạn."}</div>
         </div>
@@ -102,6 +102,7 @@ export default function PlanPage() {
           </div>
         ))}
 
+        <div className="days-grid">
         {plan.days.map((d) => (
           <section key={d.day} className="day-block">
             <div className="day-header">
@@ -135,6 +136,7 @@ export default function PlanPage() {
             </div>
           </section>
         ))}
+        </div>
 
         {lodging.length > 0 && (
           <div className="card">
