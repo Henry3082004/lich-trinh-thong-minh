@@ -51,7 +51,7 @@ export default function CreatePage() {
         </Button>
       }
     >
-      <div className="content">
+      <div className="content narrow">
         <div className="section-title">Bạn đi mấy ngày?</div>
         <div className="card stepper" style={{ justifyContent: "center" }}>
           <button aria-label="Bớt ngày" onClick={() => setDays((d) => Math.max(1, d - 1))}>

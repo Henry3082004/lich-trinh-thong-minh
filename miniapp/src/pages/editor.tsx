@@ -52,6 +52,7 @@ export default function EditorPage() {
       }
     >
       <div className="content">
+        <div className="editor-head">
         <input
           className="title-input"
           value={draft.title}
@@ -62,7 +63,9 @@ export default function EditorPage() {
         <div className="muted" style={{ margin: "6px 0 16px" }}>
           Giờ được tính tự động từ 08:00, gồm thời gian tham quan và di chuyển.
         </div>
+        </div>
 
+        <div className="days-grid">
         {draft.schedule.map((d) => (
           <div key={d.day} className="day-block">
             <div className="day-header">
@@ -108,9 +111,10 @@ export default function EditorPage() {
             </div>
           </div>
         ))}
+        </div>
 
         {draft.schedule.length < 7 && (
-          <Button fullWidth variant="secondary" onClick={addDay}>
+          <Button className="add-day" fullWidth variant="secondary" onClick={addDay}>
             + Thêm ngày
           </Button>
         )}

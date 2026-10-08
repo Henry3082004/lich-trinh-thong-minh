@@ -59,7 +59,7 @@ export default function PlacesPage() {
 
         {!places && <Loading />}
         {places?.length === 0 && <div className="empty">Chưa có điểm đến nào.</div>}
-        <div className="stack">
+        <div className="stack card-grid">
           {places?.map((p) => (
             <PlaceCard
               key={p.id}

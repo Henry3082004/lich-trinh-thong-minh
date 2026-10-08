@@ -13,11 +13,13 @@ export default function HomePage() {
   return (
     <Screen back={false}>
       <div className="hero">
+        <div className="hero-inner">
         <div style={{ fontSize: 13, letterSpacing: 2, textTransform: "uppercase", opacity: 0.8, marginBottom: 10 }}>
           Cổng du lịch Đắk Song
         </div>
         <h1>Lên lịch trình khám phá Đắk Song trong 1 phút</h1>
         <p>Chọn số ngày và sở thích, app gợi ý tuyến đi hợp lý. Chỉnh theo ý bạn rồi lưu ảnh lịch trình về máy.</p>
+        </div>
       </div>
 
       <div className="content stack">
@@ -47,7 +49,7 @@ export default function HomePage() {
         </div>
 
         <div className="section-title">Khám phá theo chủ đề</div>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+        <div className="category-grid">
           {CATEGORIES.map((c) => (
             <div
               key={c.id}

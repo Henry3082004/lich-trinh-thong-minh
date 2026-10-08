@@ -84,7 +84,7 @@ export default function ExportPage() {
         </>
       }
     >
-      <div className="content">
+      <div className="content narrow">
         {image ? (
           <div className="poster-frame">
             <img src={image} alt="Ảnh lịch trình" style={{ width: "100%", display: "block" }} />

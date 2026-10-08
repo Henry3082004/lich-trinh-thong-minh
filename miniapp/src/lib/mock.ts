@@ -21,7 +21,8 @@ const store = (list: Itinerary[]) => localStorage.setItem(STORAGE_KEY, JSON.stri
 // Phiên bản đơn giản của thuật toán backend: ưu tiên sở thích, mỗi ngày 1 điểm ẩm thực
 export function mockSuggest(input: SuggestInput): SuggestResponse {
   const score = (p: Place) => input.interests.filter((i) => p.category === i || p.tags.includes(i)).length;
-  const sights = mockPlaces.filter((p) => p.category !== "am-thuc").sort((a, b) => score(b) - score(a));
+  // Giống backend: lưu trú không phải điểm tham quan nên không xếp vào lịch
+  const sights = mockPlaces.filter((p) => p.category !== "am-thuc" && p.category !== "luu-tru").sort((a, b) => score(b) - score(a));
   const foods = mockPlaces.filter((p) => p.category === "am-thuc");
   const perDay = PACE_STOPS[input.pace] - 1;
 

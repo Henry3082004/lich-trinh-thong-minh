@@ -38,7 +38,7 @@ export default function PlaceDetailPage() {
       {error && <div className="empty">{error}</div>}
       {!place && !error && <Loading />}
       {place && (
-        <div className="content stack">
+        <div className="content narrow stack">
           {place.images.length > 0 && !imageFailed ? (
             <img
               src={place.images[0]}
