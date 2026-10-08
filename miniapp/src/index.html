@@ -10,16 +10,37 @@
     <meta name="format-detection" content="telephone=no" />
     <title>Lịch trình Đắk Song</title>
     <script>
-      // Máy cảm ứng (điện thoại, tablet) -> giao diện điện thoại; máy tính -> giao diện rộng.
-      // Có thể ép thử bằng ?layout=phone hoặc ?layout=desktop.
+      // Chọn giao diện theo thiết bị, cập nhật khi xoay máy hoặc mở/gập điện thoại gập:
+      //  - phone:   điện thoại (và màn hình ngoài của điện thoại gập)
+      //  - tablet:  máy tính bảng, điện thoại gập khi mở ra
+      //  - desktop: máy tính (chuột), cửa sổ rộng
+      // Máy cảm ứng dựa vào cạnh ngắn của màn hình (để điện thoại xoay ngang vẫn là phone).
+      // Có thể ép thử bằng ?layout=phone | tablet | desktop.
       (function () {
-        var layout = "phone";
+        var root = document.documentElement;
+        var forced = null;
         try {
           var q = new URLSearchParams(location.search).get("layout");
-          if (q === "phone" || q === "desktop") layout = q;
-          else layout = matchMedia("(pointer: coarse)").matches || innerWidth <= 700 ? "phone" : "desktop";
+          if (q === "phone" || q === "tablet" || q === "desktop") forced = q;
         } catch (e) {}
-        document.documentElement.setAttribute("data-layout", layout);
+        function pick() {
+          if (forced) return forced;
+          var w = window.innerWidth || root.clientWidth;
+          var h = window.innerHeight || root.clientHeight;
+          var touch = false;
+          try {
+            touch = matchMedia("(pointer: coarse)").matches;
+          } catch (e) {}
+          if (touch) return Math.min(w, h) < 600 ? "phone" : "tablet";
+          return w < 600 ? "phone" : w < 900 ? "tablet" : "desktop";
+        }
+        function apply() {
+          var l = pick();
+          if (root.getAttribute("data-layout") !== l) root.setAttribute("data-layout", l);
+        }
+        apply();
+        window.addEventListener("resize", apply);
+        window.addEventListener("orientationchange", apply);
       })();
     </script>
   </head>

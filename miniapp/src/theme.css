@@ -304,14 +304,14 @@ body {
   gap: 12px;
 }
 
-/* ---------- Máy cảm ứng rộng (tablet): giao diện điện thoại, một cột ở giữa ---------- */
-@media (min-width: 701px) {
-  html:not([data-layout="desktop"]),
-  html:not([data-layout="desktop"]) body {
+/* ---------- Điện thoại: một cột. Trên màn rộng (ép ?layout=phone, điện thoại xoay ngang) thì cột 480px ở giữa ---------- */
+@media (min-width: 601px) {
+  html[data-layout="phone"],
+  html[data-layout="phone"] body {
     background: #cfe3cf;
   }
 
-  html:not([data-layout="desktop"]) #app {
+  html[data-layout="phone"] #app {
     max-width: 480px;
     margin: 0 auto;
     min-height: 100vh;
@@ -321,7 +321,7 @@ body {
     overflow: hidden;
   }
 
-  html:not([data-layout="desktop"]) .bottom-bar {
+  html[data-layout="phone"] .bottom-bar {
     left: 50%;
     right: auto;
     width: 480px;
@@ -1539,8 +1539,8 @@ html[data-layout="desktop"] .bottom-bar > .chat-form {
     transform: scale(1);
   }
 }
-@media (min-width: 701px) {
-  html:not([data-layout="desktop"]) .cart-fab {
+@media (min-width: 601px) {
+  html[data-layout="phone"] .cart-fab {
     right: calc(50% - 240px + 16px);
   }
   html[data-layout="desktop"] .cart-fab {
@@ -1732,4 +1732,204 @@ html[data-layout="desktop"] .rail {
   font-size: 12px;
   color: var(--earth-700);
   padding: 0 0 6px 8px;
+}
+
+/* =====================================================================
+   Máy tính bảng và điện thoại gập khi mở ra (html[data-layout="tablet"])
+   Rộng hơn điện thoại: hai cột, ảnh lớn hơn, màn ảnh poster chia đôi.
+   ===================================================================== */
+html[data-layout="tablet"] {
+  --page-max: 960px;
+}
+html[data-layout="tablet"],
+html[data-layout="tablet"] body {
+  background: #e4eddf;
+}
+html[data-layout="tablet"] #app {
+  max-width: 1024px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--cream);
+  position: relative;
+  box-shadow: 0 0 48px rgba(27, 77, 32, 0.14);
+}
+html[data-layout="tablet"] .app-header {
+  padding: calc(10px + env(safe-area-inset-top)) 20px 10px 12px;
+}
+html[data-layout="tablet"] .app-header-inner {
+  max-width: var(--page-max);
+  margin: 0 auto;
+}
+html[data-layout="tablet"] .content {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 20px 28px;
+}
+html[data-layout="tablet"] .content.narrow {
+  max-width: 720px;
+}
+
+/* Danh sách thẻ, các ngày trong lịch: hai cột */
+html[data-layout="tablet"] .card-grid,
+html[data-layout="tablet"] .days-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+html[data-layout="tablet"] .card-grid > .empty,
+html[data-layout="tablet"] .card-grid > .zaui-spinner {
+  grid-column: 1 / -1;
+}
+html[data-layout="tablet"] .day-block {
+  margin-bottom: 0;
+}
+html[data-layout="tablet"] .editor-head {
+  max-width: 720px;
+}
+html[data-layout="tablet"] .add-day {
+  max-width: 360px;
+}
+html[data-layout="tablet"] .chip-scroll {
+  margin: 10px -28px 14px;
+  padding: 0 28px;
+}
+
+/* Tạo ảnh: sở thích thành 4 ô một hàng */
+html[data-layout="tablet"] .interest-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+html[data-layout="tablet"] .interest {
+  height: 140px;
+}
+
+/* Trang chủ */
+html[data-layout="tablet"] .home-hero {
+  height: 460px;
+}
+html[data-layout="tablet"] .home-body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: calc(72px + env(safe-area-inset-top)) 28px 36px;
+}
+html[data-layout="tablet"] .home-greeting {
+  margin-bottom: 120px;
+}
+html[data-layout="tablet"] .home-greeting h1 {
+  font-size: 38px;
+  max-width: 560px;
+}
+html[data-layout="tablet"] .rail {
+  margin: 8px -28px 0;
+  padding: 4px 28px 8px;
+}
+html[data-layout="tablet"] .rail-card {
+  flex-basis: 196px;
+}
+html[data-layout="tablet"] .rail-img {
+  height: 148px;
+}
+html[data-layout="tablet"] .rail-name {
+  font-size: 16px;
+}
+
+/* Chi tiết điểm đến */
+html[data-layout="tablet"] .detail-hero {
+  height: 460px;
+}
+
+/* Thanh nút dưới: căn giữa, không kéo dài hết màn hình */
+html[data-layout="tablet"] .bottom-bar {
+  left: 50%;
+  right: auto;
+  width: min(720px, 100%);
+  transform: translateX(-50%);
+  border-radius: 20px 20px 0 0;
+  box-shadow: 0 -4px 20px rgba(27, 77, 32, 0.08);
+}
+html[data-layout="tablet"] .cart-fab {
+  right: max(20px, calc(50% - 512px + 20px));
+}
+
+/* Trang plan: các ngày chia cột */
+html[data-layout="tablet"] .plan-wrap {
+  max-width: var(--page-max);
+}
+
+/* ---------- Màn ảnh poster: bên trái điều khiển, bên phải ảnh (máy tính bảng và máy tính) ---------- */
+html[data-layout="tablet"] .poster-wrap,
+html[data-layout="desktop"] .poster-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+}
+html[data-layout="tablet"] .poster-stage,
+html[data-layout="desktop"] .poster-stage {
+  max-width: 500px;
+}
+html[data-layout="tablet"] .poster-controls,
+html[data-layout="desktop"] .poster-controls {
+  position: sticky;
+  top: 76px;
+}
+html[data-layout="tablet"] .poster-controls .template-row,
+html[data-layout="desktop"] .poster-controls .template-row {
+  grid-template-columns: 1fr;
+}
+html[data-layout="desktop"] .poster-wrap {
+  justify-content: center;
+}
+html[data-layout="desktop"] .plan-wrap {
+  max-width: 960px;
+}
+html[data-layout="desktop"] .plan-wrap .days-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* ---------- Trang chủ trên máy tính: rộng, ảnh bìa tràn, các dải thẻ lớn ---------- */
+html[data-layout="desktop"] .home {
+  max-width: none;
+  margin: 0;
+  box-shadow: none;
+}
+html[data-layout="desktop"] .home-hero {
+  height: 520px;
+}
+html[data-layout="desktop"] .home-body {
+  max-width: var(--page-max);
+  margin: 0 auto;
+  padding: 120px 32px 56px;
+}
+html[data-layout="desktop"] .home-greeting {
+  margin-bottom: 150px;
+}
+html[data-layout="desktop"] .home-greeting h1 {
+  font-size: 48px;
+  max-width: 720px;
+}
+html[data-layout="desktop"] .home-greeting .eyebrow {
+  font-size: 15px;
+}
+html[data-layout="desktop"] .home-cta,
+html[data-layout="desktop"] .home-tiles,
+html[data-layout="desktop"] .chat-entry,
+html[data-layout="desktop"] .resume,
+html[data-layout="desktop"] .home-body > .btn-outline {
+  max-width: 620px;
+}
+html[data-layout="desktop"] .rail-card {
+  flex-basis: 232px;
+}
+html[data-layout="desktop"] .rail-img {
+  height: 168px;
+}
+html[data-layout="desktop"] .rail-name {
+  font-size: 17px;
+}
+html[data-layout="desktop"] .rail-head h2 {
+  font-size: 22px;
+}
+html[data-layout="desktop"] .rail {
+  scrollbar-width: thin;
 }
