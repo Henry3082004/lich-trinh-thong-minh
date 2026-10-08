@@ -106,13 +106,47 @@ export function buildPlan(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[], dra
     place(dayIdx, p.id);
   }
 
-  // Tính giờ
+  // Giờ bắt đầu từng ngày
   const today = vietnamNow(now);
+  const dayStart = (i: number) => {
+    let clock = i === 0 ? toMin(prefs.startTime) : NEXT_DAY_START_MIN;
+    if (i === 0 && addDays(prefs.startDate, 0) === today.date && today.minutes > clock) clock = Math.ceil(today.minutes / 15) * 15; // đi hôm nay: bắt đầu từ bây giờ
+    return clock;
+  };
+
+  // AI không biết giờ nên hay xếp bữa ăn lệch giờ: đặt quán ăn vào vị trí có giờ đến gần 12:00 nhất
+  const startsOf = (list: { id: string }[], from: number) => {
+    let clock = from;
+    return list.map((s, j) => {
+      if (j > 0) clock += travelMinutes(byId.get(list[j - 1].id)!, byId.get(s.id)!, prefs.transport);
+      const at = clock;
+      clock += stayMinutes(byId.get(s.id)!, prefs.kids);
+      return at;
+    });
+  };
+  days.forEach((stops, i) => {
+    if (stops.length < 3) return;
+    const k = stops.findIndex((s) => byId.get(s.id)!.category === "am-thuc");
+    if (k < 0) return;
+    const [food] = stops.splice(k, 1);
+    let best = k;
+    let bestGap = Infinity;
+    for (let pos = 0; pos <= stops.length; pos++) {
+      const trial = [...stops.slice(0, pos), food, ...stops.slice(pos)];
+      const gap = Math.abs(startsOf(trial, dayStart(i))[pos] - 12 * 60);
+      if (gap < bestGap) {
+        bestGap = gap;
+        best = pos;
+      }
+    }
+    stops.splice(best, 0, food);
+  });
+
+  // Tính giờ
+
   const result: PlanDay[] = days.map((stops, i) => {
     const date = addDays(prefs.startDate, i);
-    let clock = toMin(prefs.startTime);
-    if (i > 0) clock = NEXT_DAY_START_MIN;
-    if (i === 0 && date === today.date && today.minutes > clock) clock = Math.ceil(today.minutes / 15) * 15; // đi hôm nay: bắt đầu từ bây giờ
+    let clock = dayStart(i);
     const out: PlanStop[] = [];
     stops.forEach((s, j) => {
       const p = byId.get(s.id)!;

@@ -56,6 +56,17 @@ describe("buildPlan", () => {
     expect(ok.days[0].stops.map((s) => s.placeId)).toEqual(["fest"]);
   });
 
+  it("bữa ăn được đặt vào vị trí có giờ gần 12:00 nhất", () => {
+    const S1 = mk("s1", { durationMin: 120 }), S2 = mk("s2", { durationMin: 120 }), S3 = mk("s3", { durationMin: 120 });
+    const all = [S1, S2, S3, FOOD];
+    // AI xếp quán ăn cuối ngày: sau 3 điểm 2 giờ thì đã quá trưa rất xa
+    const plan = buildPlan({ ...prefs, days: 1 }, [S1, S2, S3, FOOD], all, { days: [{ placeIds: ["s1", "s2", "s3", "food"].map((id) => ({ id })) }] }, NOW);
+    const stops = plan.days[0].stops;
+    // Các điểm cùng toạ độ (không tốn thời gian đi): 08:00 và 10:00 mỗi điểm 2 giờ, nên bữa ăn vào đúng 12:00
+    expect(stops.map((s) => s.placeId)).toEqual(["s1", "s2", "food", "s3"]);
+    expect(stops[2].startTime).toBe("12:00");
+  });
+
   it("lưu trú không thành điểm dừng mà đi vào lodgingIds", () => {
     const plan = buildPlan(prefs, [A, HOTEL], ALL, { days: [{ placeIds: [{ id: "a" }, { id: "hotel" }] }, { placeIds: [] }] }, NOW);
     expect(plan.lodgingIds).toEqual(["hotel"]);
