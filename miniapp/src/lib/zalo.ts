@@ -3,7 +3,8 @@
 import { randomId } from "./id";
 import { getAccessToken, openOutApp, openPhone, openShareSheet, openWebview, saveImageToGallery } from "zmp-sdk/apis";
 
-export const PORTAL_URL = "https://daksong-daknong.vnasw.vn/";
+// Trang chủ cổng du lịch Đắk Song, đổi được bằng biến VITE_PORTAL_URL
+export const PORTAL_URL = (import.meta.env.VITE_PORTAL_URL as string | undefined) || "https://dulichdaksong.vnasw.vn";
 
 export const isInZalo = () => /zalo/i.test(navigator.userAgent);
 

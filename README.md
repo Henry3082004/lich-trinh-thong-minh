@@ -21,6 +21,7 @@ npm start                # http://localhost:5173, xem trên trình duyệt (đ�
 
 - `VITE_USE_MOCK=true` chạy hoàn toàn bằng dữ liệu giả, không cần backend.
 - Chạy ngoài app Zalo thì "Lưu ảnh" tải file `.png` xuống, "Chia sẻ" dùng chia sẻ của trình duyệt, và đăng nhập dùng header `X-Dev-User`. Vì vậy backend phải đang chạy `AUTH_MODE=dev`.
+- Nút "Xem thêm trên cổng du lịch" mở `https://dulichdaksong.vnasw.vn` (đổi bằng `VITE_PORTAL_URL`). Trong app Zalo nó mở bằng `openWebview`, nên tên miền này có thể cần được khai báo trong cài đặt mini app.
 - Trong app Zalo, app dùng `getAccessToken`, `saveImageToGallery`, `openShareSheet`, `openWebview` của `zmp-sdk`. **Lưu ảnh chỉ chạy trên điện thoại thật.**
 
 Deploy lên Zalo:
