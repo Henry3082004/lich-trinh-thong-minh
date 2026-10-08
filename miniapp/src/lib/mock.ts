@@ -8,6 +8,7 @@ export const mockPlaces: Place[] = rawPlaces.map((p) => ({
   ...p,
   id: p.slug,
   kind: "place" as const,
+  approxLocation: false,
   season: null,
   months: [],
   priceNote: null,

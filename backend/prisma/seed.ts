@@ -20,6 +20,7 @@ async function main() {
     const data = {
       ...p,
       kind: (p as { kind?: string }).kind ?? kind,
+      approxLocation: (p as { approxLocation?: boolean }).approxLocation ?? false,
       season: (p as { season?: string | null }).season ?? null,
       months: (p as { months?: number[] }).months ?? [],
       priceNote: (p as { priceNote?: string | null }).priceNote ?? null,

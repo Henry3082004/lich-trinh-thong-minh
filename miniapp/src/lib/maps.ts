@@ -6,19 +6,22 @@ import type { Place } from "../types";
 // Google Maps giới hạn số điểm dừng chen giữa (waypoints) trong một link
 export const MAX_WAYPOINTS = 9;
 
-const coord = (p: Pick<Place, "lat" | "lng">) => `${p.lat.toFixed(6)},${p.lng.toFixed(6)}`;
+type Spot = Pick<Place, "lat" | "lng" | "name" | "approxLocation">;
+
+// Điểm chưa có vị trí chính xác thì để Google Maps tự tìm theo tên (kèm "Đắk Song")
+const coord = (p: Spot) => (p.approxLocation ? `${p.name} Đắk Song` : `${p.lat.toFixed(6)},${p.lng.toFixed(6)}`);
 
 const base = "https://www.google.com/maps/dir/?api=1&travelmode=driving";
 
-export function directionsUrl(place: Pick<Place, "lat" | "lng">): string {
-  return `${base}&destination=${coord(place)}`;
+export function directionsUrl(place: Spot): string {
+  return `${base}&destination=${encodeURIComponent(coord(place))}`;
 }
 
 // Lộ trình đi qua các điểm theo thứ tự: điểm cuối là đích, các điểm trước là điểm dừng
-export function dayRouteUrl(places: Pick<Place, "lat" | "lng">[]): string | null {
+export function dayRouteUrl(places: Spot[]): string | null {
   if (places.length === 0) return null;
   const destination = places[places.length - 1];
   const waypoints = places.slice(0, -1).slice(0, MAX_WAYPOINTS);
   const wp = waypoints.length ? `&waypoints=${encodeURIComponent(waypoints.map(coord).join("|"))}` : "";
-  return `${base}&destination=${coord(destination)}${wp}`;
+  return `${base}&destination=${encodeURIComponent(coord(destination))}${wp}`;
 }

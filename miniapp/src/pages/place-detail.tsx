@@ -104,6 +104,7 @@ export default function PlaceDetailPage() {
                 </button>
               )}
             </div>
+            {place.approxLocation && <div className="muted">📍 Chỉ đường sẽ tìm theo tên quán trên Google Maps.</div>}
             {place.openHours && <div className="muted">🕒 {place.openHours}</div>}
             {place.imageCredits.length > 0 && <div className="muted" style={{ fontSize: 12 }}>Ảnh: {place.imageCredits.join("; ")}</div>}
 
