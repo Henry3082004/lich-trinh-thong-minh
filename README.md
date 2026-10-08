@@ -87,7 +87,7 @@ Trang chi tiết điểm đến hiện điểm sao và tối đa 5 review của 
 
 ## Chatbot hỏi đáp (tuỳ chọn)
 
-Nút "Hỏi đáp Đắk Song" ở trang chủ chỉ hiện khi backend có `GEMINI_API_KEY` (tạo ở Google AI Studio). Backend gửi danh sách điểm đến cho Gemini làm ngữ cảnh và yêu cầu chỉ trả lời theo dữ liệu đó. Model đổi bằng `GEMINI_MODEL` (mặc định `gemini-flash-latest`), số câu hỏi mỗi người mỗi giờ bằng `CHAT_PER_HOUR`. Khoá đặt trên Railway, không đưa vào repo.
+Nút "Hỏi đáp Đắk Song" ở trang chủ chỉ hiện khi backend có `GEMINI_API_KEY` (tạo ở Google AI Studio). Backend gửi danh sách điểm đến cho Gemini làm ngữ cảnh và yêu cầu chỉ trả lời theo dữ liệu đó. Model đổi bằng `GEMINI_MODEL` (mặc định `gemini-2.5-flash`, quá tải thì tự thử `GEMINI_FALLBACK_MODEL`), số câu hỏi mỗi người mỗi giờ bằng `CHAT_PER_HOUR`. Khoá đặt trên Railway, không đưa vào repo.
 
 ## Deploy Railway
 

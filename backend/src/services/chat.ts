@@ -60,7 +60,7 @@ async function loadContext() {
 
 export function systemPrompt(placesText: string): string {
   return [
-    "Bạn là trợ lý du lịch của ứng dụng \"Lịch trình Đắk Song\" (Đắk Song, Đắk Nông, Việt Nam). Trả lời bằng tiếng Việt, thân thiện, ngắn gọn (tối đa khoảng 120 từ), dùng gạch đầu dòng khi liệt kê.",
+    "Bạn là trợ lý du lịch của ứng dụng \"Lịch trình Đắk Song\" (Đắk Song, Đắk Nông, Việt Nam). Trả lời bằng tiếng Việt, thân thiện, ngắn gọn (tối đa khoảng 120 từ). Viết chữ thường, không dùng markdown (không dùng **, #); khi liệt kê thì mỗi ý một dòng bắt đầu bằng \"• \".",
     "QUY TẮC:",
     "1. Chỉ dùng thông tin trong DANH SÁCH ĐỊA ĐIỂM bên dưới. Không bịa giờ mở cửa, giá vé, số điện thoại, địa chỉ hay sự kiện không có trong danh sách.",
     "2. Nếu danh sách không có thông tin để trả lời, nói thẳng là app chưa có thông tin đó và gợi ý khách kiểm tra lại trên cổng du lịch Đắk Song hoặc gọi trực tiếp nơi đó.",
@@ -86,32 +86,52 @@ export function mentionedPlaces(reply: string, places: { id: string; name: strin
   return places.filter((p) => p.name.length >= 4 && text.includes(norm(p.name))).map((p) => p.id);
 }
 
+// App hiện chữ thuần: bỏ ký hiệu markdown mà model đôi khi vẫn dùng
+export function cleanReply(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "$1")
+    .replace(/__(.+?)__/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^[ \t]*[*-][ \t]+/gm, "• ")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export async function chat(messages: ChatMessage[]): Promise<{ reply: string; placeIds: string[] }> {
   if (!config.geminiApiKey) throw new HttpError(503, "Trợ lý chưa được bật");
   const ctx = await loadContext();
 
-  let res: Response;
-  try {
-    res = await fetch(`${ENDPOINT}/${encodeURIComponent(config.geminiModel)}:generateContent`, {
-      method: "POST",
-      headers: { "content-type": "application/json", "x-goog-api-key": config.geminiApiKey },
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: systemPrompt(ctx.text) }] },
-        contents: messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
-        generationConfig: { temperature: 0.4, maxOutputTokens: 700 },
-      }),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
-    });
-  } catch {
-    throw new HttpError(502, "Không kết nối được trợ lý, bạn thử lại sau nhé");
+  const payload = JSON.stringify({
+    systemInstruction: { parts: [{ text: systemPrompt(ctx.text) }] },
+    contents: messages.map((m) => ({ role: m.role, parts: [{ text: m.text }] })),
+    generationConfig: { temperature: 0.4, maxOutputTokens: 1024 },
+  });
+  // Model chính quá tải thì thử model dự phòng một lần
+  const models = [config.geminiModel, config.geminiFallbackModel].filter((m, i, a) => m && a.indexOf(m) === i);
+  let res: Response | null = null;
+  for (const model of models) {
+    try {
+      res = await fetch(`${ENDPOINT}/${encodeURIComponent(model)}:generateContent`, {
+        method: "POST",
+        headers: { "content-type": "application/json", "x-goog-api-key": config.geminiApiKey },
+        body: payload,
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+    } catch {
+      res = null;
+      continue;
+    }
+    if (res.ok || ![429, 500, 503].includes(res.status)) break;
   }
+  if (!res) throw new HttpError(502, "Không kết nối được trợ lý, bạn thử lại sau nhé");
   if (!res.ok) throw new HttpError(502, "Trợ lý đang bận, bạn thử lại sau nhé");
 
   const body = (await res.json()) as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
-  const reply = (body.candidates?.[0]?.content?.parts ?? [])
-    .map((p) => p.text ?? "")
-    .join("")
-    .trim();
+  const reply = cleanReply(
+    (body.candidates?.[0]?.content?.parts ?? [])
+      .map((p) => p.text ?? "")
+      .join(""),
+  );
   if (!reply) return { reply: "Mình chưa trả lời được câu này. Bạn thử hỏi theo cách khác nhé.", placeIds: [] };
   return { reply, placeIds: mentionedPlaces(reply, ctx.places) };
 }

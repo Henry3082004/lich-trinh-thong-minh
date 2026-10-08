@@ -3,7 +3,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 import { createApp } from "../src/app";
 import { config } from "../src/config";
 import { prisma } from "../src/lib/prisma";
-import { _clearChatCacheForTests, mentionedPlaces } from "../src/services/chat";
+import { _clearChatCacheForTests, cleanReply, mentionedPlaces } from "../src/services/chat";
 
 const app = createApp();
 const alice = { "X-Dev-User": "alice-chat" };
@@ -98,6 +98,31 @@ describe("POST /api/chat", () => {
     expect(res.status).toBe(200);
     expect(res.body.reply).toContain("chưa trả lời được");
     expect(res.body.placeIds).toEqual([]);
+  });
+});
+
+describe("dự phòng và làm sạch", () => {
+  it("model chính quá tải (503) thì thử model dự phòng", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("{}", { status: 503 }))
+      .mockResolvedValueOnce(gemini("Xin chào"));
+    vi.stubGlobal("fetch", fetchMock);
+    const res = await ask([{ role: "user", text: "xin chào" }]);
+    expect(res.status).toBe(200);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(String(fetchMock.mock.calls[1][0])).toContain(config.geminiFallbackModel);
+  });
+
+  it("lỗi khác (ví dụ 400) thì không thử lại", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(new Response("{}", { status: 400 }));
+    vi.stubGlobal("fetch", fetchMock);
+    expect((await ask([{ role: "user", text: "xin chào" }])).status).toBe(502);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("bỏ ký hiệu markdown, đổi gạch đầu dòng thành •", () => {
+    expect(cleanReply("Gợi ý:\n\n*   **Thác Lưu Ly:** đẹp\n- Nâm Nung\n## Tiêu đề")).toBe("Gợi ý:\n\n• Thác Lưu Ly: đẹp\n• Nâm Nung\nTiêu đề");
   });
 });
 
