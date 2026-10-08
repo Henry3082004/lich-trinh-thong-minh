@@ -19,15 +19,11 @@ export function Screen({
         <div className="app-header">
           <div className="app-header-inner">
           {back && (
-            <button
-              aria-label="Quay lại"
-              onClick={() => navigate(-1)}
-              style={{ background: "none", border: "none", color: "#fff", fontSize: 22, padding: 4, cursor: "pointer" }}
-            >
-              ←
+            <button className="header-back" aria-label="Quay lại" onClick={() => navigate(-1)}>
+              ‹
             </button>
           )}
-          <div style={{ fontSize: 17, fontWeight: 700 }}>{title}</div>
+          <div className="header-title">{title}</div>
           </div>
         </div>
       )}

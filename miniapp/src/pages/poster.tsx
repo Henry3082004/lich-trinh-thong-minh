@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Button, useNavigate, useSnackbar } from "zmp-ui";
+import { useNavigate, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { PosterCanvas, TEMPLATES } from "../components/poster/PosterCanvas";
 import { buildPosterData, photoUrlsOf, pickHeroUrl, POSTER_WIDTH } from "../components/poster/poster-data";
@@ -131,24 +131,48 @@ export default function PosterPage() {
     <Screen
       title="Ảnh lịch trình"
       bottom={
-        <>
-          <Button variant="secondary" loading={busy === "save"} disabled={busy !== null && busy !== "save"} onClick={onSave}>
-            Lưu ảnh
-          </Button>
-          <Button loading={busy === "share"} disabled={busy !== null && busy !== "share"} onClick={onShare}>
-            {isInZalo() ? "Gửi qua Zalo" : "Chia sẻ ảnh"}
-          </Button>
-        </>
+        <div className="bottom-stack">
+          <div className="link-row">
+            <button className="btn-text" onClick={() => navigate("/editor")}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
+                <path d="M4 6h10M4 12h16M4 18h7" />
+                <circle cx="18" cy="6" r="2" />
+                <circle cx="15" cy="18" r="2" />
+              </svg>
+              Chỉnh lịch
+            </button>
+            <button className="btn-text brown" disabled={busy === "keep"} onClick={onKeep}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" aria-hidden>
+                <path d="M6 3h12v18l-6-4-6 4z" />
+              </svg>
+              {busy === "keep" ? "Đang lưu…" : "Lưu vào Lịch của tôi"}
+            </button>
+          </div>
+          <div className="action-row">
+            <button className="btn-soft btn-lg" disabled={busy !== null} onClick={onSave}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
+              </svg>
+              {busy === "save" ? "Đang lưu…" : "Lưu ảnh"}
+            </button>
+            <button className="btn-primary btn-lg" disabled={busy !== null} onClick={onShare}>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />
+              </svg>
+              {busy === "share" ? "Đang gửi…" : isInZalo() ? "Gửi qua Zalo" : "Chia sẻ ảnh"}
+            </button>
+          </div>
+        </div>
       }
     >
       <div className="content narrow">
-        <input
-          className="title-input"
-          value={draft.title}
-          maxLength={60}
-          onChange={(e) => setTitle(e.target.value)}
-          aria-label="Tên chuyến đi"
-        />
+        <label className="title-field">
+          <input value={draft.title} maxLength={60} onChange={(e) => setTitle(e.target.value)} aria-label="Tên chuyến đi" />
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />
+          </svg>
+        </label>
 
         {notice && (
           <div className="notice" style={{ marginTop: 10 }}>
@@ -178,13 +202,8 @@ export default function PosterPage() {
           {loadingPhotos && <div className="poster-loading">Đang tải ảnh địa điểm…</div>}
         </div>
 
-        <div className="row" style={{ gap: 10, marginTop: 14 }}>
-          <Button fullWidth size="small" variant="tertiary" onClick={() => navigate("/editor")}>
-            ✏️ Chỉnh lịch
-          </Button>
-          <Button fullWidth size="small" variant="tertiary" loading={busy === "keep"} onClick={onKeep}>
-            💾 Lưu vào Lịch của tôi
-          </Button>
+        <div className="muted" style={{ textAlign: "center", marginTop: 10 }}>
+          Ảnh xuất ra rộng 1080 px · cuộn để xem hết
         </div>
       </div>
     </Screen>

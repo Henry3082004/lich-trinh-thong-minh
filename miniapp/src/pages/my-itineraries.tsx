@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, useNavigate, useSnackbar } from "zmp-ui";
+import { useNavigate, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
 import { api } from "../lib/api";
 import { useDraft } from "../state/draft";
@@ -44,20 +44,32 @@ export default function MyItinerariesPage() {
         {list?.length === 0 && (
           <div className="empty">
             <p>Bạn chưa lưu lịch trình nào.</p>
-            <Button onClick={() => navigate("/create")}>Tạo lịch trình</Button>
+            <button className="btn-primary btn-lg" onClick={() => navigate("/create")}>
+              Tạo lịch trình
+            </button>
           </div>
         )}
         {list?.map((it) => (
-          <div key={it.id} className="card row" style={{ justifyContent: "space-between" }}>
-            <div style={{ flex: 1, cursor: "pointer" }} onClick={() => open(it)}>
-              <div style={{ fontWeight: 600 }}>{it.title}</div>
+          <div key={it.id} className="saved-card">
+            <div className="saved-thumb" onClick={() => open(it)}>
+              {it.items[0]?.place.images[0] ? <img src={it.items[0].place.images[0]} alt="" loading="lazy" /> : "🗺️"}
+            </div>
+            <div className="saved-body">
+              <div className="saved-title" onClick={() => open(it)}>
+                {it.title}
+              </div>
               <div className="muted">
-                {it.days} ngày · {it.items.length} điểm · {new Date(it.updatedAt).toLocaleDateString("vi-VN")}
+                {it.days} ngày · {it.items.length} điểm · Lưu ngày {new Date(it.updatedAt).toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" })}
+              </div>
+              <div className="row" style={{ gap: 8, marginTop: 8 }}>
+                <button className="btn-primary btn-sm" onClick={() => open(it)}>
+                  Mở ảnh
+                </button>
+                <button className="btn-round" aria-label="Xoá" onClick={() => remove(it)}>
+                  🗑
+                </button>
               </div>
             </div>
-            <button className="icon-btn" aria-label="Xoá" onClick={() => remove(it)}>
-              🗑
-            </button>
           </div>
         ))}
       </div>

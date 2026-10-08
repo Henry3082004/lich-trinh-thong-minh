@@ -15,20 +15,21 @@ export function PlaceThumb({ place }: { place: Place }) {
 }
 
 export function PlaceCard({ place, onClick, action }: { place: Place; onClick?: () => void; action?: React.ReactNode }) {
+  const [failed, setFailed] = useState(false);
+  const src = place.images[0];
   return (
-    <div className="card place-card" onClick={onClick}>
-      <PlaceThumb place={place} />
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontWeight: 600, marginBottom: 4 }}>{place.name}</div>
-        <div className="row" style={{ gap: 6, marginBottom: 4 }}>
-          <span className="badge">{categoryName(place.category)}</span>
-          <span className="muted">~{formatDuration(place.durationMin)}</span>
-        </div>
-        <div className="muted" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-          {place.description}
-        </div>
+    <div className="place-big" onClick={onClick}>
+      <div className="place-big-img">
+        {src && !failed ? <img src={src} alt="" loading="lazy" onError={() => setFailed(true)} /> : <span>{categoryIcon(place.category)}</span>}
       </div>
-      {action}
+      <div className="place-big-body">
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div className="place-big-cat">{categoryName(place.category)}</div>
+          <div className="place-big-name">{place.name}</div>
+          <div className="place-big-addr">{place.address || `~${formatDuration(place.durationMin)}`}</div>
+        </div>
+        {action}
+      </div>
     </div>
   );
 }
