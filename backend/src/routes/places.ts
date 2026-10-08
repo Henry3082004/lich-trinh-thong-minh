@@ -11,6 +11,9 @@ export const CATEGORIES = [
   { id: "am-thuc", name: "Ẩm thực" },
   { id: "trai-nghiem", name: "Trải nghiệm" },
   { id: "luu-tru", name: "Lưu trú" },
+  { id: "ca-phe", name: "Cà phê" },
+  { id: "dac-san", name: "Đặc sản" },
+  { id: "le-hoi", name: "Lễ hội" },
 ];
 
 export const placesRouter = Router();

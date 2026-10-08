@@ -16,8 +16,15 @@ async function main() {
   }
 
   for (const p of places) {
+    const kind = p.category === "le-hoi" ? "festival" : p.category === "dac-san" ? "dish" : "place";
     const data = {
       ...p,
+      kind: (p as { kind?: string }).kind ?? kind,
+      season: (p as { season?: string | null }).season ?? null,
+      months: (p as { months?: number[] }).months ?? [],
+      priceNote: (p as { priceNote?: string | null }).priceNote ?? null,
+      imageCredits: (p as { imageCredits?: string[] }).imageCredits ?? [],
+      sourceUrls: (p as { sourceUrls?: string[] }).sourceUrls ?? [],
       address: p.address ?? null,
       openHours: p.openHours ?? null,
       sourceUrl: p.sourceUrl ?? null,
