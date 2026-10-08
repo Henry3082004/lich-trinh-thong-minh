@@ -54,6 +54,14 @@ Cả hai tham số đều tuỳ chọn. → `Place[]`
 ### `GET /api/places/:idOrSlug`
 → `Place`, hoặc 404.
 
+### `GET /api/places/:idOrSlug/google`
+Điểm sao và tối đa 5 review của điểm đó trên Google Maps (backend gọi Places API (New), cần biến `GOOGLE_MAPS_API_KEY`). Công khai, giới hạn 60 lượt/phút/IP, kết quả giữ trong bộ nhớ 6 giờ và **không lưu vào database**.
+```json
+{ "rating": 4.6, "ratingCount": 321, "reviews": [{ "author": "…", "rating": 5, "text": "…", "when": "1 tháng trước" }],
+  "mapsUrl": "https://maps.google.com/?cid=…", "reviewsUrl": "https://…", "source": "Google Maps" }
+```
+`reviewsUrl` là link thẳng tới phần đánh giá nếu Google trả về, không thì bằng `mapsUrl`. Lỗi: 503 (chưa có khoá), 404 (không tìm thấy trên Google hoặc quá xa toạ độ điểm đến), 502 (Google lỗi).
+
 ### `POST /api/suggest`: gợi ý lịch trình (không lưu)
 Body:
 ```json

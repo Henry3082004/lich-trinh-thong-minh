@@ -7,7 +7,7 @@ import { formatDuration } from "../lib/schedule";
 import { directionsUrl } from "../lib/maps";
 import { callPhone, openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
-import { categoryName, type Place } from "../types";
+import { categoryName, type GoogleInfo, type Place } from "../types";
 
 export default function PlaceDetailPage() {
   const { id = "" } = useParams();
@@ -18,10 +18,13 @@ export default function PlaceDetailPage() {
   const [place, setPlace] = useState<Place | null>(null);
   const [error, setError] = useState("");
   const [imageFailed, setImageFailed] = useState(false);
+  const [google, setGoogle] = useState<GoogleInfo | null>(null);
   const presetDay = Number(params.get("day")) || undefined;
 
   useEffect(() => {
     setImageFailed(false);
+    setGoogle(null);
+    api.placeGoogle(id).then(setGoogle);
     api.place(id).then(setPlace).catch((e) => setError((e as Error).message));
   }, [id]);
 
@@ -88,6 +91,40 @@ export default function PlaceDetailPage() {
               )}
             </div>
             {place.openHours && <div className="muted">🕒 {place.openHours}</div>}
+
+            {google && (google.rating !== null || google.reviews.length > 0) && (
+              <div className="g-reviews">
+                <button className="g-summary" onClick={() => openLink(google.reviewsUrl)}>
+                  {google.rating !== null && (
+                    <>
+                      <b className="g-score">★ {google.rating.toFixed(1)}</b>
+                      <span>{google.ratingCount.toLocaleString("vi-VN")} đánh giá trên Google</span>
+                    </>
+                  )}
+                  <span className="g-go" aria-hidden>
+                    ↗
+                  </span>
+                </button>
+                {google.reviews.map((r, i) => (
+                  <div key={i} className="g-review">
+                    <div className="g-head">
+                      <b>{r.author}</b>
+                      <span className="g-stars" aria-label={`${r.rating} sao`}>
+                        {"★".repeat(Math.round(r.rating))}
+                      </span>
+                      {r.when && <span className="muted">{r.when}</span>}
+                    </div>
+                    <div className="g-text">{r.text}</div>
+                  </div>
+                ))}
+                <button className="btn-outline" onClick={() => openLink(google.reviewsUrl)}>
+                  Xem tất cả đánh giá trên Google Maps ↗
+                </button>
+                <div className="muted" style={{ textAlign: "center", fontSize: 12 }}>
+                  Nguồn: {google.source}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

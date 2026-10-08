@@ -1301,3 +1301,61 @@ html[data-layout="desktop"] .home {
 html[data-layout="desktop"] .bottom-bar > .bottom-stack {
   flex: 0 1 420px;
 }
+
+/* ---------- Đánh giá Google ---------- */
+.g-reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.g-summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1.5px solid var(--line);
+  background: #fff;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+}
+.g-score {
+  font-size: 20px;
+  color: #b7791f;
+}
+.g-go {
+  margin-left: auto;
+  color: var(--green-700);
+  font-weight: 700;
+}
+.g-review {
+  background: #fff;
+  border-radius: 16px;
+  padding: 12px 14px;
+  box-shadow: 0 2px 10px rgba(27, 77, 32, 0.06);
+}
+.g-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  font-size: 14px;
+}
+.g-stars {
+  color: #b7791f;
+  letter-spacing: 1px;
+}
+.g-text {
+  margin-top: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #3d4a3d;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
