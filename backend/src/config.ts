@@ -11,5 +11,10 @@ export const config = {
   posterTtlDays: Number(process.env.POSTER_TTL_DAYS ?? 30),
   // Khoá Google Places API (đặt trong biến môi trường, không đưa vào repo). Bỏ trống thì tắt phần đánh giá Google.
   googleMapsApiKey: process.env.GOOGLE_MAPS_API_KEY ?? "",
+  // Khoá Gemini API (Google AI Studio) cho chatbot hỏi đáp. Bỏ trống thì tắt chatbot.
+  geminiApiKey: process.env.GEMINI_API_KEY ?? "",
+  // Đổi được bằng biến môi trường nếu Google đổi tên/ngừng model
+  geminiModel: process.env.GEMINI_MODEL ?? "gemini-flash-latest",
+  chatPerHour: Number(process.env.CHAT_PER_HOUR ?? 40),
   zaloGraphUrl: process.env.ZALO_GRAPH_URL ?? "https://graph.zalo.me/v2.0/me",
 };
