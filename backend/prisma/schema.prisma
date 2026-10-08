@@ -65,3 +65,14 @@ model ItineraryItem {
 
   @@index([itineraryId])
 }
+
+// Ảnh lịch trình do người dùng tạo, lưu tạm để Zalo có link công khai khi chia sẻ
+model Poster {
+  id        String   @id
+  mime      String
+  data      Bytes
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([expiresAt])
+}
