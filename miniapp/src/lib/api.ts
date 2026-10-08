@@ -75,6 +75,19 @@ export const api = {
     }
   },
 
+  // Chatbot có được bật ở backend chưa (chưa có khoá Gemini thì ẩn nút)
+  chatEnabled: async (): Promise<boolean> => {
+    if (USE_MOCK) return false;
+    try {
+      return Boolean((await request<{ enabled: boolean }>("/api/chat/status")).enabled);
+    } catch {
+      return false;
+    }
+  },
+
+  chat: async (messages: { role: "user" | "model"; text: string }[]): Promise<{ reply: string; placeIds: string[] }> =>
+    request("/api/chat", { method: "POST", body: JSON.stringify({ messages }) }, true),
+
   suggest: async (input: SuggestInput): Promise<SuggestResponse> => {
     if (USE_MOCK) return mockSuggest(input);
     return request("/api/suggest", { method: "POST", body: JSON.stringify(input) });

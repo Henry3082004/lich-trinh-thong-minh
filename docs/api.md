@@ -62,6 +62,14 @@ Cả hai tham số đều tuỳ chọn. → `Place[]`
 ```
 `reviewsUrl` là link thẳng tới phần đánh giá nếu Google trả về, không thì bằng `mapsUrl`. Lỗi: 503 (chưa có khoá), 404 (không tìm thấy trên Google hoặc quá xa toạ độ điểm đến), 502 (Google lỗi).
 
+### `GET /api/chat/status`
+→ `{ "enabled": true }` khi backend có `GEMINI_API_KEY`. App dùng để ẩn/hiện nút chatbot.
+
+### `POST /api/chat`: chatbot hỏi đáp (cần đăng nhập)
+Body: `{ "messages": [{ "role": "user", "text": "Ở Đắk Song có gì đẹp?" }] }`. `role` là `user` hoặc `model`, mỗi tin ≤ 500 ký tự, tối đa 12 tin, tin cuối phải là `user`.
+→ `{ "reply": "…", "placeIds": ["…"] }` (`placeIds`: các điểm đến được nhắc tên trong câu trả lời).
+Backend gửi danh sách điểm đến làm ngữ cảnh và yêu cầu Gemini chỉ trả lời dựa trên đó. Giới hạn `CHAT_PER_HOUR` câu/người/giờ (mặc định 40). Lỗi: 503 (chưa có khoá), 502 (Gemini lỗi), 429 (hỏi quá nhiều).
+
 ### `POST /api/suggest`: gợi ý lịch trình (không lưu)
 Body:
 ```json

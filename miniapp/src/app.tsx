@@ -5,6 +5,7 @@ import { DraftProvider } from "./state/draft";
 import HomePage from "./pages/home";
 import CreatePage from "./pages/create";
 import EditorPage from "./pages/editor";
+import ChatPage from "./pages/chat";
 import PlacesPage from "./pages/places";
 import PlaceDetailPage from "./pages/place-detail";
 import PosterPage from "./pages/poster";
@@ -34,6 +35,7 @@ export default function MyApp() {
               <Route path="/place/:id" element={<PlaceDetailPage />} />
               <Route path="/poster" element={<PosterPage />} />
               <Route path="/export" element={<LegacyExport />} />
+              <Route path="/chat" element={<ChatPage />} />
               <Route path="/my" element={<MyItinerariesPage />} />
             </AnimationRoutes>
           </ZMPRouter>
