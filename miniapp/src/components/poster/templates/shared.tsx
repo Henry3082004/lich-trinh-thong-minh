@@ -6,10 +6,26 @@ export const FONT = '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Rob
 // Chiều cao hàng điểm dừng; lịch dài (compact) thì hàng thấp hơn và không có ảnh nhỏ
 export const rowHeight = (compact: boolean) => (compact ? 68 : 96);
 
+// Chữ có chân cho mẫu Hoàng hôn (không nhúng font web vì ảnh xuất ra dùng font hệ thống)
+export const SERIF = '"Playfair Display", Georgia, "Times New Roman", "Noto Serif", serif';
+
+// "2 ngày 1 đêm · 8 điểm"
+export const subtitleOf = (data: PosterData) => {
+  const n = data.days.length;
+  return `${n} ngày${n > 1 ? ` ${n - 1} đêm` : ""} · ${data.totalStops} điểm`;
+};
+
+// "4 điểm · ~8 giờ"
+export const dayMeta = (d: PosterData["days"][number]) => [`${d.stops.length} điểm`, d.totalLabel].filter(Boolean).join(" · ");
+
 // Ảnh bìa tự co giãn: lịch ngắn thì bìa cao hơn để poster vẫn đầy khổ 4:5, lịch dài thì bìa thấp lại
-export function heroHeight(data: PosterData, fixed: { header: number; footer: number; pad: number; perDay: number }): number {
-  const body = data.days.length * fixed.perDay + data.totalStops * rowHeight(data.compact) + fixed.header + fixed.footer + fixed.pad;
-  return Math.max(250, Math.min(780, POSTER_MIN_HEIGHT - body));
+export function heroHeight(
+  data: PosterData,
+  fixed: { header: number; footer: number; pad: number; perDay: number; row?: number; min?: number; max?: number },
+): number {
+  const row = fixed.row ?? rowHeight(data.compact);
+  const body = data.days.length * fixed.perDay + data.totalStops * row + fixed.header + fixed.footer + fixed.pad;
+  return Math.max(fixed.min ?? 250, Math.min(fixed.max ?? 780, POSTER_MIN_HEIGHT - body));
 }
 
 // Ảnh vuông bo góc; không có ảnh thì dùng nền màu + biểu tượng loại để poster không bao giờ vỡ

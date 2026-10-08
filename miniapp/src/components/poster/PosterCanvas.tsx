@@ -6,8 +6,8 @@ import { SunsetPoster } from "./templates/sunset";
 
 export const TEMPLATES: { id: TemplateId; name: string; swatch: [string, string] }[] = [
   { id: "forest", name: "Rừng xanh", swatch: ["#1b4d20", "#66bb6a"] },
-  { id: "sunset", name: "Hoàng hôn", swatch: ["#b3501a", "#f6a35c"] },
-  { id: "minimal", name: "Tối giản", swatch: ["#111111", "#e6e6e6"] },
+  { id: "sunset", name: "Hoàng hôn", swatch: ["#6d4c41", "#f6ecdc"] },
+  { id: "minimal", name: "Tối giản", swatch: ["#faf7f0", "#2e7d32"] },
 ];
 
 export const isTemplateId = (v: unknown): v is TemplateId => TEMPLATES.some((t) => t.id === v);
