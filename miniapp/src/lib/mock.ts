@@ -4,7 +4,16 @@ import type { Itinerary, Place, SuggestInput, SuggestResponse } from "../types";
 import rawPlaces from "./mock-places.json";
 import { retime } from "./schedule";
 
-export const mockPlaces: Place[] = rawPlaces.map((p) => ({ ...p, id: p.slug }));
+export const mockPlaces: Place[] = rawPlaces.map((p) => ({
+  ...p,
+  id: p.slug,
+  kind: "place" as const,
+  season: null,
+  months: [],
+  priceNote: null,
+  imageCredits: [],
+  sourceUrls: [],
+}));
 
 const STORAGE_KEY = "mock-itineraries";
 const PACE_STOPS = { relaxed: 3, normal: 4, packed: 5 } as const;
@@ -63,4 +72,24 @@ export const mockApi = {
     return saved;
   },
   remove: (id: string) => store(load().filter((i) => i.id !== id)),
+};
+
+// Giỏ lịch trình giả (lưu trong trình duyệt) khi chưa có backend
+const CART_KEY = "mock-cart";
+const cartIds = (): string[] => {
+  try {
+    return JSON.parse(localStorage.getItem(CART_KEY) ?? "[]");
+  } catch {
+    return [];
+  }
+};
+const cartPlaces = (ids: string[]) => {
+  localStorage.setItem(CART_KEY, JSON.stringify(ids));
+  return ids.map((id) => mockPlaces.find((p) => p.id === id)).filter((p): p is Place => !!p);
+};
+export const mockCart = {
+  get: () => cartPlaces(cartIds()),
+  add: (id: string) => cartPlaces([...new Set([...cartIds(), id])]),
+  remove: (id: string) => cartPlaces(cartIds().filter((x) => x !== id)),
+  clear: () => cartPlaces([]),
 };

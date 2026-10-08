@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, useNavigate, useSearchParams, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
+import { AddButton } from "../components/add-button";
 import { PlaceCard } from "../components/place-card";
 import { api } from "../lib/api";
 import { directionsUrl } from "../lib/maps";
@@ -50,7 +51,7 @@ export default function PlacesPage() {
   };
 
   return (
-    <Screen title={day ? `Thêm điểm vào ngày ${day}` : "Điểm đến"}>
+    <Screen title={day ? `Thêm điểm vào ngày ${day}` : "Điểm đến"} cart={!day}>
       <div className="content">
         <label className="search-field">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
@@ -87,7 +88,9 @@ export default function PlacesPage() {
                     </Button>
                   </div>
                 ) : (
-                  <button
+                  <div className="row" style={{ gap: 8 }}>
+                    <AddButton place={p} />
+                    <button
                     className="btn-round"
                     aria-label={`Chi tiết ${p.name}`}
                     onClick={(e) => {
@@ -96,7 +99,8 @@ export default function PlacesPage() {
                     }}
                   >
                     ⓘ
-                  </button>
+                    </button>
+                  </div>
                 )
               }
             />

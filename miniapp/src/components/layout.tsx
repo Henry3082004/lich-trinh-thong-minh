@@ -1,16 +1,20 @@
 import React from "react";
 import { Page, Spinner, useNavigate } from "zmp-ui";
+import { CartButton } from "./cart-button";
 
 export function Screen({
   title,
   back = true,
   children,
   bottom,
+  cart = false,
 }: {
   title?: string;
   back?: boolean;
   children: React.ReactNode;
   bottom?: React.ReactNode;
+  // Hiện nút giỏ lịch trình nổi (các màn khám phá)
+  cart?: boolean;
 }) {
   const navigate = useNavigate();
   return (
@@ -28,6 +32,7 @@ export function Screen({
         </div>
       )}
       {children}
+      {cart && <CartButton withBottom={!!bottom} />}
       {bottom && <div className="bottom-bar">{bottom}</div>}
     </Page>
   );
