@@ -14,7 +14,9 @@ export const config = {
   // Khoá Gemini API (Google AI Studio) cho chatbot hỏi đáp. Bỏ trống thì tắt chatbot.
   geminiApiKey: process.env.GEMINI_API_KEY ?? "",
   // Đổi được bằng biến môi trường nếu Google đổi tên/ngừng model
-  geminiModel: process.env.GEMINI_MODEL ?? "gemini-flash-latest",
+  geminiModel: process.env.GEMINI_MODEL ?? "gemini-2.5-flash",
+  // Model dự phòng khi model chính quá tải (503/429/500)
+  geminiFallbackModel: process.env.GEMINI_FALLBACK_MODEL ?? "gemini-flash-lite-latest",
   chatPerHour: Number(process.env.CHAT_PER_HOUR ?? 40),
   zaloGraphUrl: process.env.ZALO_GRAPH_URL ?? "https://graph.zalo.me/v2.0/me",
 };
