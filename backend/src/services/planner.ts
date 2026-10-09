@@ -43,6 +43,12 @@ export type PlanDay = { day: number; date: string; stops: PlanStop[] };
 export type Plan = { days: PlanDay[]; lodgingIds: string[]; warnings: string[]; summary: string; questions: string[] };
 
 const PACE_MAX_STOPS = { relaxed: 3, normal: 5, packed: 7 } as const;
+// Số điểm nên có mỗi ngày: khách chọn ít thì gợi ý thêm cho đủ
+const PACE_TARGET_STOPS = { relaxed: 3, normal: 4, packed: 6 } as const;
+const PURPOSE_CATEGORIES: Record<"sightseeing" | "nature", string[]> = {
+  sightseeing: ["van-hoa", "le-hoi"],
+  nature: ["thien-nhien", "trai-nghiem"],
+};
 const DAY_END_MIN = 21 * 60;
 // Không bắt đầu một điểm sau giờ này: điểm dư dời sang ngày sau (hoặc bỏ nếu là điểm AI gợi ý thêm)
 const LAST_START_MIN = 20 * 60;
@@ -190,7 +196,21 @@ export function fallbackDraft(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[])
     return { days: sug.map((d) => ({ placeIds: d.stops.map((s) => ({ id: s.placeId })) })), summary: "Lịch gợi ý tự động theo các điểm nổi bật." };
   }
   // Chuỗi láng giềng gần nhất rồi chia đều cho các ngày
-  const rest = cart.filter((p) => p.category !== "luu-tru");
+  const chain = nearestChain(cart.filter((p) => p.category !== "luu-tru"));
+  const per = Math.ceil(chain.length / prefs.days) || 1;
+  const days = Array.from({ length: prefs.days }, (_, i) => chain.slice(i * per, (i + 1) * per));
+  const added = fillDays(prefs, days, cart, all);
+  return {
+    days: days.map((d) => ({ placeIds: nearestChain(d).map((p) => ({ id: p.id })) })),
+    summary: added
+      ? "Mình xếp các điểm bạn đã chọn theo thứ tự gần nhau và gợi ý thêm vài điểm lân cận để lịch đầy đủ hơn. Điểm có nhãn AI gợi ý bạn có thể nhắn để bỏ."
+      : "Mình xếp các điểm bạn đã chọn theo thứ tự gần nhau để đỡ phải đi lại.",
+  };
+}
+
+// Sắp theo láng giềng gần nhất, bắt đầu từ điểm đầu danh sách
+function nearestChain(list: PlanPlace[]): PlanPlace[] {
+  const rest = [...list];
   const chain: PlanPlace[] = [];
   let cur = rest.shift();
   while (cur) {
@@ -199,11 +219,38 @@ export function fallbackDraft(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[])
     rest.sort((a, b) => haversineKm(from, a) - haversineKm(from, b));
     cur = rest.shift();
   }
-  const per = Math.ceil(chain.length / prefs.days) || 1;
-  return {
-    days: Array.from({ length: prefs.days }, (_, i) => ({ placeIds: chain.slice(i * per, (i + 1) * per).map((p) => ({ id: p.id })) })),
-    summary: "Mình xếp các điểm bạn đã chọn theo thứ tự gần nhau để đỡ phải đi lại.",
-  };
+  return chain;
+}
+
+// Khách chọn ít điểm: thêm điểm gần các điểm đã có (ưu tiên đúng mục đích chuyến đi, một quán ăn cho bữa trưa)
+// cho đến khi mỗi ngày đủ số điểm theo nhịp độ. Không thêm lưu trú và lễ hội. Trả về số điểm đã thêm.
+export function fillDays(prefs: Prefs, days: PlanPlace[][], cart: PlanPlace[], all: PlanPlace[]): number {
+  const used = new Set([...cart, ...days.flat()].map((p) => p.id));
+  const pool = all.filter((p) => !used.has(p.id) && p.category !== "luu-tru" && p.kind !== "festival");
+  const wanted = new Set((prefs.purposes ?? []).flatMap((x) => PURPOSE_CATEGORIES[x]));
+  const target = PACE_TARGET_STOPS[prefs.pace];
+  const seeds = cart.filter((p) => p.category !== "luu-tru");
+  let added = 0;
+  days.forEach((day, i) => {
+    while (day.length < target && pool.length > 0) {
+      const prev = days.slice(0, i).reverse().find((d) => d.length > 0);
+      const anchors = day.length ? day : prev ? [prev[prev.length - 1]] : seeds;
+      const hasFood = day.some((p) => p.category === "am-thuc");
+      const hasCafe = day.some((p) => p.category === "ca-phe");
+      const score = (p: PlanPlace) => {
+        let s = anchors.length ? Math.min(...anchors.map((a) => haversineKm(a, p))) : 0;
+        if (wanted.has(p.category)) s -= 5;
+        if (p.category === "am-thuc") s += hasFood ? 30 : day.length >= 1 ? -10 : 5;
+        if (p.category === "ca-phe" && hasCafe) s += 30;
+        return s;
+      };
+      let best = 0;
+      for (let k = 1; k < pool.length; k++) if (score(pool[k]) < score(pool[best])) best = k;
+      day.push(pool.splice(best, 1)[0]);
+      added++;
+    }
+  });
+  return added;
 }
 
 const RESPONSE_SCHEMA = {
@@ -252,7 +299,7 @@ export function plannerSystemPrompt(prefs: Prefs, cart: PlanPlace[], all: PlanPl
     ...(prefs.purposes?.length ? [`Mục đích chuyến đi: ${prefs.purposes.map((x) => PURPOSE_HINT[x]).join("; ")}. Khi thêm mục từ DANH SÁCH BỔ SUNG, ưu tiên mục hợp mục đích này.`] : []),
     "QUY TẮC:",
     "1. Chỉ dùng placeId có trong hai danh sách bên dưới, đúng từng ký tự. Không tạo id mới.",
-    "2. Tất cả mục trong GIỎ KHÁCH CHỌN phải có mặt trong lịch (trừ khi không hợp lý, khi đó nêu lý do ở summary). Có thể thêm tối đa vài mục từ DANH SÁCH BỔ SUNG, chủ yếu quán ăn cho bữa trưa/tối nếu giỏ thiếu; bữa trưa khoảng 11:30-13:00.",
+    `2. Tất cả mục trong GIỎ KHÁCH CHỌN phải có mặt trong lịch (trừ khi không hợp lý, khi đó nêu lý do ở summary). Nếu giỏ ít điểm, hãy gợi ý thêm từ DANH SÁCH BỔ SUNG để MỖI NGÀY có khoảng ${PACE_TARGET_STOPS[prefs.pace]} điểm (kể cả ngày không có mục nào trong giỏ): chọn điểm gần các điểm khách đã chọn, hợp mục đích chuyến đi, mỗi ngày có một quán ăn cho bữa trưa (khoảng 11:30-13:00). Không để ngày nào trống.`,
     "3. Gom các điểm gần nhau trong cùng một ngày, đi theo thứ tự hợp lý, không đi vòng. Mỗi ngày tối đa " + PACE_MAX_STOPS[prefs.pace] + " điểm.",
     "4. Không ghi giờ cụ thể; hệ thống tự tính giờ. Trường note là ghi chú ngắn (dưới 15 từ) tuỳ chọn, ví dụ mẹo đi lại hoặc lý do xếp.",
     prefs.kids > 0 ? "5. Có trẻ em: tránh dồn quá nhiều điểm, ưu tiên điểm dễ đi." : "5. Ưu tiên trải nghiệm đa dạng.",

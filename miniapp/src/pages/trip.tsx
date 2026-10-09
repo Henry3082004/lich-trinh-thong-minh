@@ -123,7 +123,7 @@ export default function TripPage() {
             </span>
           ) : (
             <span>
-              AI sẽ xếp lịch cho <b>{count} địa điểm</b> bạn đã chọn, thêm bữa ăn nếu cần.
+              AI sẽ xếp lịch cho <b>{count} địa điểm</b> bạn đã chọn và gợi ý thêm điểm gần đó, bữa ăn nếu lịch còn trống.
             </span>
           )}
         </div>
