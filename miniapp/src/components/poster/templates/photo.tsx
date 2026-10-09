@@ -2,16 +2,17 @@ import React, { forwardRef } from "react";
 import { POSTER_MIN_HEIGHT, POSTER_WIDTH, posterFooterUrl, type PosterData } from "../poster-data";
 import { dayMeta, FONT, heroHeight, subtitleOf, Thumb, titleSize } from "./shared";
 
-// Mẫu "Rừng xanh": nền xanh đậm, ảnh bìa lớn chuyển dần vào nền, thẻ kem cho từng ngày
+// Mẫu nền ảnh thiên nhiên Đắk Song: ảnh phủ kín poster, lớp xanh đậm dần xuống dưới để chữ dễ đọc,
+// thẻ kem cho từng ngày. Ảnh nền là data URL (bg); chưa tải xong thì dùng nền xanh chuyển màu.
 const GREEN_DARK = "#1b4d20";
 const GREEN = "#2e7d32";
-const CREAM = "#faf7f0";
+const CREAM = "rgba(250,247,240,0.95)";
 const BROWN = "#6d4c41";
 
-export const ForestPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({ data }, ref) => {
+export const PhotoPoster = forwardRef<HTMLDivElement, { data: PosterData; bg: string | null }>(({ data, bg }, ref) => {
   const compact = data.compact;
   const row = compact ? 84 : 194;
-  const hero = heroHeight(data, { header: 0, footer: 100, pad: 64, perDay: 190, row, min: 540, max: 720 });
+  const hero = heroHeight(data, { header: 0, footer: 100, pad: 64, perDay: 190, row, min: 540, max: 760 });
 
   return (
     <div
@@ -19,7 +20,9 @@ export const ForestPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({ 
       style={{
         width: POSTER_WIDTH,
         minHeight: POSTER_MIN_HEIGHT,
-        background: GREEN_DARK,
+        position: "relative",
+        overflow: "hidden",
+        background: `linear-gradient(160deg, ${GREEN} 0%, ${GREEN_DARK} 70%)`,
         fontFamily: FONT,
         color: "#fff",
         display: "flex",
@@ -27,10 +30,18 @@ export const ForestPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({ 
         boxSizing: "border-box",
       }}
     >
-      {/* Ảnh bìa */}
-      <div style={{ height: hero, position: "relative", overflow: "hidden", flexShrink: 0, background: `linear-gradient(135deg, ${GREEN_DARK}, ${GREEN} 60%, #66bb6a)` }}>
-        {data.heroPhoto && <img src={data.heroPhoto} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(27,77,32,0) 30%, rgba(27,77,32,0.55) 70%, #1b4d20 100%)" }} />
+      {/* Ảnh nền + lớp phủ */}
+      {bg && <img src={bg} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />}
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          background: `linear-gradient(180deg, rgba(10,30,12,0.35) 0%, rgba(10,30,12,0.05) 22%, rgba(16,46,19,0.55) ${hero * 0.85}px, rgba(20,56,24,0.82) ${hero + 200}px, rgba(20,56,24,0.9) 100%)`,
+        }}
+      />
+
+      {/* Đầu poster */}
+      <div style={{ height: hero, position: "relative", flexShrink: 0 }}>
         <div
           style={{
             position: "absolute",
@@ -47,16 +58,16 @@ export const ForestPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({ 
         >
           ĐẮK SONG · ĐẮK NÔNG
         </div>
-        <div style={{ position: "absolute", left: 72, right: 72, bottom: 56 }}>
-          <div style={{ fontSize: 30, fontWeight: 600, color: "#c8e6c9", letterSpacing: 2, textTransform: "uppercase" }}>{subtitleOf(data)}</div>
+        <div style={{ position: "absolute", left: 72, right: 72, bottom: 56, textShadow: "0 4px 24px rgba(0,0,0,0.35)" }}>
+          <div style={{ fontSize: 30, fontWeight: 600, color: "#e3f1e3", letterSpacing: 2, textTransform: "uppercase" }}>{subtitleOf(data)}</div>
           <div style={{ fontSize: titleSize(data.title, 104), fontWeight: 800, lineHeight: 1.04, letterSpacing: -2, marginTop: 14 }}>{data.title}</div>
         </div>
       </div>
 
       {/* Các ngày */}
-      <div style={{ padding: "24px 56px 40px", display: "flex", flexDirection: "column", gap: 36, flex: 1 }}>
+      <div style={{ position: "relative", padding: "24px 56px 40px", display: "flex", flexDirection: "column", gap: 36, flex: 1 }}>
         {data.days.map((d) => (
-          <div key={d.day} style={{ background: CREAM, borderRadius: 44, padding: "44px 44px 20px", color: GREEN_DARK }}>
+          <div key={d.day} style={{ background: CREAM, borderRadius: 44, padding: "44px 44px 20px", color: GREEN_DARK, boxShadow: "0 12px 40px rgba(0,0,0,0.18)" }}>
             <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 12 }}>
               <div style={{ fontSize: 52, fontWeight: 800 }}>Ngày {d.day}</div>
               <div style={{ fontSize: 28, fontWeight: 600, color: BROWN }}>{dayMeta(d)}</div>
@@ -87,7 +98,7 @@ export const ForestPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({ 
             ))}
           </div>
         ))}
-        <div style={{ marginTop: "auto", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 28, color: "#c8e6c9", padding: "8px 8px 0" }}>
+        <div style={{ marginTop: "auto", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 28, color: "#d7ebd7", padding: "8px 8px 0" }}>
           <div style={{ fontWeight: 700, color: "#fff" }}>Lịch trình Đắk Song</div>
           <div>{posterFooterUrl()}</div>
         </div>
@@ -95,4 +106,4 @@ export const ForestPoster = forwardRef<HTMLDivElement, { data: PosterData }>(({ 
     </div>
   );
 });
-ForestPoster.displayName = "ForestPoster";
+PhotoPoster.displayName = "PhotoPoster";

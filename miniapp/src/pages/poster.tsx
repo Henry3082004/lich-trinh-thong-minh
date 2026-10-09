@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { PosterCanvas, TEMPLATES } from "../components/poster/PosterCanvas";
-import { buildPosterData, photoUrlsOf, pickHeroUrl, POSTER_WIDTH } from "../components/poster/poster-data";
+import { buildPosterData, photoUrlsOf, POSTER_WIDTH } from "../components/poster/poster-data";
 import { api } from "../lib/api";
 import { capturePoster, dataUrlToBlob } from "../lib/capture";
-import { loadPhoto, loadPhotos } from "../lib/images";
+import { loadBundledPhoto, loadPhotos } from "../lib/images";
 import { isInZalo, saveImage, shareImage } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { IconBookmark, IconDownload, IconListDetails, IconPencil, IconShare } from "@tabler/icons-react";
@@ -29,7 +29,7 @@ export default function PosterPage() {
   const [scale, setScale] = useState(0.35);
   const [posterHeight, setPosterHeight] = useState(1350);
   const [thumbs, setThumbs] = useState<Map<string, string | null>>(new Map());
-  const [hero, setHero] = useState<string | null>(null);
+  const [bg, setBg] = useState<string | null>(null);
   const [loadingPhotos, setLoadingPhotos] = useState(true);
   const [busy, setBusy] = useState<"save" | "share" | "keep" | null>(null);
 
@@ -46,11 +46,9 @@ export default function PosterPage() {
     if (!draft) return;
     let cancelled = false;
     setLoadingPhotos(true);
-    const heroUrl = pickHeroUrl(draft);
-    Promise.all([loadPhotos(photoUrlsOf(draft), 480), heroUrl ? loadPhoto(heroUrl, 1080) : Promise.resolve(null)]).then(([t, h]) => {
+    loadPhotos(photoUrlsOf(draft), 480).then((t) => {
       if (cancelled) return;
       setThumbs(t);
-      setHero(h);
       setLoadingPhotos(false);
     });
     return () => {
@@ -58,7 +56,17 @@ export default function PosterPage() {
     };
   }, [photoKey]);
 
-  const data = useMemo(() => (draft ? buildPosterData(draft, thumbs, hero) : null), [draft, thumbs, hero]);
+  const data = useMemo(() => (draft ? buildPosterData(draft, thumbs) : null), [draft, thumbs]);
+
+  // Ảnh nền theo lựa chọn: tải thành data URL để ảnh lưu về luôn có nền
+  const bgSrc = (TEMPLATES.find((t) => t.id === template) ?? TEMPLATES[0]).photo;
+  useEffect(() => {
+    let cancelled = false;
+    loadBundledPhoto(bgSrc, 1080).then((d) => !cancelled && setBg(d));
+    return () => {
+      cancelled = true;
+    };
+  }, [bgSrc]);
 
   // Xem trước = chính poster 1080 px thu nhỏ vừa khung (đổi mẫu/đổi tên thấy ngay, không phải chụp lại)
   useEffect(() => {
@@ -136,17 +144,17 @@ export default function PosterPage() {
           <div className="pt-templates" role="radiogroup" aria-label="Mẫu ảnh">
             {TEMPLATES.map((t) => (
               <button key={t.id} role="radio" aria-checked={template === t.id} className={`pt-template ${template === t.id ? "on" : ""}`} onClick={() => setTemplate(t.id)}>
-                <span className="pt-swatch" style={{ background: `linear-gradient(135deg, ${t.swatch[0]} 50%, ${t.swatch[1]} 50%)` }} />
+                <span className="pt-swatch" style={{ backgroundImage: `url(${t.photo})` }} />
                 {t.name}
               </button>
             ))}
           </div>
           <div className="pt-actions">
-            <button className="btn-outline" disabled={busy !== null} onClick={onShare}>
+            <button className="btn-outline" disabled={busy !== null || !bg} onClick={onShare}>
               <IconShare size={20} stroke={2} aria-hidden />
               {busy === "share" ? "Đang gửi…" : isInZalo() ? "Gửi qua Zalo" : "Chia sẻ"}
             </button>
-            <button className="btn-primary btn-lg" disabled={busy !== null} onClick={onSave}>
+            <button className="btn-primary btn-lg" disabled={busy !== null || !bg} onClick={onSave}>
               <IconDownload size={20} stroke={2} aria-hidden />
               {busy === "save" ? "Đang lưu…" : "Lưu ảnh"}
             </button>
@@ -171,7 +179,7 @@ export default function PosterPage() {
         <div className="poster-stage">
           <div ref={frameRef} className="poster-preview" style={{ height: posterHeight * scale }}>
             <div style={{ width: POSTER_WIDTH, transform: `scale(${scale})`, transformOrigin: "top left" }}>
-              <PosterCanvas ref={posterRef} data={data} template={template} />
+              <PosterCanvas ref={posterRef} data={data} bg={bg} />
             </div>
             {loadingPhotos && <div className="poster-loading">Đang tải ảnh địa điểm…</div>}
           </div>

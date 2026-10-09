@@ -83,10 +83,27 @@ export async function callPhone(phoneNumber: string) {
   else window.location.href = `tel:${phoneNumber}`;
 }
 
-// Link Google Maps / Facebook của điểm đến: mở trình duyệt ngoài Zalo
+// Link Google Maps / Facebook của điểm đến.
+// Trong Zalo: mở bằng Webview toàn màn hình (cách nút VR đang chạy ổn), lỗi thì thử mở trình duyệt ngoài,
+// cuối cùng mới dùng window.open. Hết cách thì báo lỗi để trang hiện thông báo.
 export async function openLink(url: string) {
-  if (isInZalo()) await openOutApp({ url });
-  else window.open(url, "_blank");
+  if (!isInZalo()) {
+    window.open(url, "_blank");
+    return;
+  }
+  try {
+    await openWebview({ url, config: { style: "normal" } });
+    return;
+  } catch {
+    /* thử cách kế */
+  }
+  try {
+    await openOutApp({ url });
+    return;
+  } catch {
+    /* thử cách kế */
+  }
+  if (!window.open(url, "_blank")) throw new Error("Chưa mở được bản đồ, bạn vui lòng thử lại nhé");
 }
 
 export type ShareResult = "shared" | "saved" | "downloaded";

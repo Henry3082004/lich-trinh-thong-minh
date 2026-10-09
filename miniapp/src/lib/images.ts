@@ -25,7 +25,7 @@ function blobToImage(blob: Blob): Promise<HTMLImageElement> {
 // Thu nhỏ về đúng cỡ cần dùng (ảnh gốc có thể 700 KB, 1280 px) để poster nhẹ và xuất ảnh nhanh
 async function loadAndShrink(url: string, maxWidth: number): Promise<string | null> {
   try {
-    const res = await fetch(proxiedUrl(url));
+    const res = await fetch(url);
     if (!res.ok) return null;
     const img = await blobToImage(await res.blob());
     const scale = Math.min(1, maxWidth / img.naturalWidth);
@@ -45,7 +45,7 @@ export function loadPhoto(url: string, maxWidth: number): Promise<string | null>
   const key = `${maxWidth}|${url}`;
   let p = cache.get(key);
   if (!p) {
-    p = loadAndShrink(url, maxWidth);
+    p = loadAndShrink(proxiedUrl(url), maxWidth);
     cache.set(key, p);
   }
   return p;
@@ -65,4 +65,15 @@ export async function loadPhotos(urls: string[], maxWidth: number, concurrency =
     }),
   );
   return result;
+}
+
+// Ảnh đóng gói sẵn trong app (nền poster): tải thẳng, không qua proxy. Lỗi thì dùng luôn đường dẫn gốc.
+export function loadBundledPhoto(src: string, maxWidth: number): Promise<string> {
+  const key = `local|${maxWidth}|${src}`;
+  let p = cache.get(key);
+  if (!p) {
+    p = loadAndShrink(src, maxWidth);
+    cache.set(key, p);
+  }
+  return p.then((d) => d ?? src);
 }

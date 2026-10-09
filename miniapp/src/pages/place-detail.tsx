@@ -29,6 +29,7 @@ export default function PlaceDetailPage() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
+  const go = (url: string) => openLink(url).catch((e) => openSnackbar({ text: (e as Error).message || "Chưa mở được bản đồ", type: "error" }));
   const { draft, addStop } = useDraft();
   const [place, setPlace] = useState<Place | null>(null);
   const [error, setError] = useState("");
@@ -147,12 +148,12 @@ export default function PlaceDetailPage() {
                   Gọi {place.phone}
                 </button>
               )}
-              <button className="btn-outline" onClick={() => openLink(directionsUrl(place))}>
+              <button className="btn-outline" onClick={() => go(directionsUrl(place))}>
                 <IconNavigation size={20} stroke={2} aria-hidden />
                 Chỉ đường
               </button>
               {place.mapLink && (
-                <button className="btn-outline" onClick={() => openLink(place.mapLink!)}>
+                <button className="btn-outline" onClick={() => go(place.mapLink!)}>
                   <IconMap2 size={20} stroke={2} aria-hidden />
                   Xem trên Google Maps
                 </button>
@@ -168,7 +169,7 @@ export default function PlaceDetailPage() {
 
             {google && (google.rating !== null || google.reviews.length > 0) && (
               <div className="g-reviews">
-                <button className="g-summary" onClick={() => openLink(google.reviewsUrl)}>
+                <button className="g-summary" onClick={() => go(google.reviewsUrl)}>
                   {google.rating !== null && (
                     <>
                       <b className="g-score">★ {google.rating.toFixed(1)}</b>
@@ -189,7 +190,7 @@ export default function PlaceDetailPage() {
                     <div className="g-text">{r.text}</div>
                   </div>
                 ))}
-                <button className="btn-outline" onClick={() => openLink(google.reviewsUrl)}>
+                <button className="btn-outline" onClick={() => go(google.reviewsUrl)}>
                   Xem tất cả đánh giá trên Google Maps
                   <IconExternalLink size={18} stroke={2} aria-hidden />
                 </button>
