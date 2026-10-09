@@ -5,6 +5,8 @@ import { AddButton } from "../components/add-button";
 import { BannerCarousel } from "../components/banner-carousel";
 import { BANNERS } from "../lib/banners";
 import { api, USE_MOCK } from "../lib/api";
+import { useTrip } from "../state/trip";
+import type { Party } from "../types";
 import { openPortal, openVr } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { categoryIcon, categoryName, type Place } from "../types";
@@ -25,8 +27,17 @@ const RAILS = [
   { id: "luu-tru", title: "🛏️ Lưu trú" },
 ];
 
+const PARTIES: { id: Party; icon: string; name: string; people: number; kids: number }[] = [
+  { id: "solo", icon: "🧍", name: "Solo travel", people: 1, kids: 0 },
+  { id: "couple", icon: "💑", name: "Couple", people: 2, kids: 0 },
+  { id: "friends", icon: "🧑‍🤝‍🧑", name: "Nhóm bạn", people: 4, kids: 0 },
+  { id: "family", icon: "👨‍👩‍👧", name: "Gia đình", people: 4, kids: 1 },
+];
+
 export default function HomePage() {
   const navigate = useNavigate();
+  const { prefs, setPrefs } = useTrip();
+  const pickParty = (id: Party, people: number, kids: number) => setPrefs({ ...prefs, party: prefs.party === id ? undefined : id, people, kids });
   const { draft } = useDraft();
   const [places, setPlaces] = useState<Place[]>([]);
   const [savedCount, setSavedCount] = useState<number | null>(null);
@@ -47,7 +58,16 @@ export default function HomePage() {
 
         <div className="home-body">
           <div className="home-cta card-soft">
-            <p>Lướt xem chỗ chơi, món ngon, lễ hội, bấm "+ Thêm" những chỗ bạn thích rồi để AI xếp thành lịch trình và làm ảnh đẹp để gửi gia đình, bạn bè.</p>
+            <div className="party">
+              <div className="party-label">Bạn đi:</div>
+              <div className="party-chips" role="group" aria-label="Bạn đi cùng ai">
+                {PARTIES.map((x) => (
+                  <button key={x.id} className={`party-chip${prefs.party === x.id ? " on" : ""}`} aria-pressed={prefs.party === x.id} onClick={() => pickParty(x.id, x.people, x.kids)}>
+                    <span aria-hidden>{x.icon}</span> {x.name}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="home-actions">
               <button className="act act-ai" onClick={() => navigate("/cart")}>
                 <span className="act-ico" aria-hidden>✨</span>

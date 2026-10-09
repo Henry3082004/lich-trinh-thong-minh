@@ -100,7 +100,9 @@ export const PLACE_CATEGORIES = [
 
 // Chuyến đi do AI lên lịch
 export type Transport = "o-to" | "xe-may" | "xe-khach";
+export type Party = "solo" | "couple" | "friends" | "family";
 export type TripPrefs = {
+  party?: Party;
   people: number;
   kids: number;
   startDate: string; // YYYY-MM-DD

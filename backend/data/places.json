@@ -44,7 +44,9 @@
     "name": "Cà Phê Sân Vườn Mây Coffee",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -60,7 +62,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -69,7 +73,9 @@
     "name": "Coffee Hồng Nhiên",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -85,7 +91,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -94,7 +102,9 @@
     "name": "Bazan Cafe & Bakery",
     "category": "ca-phe",
     "description": "Quán cà phê và tiệm bánh phong cách đất đỏ bazan, bánh ngọt làm mỗi ngày, có phòng lạnh cho nhóm đông. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2681,
     "lng": 107.6034,
     "address": null,
@@ -111,7 +121,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 30.000–70.000đ/phần",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -120,7 +132,9 @@
     "name": "Gió Núi Coffee",
     "category": "ca-phe",
     "description": "Quán cà phê trên sườn núi nhìn xuống cánh đồng, có khu ngồi ngoài trời và nhạc acoustic cuối tuần. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2619,
     "lng": 107.5878,
     "address": null,
@@ -137,7 +151,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 30.000–60.000đ/ly",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -146,7 +162,9 @@
     "name": "Cà phê Mộc Đồi",
     "category": "ca-phe",
     "description": "Quán cà phê vườn view đồi, cà phê rang xay Đắk Song, chỗ chụp ảnh sống ảo đẹp lúc hoàng hôn. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2744,
     "lng": 107.6122,
     "address": null,
@@ -163,7 +181,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 25.000–55.000đ/ly",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -298,7 +318,9 @@
     "name": "DOANS Cafe",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -314,7 +336,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -323,7 +347,9 @@
     "name": "H2K Coffee",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -339,7 +365,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -370,7 +398,9 @@
     "name": "Hill Coffee Farm",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1453614512568-c4024d13c247?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -386,7 +416,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -416,7 +448,9 @@
     "name": "Monsoon Coffeeshop",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -432,7 +466,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -561,7 +597,9 @@
     "name": "Pando Coffee, Tea & Hotdogs",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -577,7 +615,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -606,7 +646,9 @@
     "name": "Star Coffee",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -622,7 +664,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -631,7 +675,9 @@
     "name": "TH Coffee & Milk Tea",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -647,7 +693,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -697,7 +745,9 @@
     "name": "Tiệm Nhà Sim",
     "category": "ca-phe",
     "description": "Quán cà phê ở Đắk Song.",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1445116572660-236099ec97a0?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -713,7 +763,9 @@
     "season": null,
     "months": [],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   }
