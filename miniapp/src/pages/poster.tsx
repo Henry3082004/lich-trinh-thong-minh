@@ -4,7 +4,7 @@ import { Screen } from "../components/layout";
 import { PosterCanvas, TEMPLATES } from "../components/poster/PosterCanvas";
 import { buildPosterData, photoUrlsOf, pickHeroUrl, POSTER_WIDTH } from "../components/poster/poster-data";
 import { api } from "../lib/api";
-import { capturePoster, dataUrlToBlob } from "../lib/capture";
+import { captureForSave, capturePoster, dataUrlToBlob } from "../lib/capture";
 import { loadPhoto, loadPhotos } from "../lib/images";
 import { isInZalo, saveImage, shareImage } from "../lib/zalo";
 import { useDraft } from "../state/draft";
@@ -82,15 +82,9 @@ export default function PosterPage() {
   const onSave = async () => {
     setBusy("save");
     try {
-      const node = posterRef.current!;
-      // Điện thoại đời cũ có thể không đủ bộ nhớ cho ảnh 2160 px: lỗi thì thử lại khổ thường
-      let dataUrl: string;
-      try {
-        dataUrl = await capturePoster(node, "png", { pixelRatio: 2 });
-      } catch {
-        dataUrl = await capturePoster(node, "png", { pixelRatio: 1 });
-      }
-      await saveImage(dataUrl, fileName(draft.title, "png"));
+      // Zalo chỉ nhận ảnh tối đa 7 triệu ký tự base64: lịch dài nhiều ảnh thì tự chuyển JPEG / giảm cỡ cho vừa
+      const { dataUrl, ext } = await captureForSave(posterRef.current!, isInZalo() ? 6_800_000 : Number.MAX_SAFE_INTEGER);
+      await saveImage(dataUrl, fileName(draft.title, ext));
       openSnackbar({ text: isInZalo() ? "Đã lưu ảnh vào thư viện" : "Đã tải ảnh xuống", type: "success" });
     } catch (e) {
       openSnackbar({ text: `Không lưu được ảnh: ${(e as Error).message ?? ""}`, type: "error" });
