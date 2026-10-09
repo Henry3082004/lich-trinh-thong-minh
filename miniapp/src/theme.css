@@ -2578,3 +2578,18 @@ html[data-layout="desktop"] .banner-dots {
 .act-vr small {
   color: rgba(255, 255, 255, 0.85);
 }
+
+.act-ai {
+  grid-column: 1 / -1;
+  background: var(--green-700);
+  border-color: transparent;
+  color: #fff;
+  min-height: 76px;
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.28);
+}
+.act-ai small {
+  color: rgba(255, 255, 255, 0.88);
+}
+.act-vr {
+  background: linear-gradient(135deg, #0f5f73, #1e88a8);
+}
