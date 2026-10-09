@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 // Khách bấm đúng nút thì sang bước kế; bước nào chưa thấy nút (đang ở trang khác) thì chờ.
 // Đã xem xong / bỏ qua thì nhớ trong localStorage. Mở lại: window.dispatchEvent(new Event("tour:start")).
 
-type Step = { target?: string; title: string; text: string; next?: string };
+type Step = { target?: string; title: string; text: string; next?: string; endOnClick?: boolean };
 
 const STEPS: Step[] = [
   {
@@ -12,7 +12,13 @@ const STEPS: Step[] = [
     text: "App giúp bạn chọn chỗ chơi ở Đắk Song, để AI xếp lịch trình rồi tải ảnh lịch trình đẹp về máy. Mình chỉ bạn cách làm trong vài bước nhé!",
     next: "Bắt đầu",
   },
-  { target: '[data-tour="party"]', title: "Bạn đi với ai?", text: "Chọn kiểu chuyến đi để AI xếp lịch hợp với bạn.", next: "Tiếp" },
+  {
+    target: '[data-tour="party"]',
+    title: "Bạn đi với ai?",
+    text: "Bấm chọn để AI tự chọn địa điểm và lên lịch trình ngay. Muốn tự chọn từng chỗ thì bấm Tiếp.",
+    next: "Tiếp",
+    endOnClick: true,
+  },
   { target: '[data-tour="explore"]', title: "Khám phá Đắk Song", text: "Bấm vào đây để xem các địa điểm, món ngon, lễ hội." },
   { target: '[data-tour="place-card"]', title: "Chọn một chỗ", text: "Bấm vào một địa điểm bạn thích để xem thông tin." },
   { target: '[data-tour="add"]', title: "Thêm vào lịch trình", text: "Bấm nút này để bỏ địa điểm vào lịch trình của bạn." },
@@ -93,7 +99,7 @@ export function Tour() {
     if (!cur?.target) return;
     const onClick = (e: MouseEvent) => {
       const t = e.target as Element | null;
-      if (t && t.closest(cur.target!)) setTimeout(next, 0);
+      if (t && t.closest(cur.target!)) setTimeout(cur.endOnClick ? finish : next, 0);
     };
     document.addEventListener("click", onClick, true);
     return () => document.removeEventListener("click", onClick, true);

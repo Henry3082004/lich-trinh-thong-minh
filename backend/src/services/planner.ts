@@ -16,6 +16,8 @@ export const prefsSchema = z.object({
   pace: z.enum(["relaxed", "normal", "packed"]).default("normal"),
   party: z.enum(["solo", "couple", "friends", "family"]).optional(),
   purposes: z.array(z.enum(["sightseeing", "nature"])).max(2).optional(),
+  // true: bỏ qua giỏ, AI tự chọn địa điểm (khách bấm "Bạn đi" ở trang chủ)
+  autoPick: z.boolean().optional(),
 });
 export type Prefs = z.infer<typeof prefsSchema>;
 

@@ -39,7 +39,11 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { has: inCart } = useCart();
   const { prefs, setPrefs } = useTrip();
-  const pickParty = (id: Party, people: number, kids: number) => setPrefs({ ...prefs, party: prefs.party === id ? undefined : id, people, kids });
+  // Chọn kiểu đi: sang màn thông tin chuyến đi, AI tự chọn địa điểm
+  const pickParty = (id: Party, people: number, kids: number) => {
+    setPrefs({ ...prefs, party: id, people, kids, autoPick: true });
+    navigate("/trip?auto=1");
+  };
   const [places, setPlaces] = useState<Place[]>([]);
   const [savedCount, setSavedCount] = useState<number | null>(null);
 

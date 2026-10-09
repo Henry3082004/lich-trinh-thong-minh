@@ -36,7 +36,9 @@ planRouter.post(
   "/plan",
   asyncHandler(async (req, res) => {
     const prefs = prefsSchema.parse(req.body?.prefs);
-    const { all, cart } = await load(req.user!.id);
+    const loaded = await load(req.user!.id);
+    const all = loaded.all;
+    const cart = prefs.autoPick ? [] : loaded.cart;
     if (all.length === 0) throw new HttpError(409, "Chưa có dữ liệu điểm đến");
     const { draft, usedAi } = await planWithAi(prefs, cart, all);
     res.json(await withPlaces(buildPlan(prefs, cart, all, draft), { usedAi }));
@@ -53,7 +55,9 @@ planRouter.post(
   "/plan/revise",
   asyncHandler(async (req, res) => {
     const { prefs, message, plan } = reviseBody.parse(req.body);
-    const { all, cart } = await load(req.user!.id);
+    const loaded = await load(req.user!.id);
+    const all = loaded.all;
+    const cart = prefs.autoPick ? [] : loaded.cart;
     let draft;
     try {
       draft = await reviseWithAi(prefs, cart, all, plan.days, message);
