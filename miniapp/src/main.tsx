@@ -21,6 +21,8 @@ window.addEventListener("error", (e) => showFatal(e.message));
 window.addEventListener("unhandledrejection", (e) => {
   const reason = e.reason as { api?: string; message?: string } | undefined;
   if (reason?.api === "login") return;
+  // Zalo chưa kích hoạt đăng nhập cho Mini App: app vẫn chạy bằng mã khách, không cần báo
+  if (/login failed|not been activated/i.test(reason?.message ?? "")) return;
   showFatal(reason?.message ?? JSON.stringify(reason));
 });
 

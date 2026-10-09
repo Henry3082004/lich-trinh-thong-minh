@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "zmp-ui";
 import { Screen } from "../components/layout";
-import { AddButton } from "../components/add-button";
 import { BannerCarousel } from "../components/banner-carousel";
 import { BANNERS } from "../lib/banners";
 import { api, USE_MOCK } from "../lib/api";
 import { useTrip } from "../state/trip";
+import { useCart } from "../state/cart";
 import type { Party } from "../types";
 import { openPortal, openVr } from "../lib/zalo";
 import { useDraft } from "../state/draft";
@@ -36,6 +36,7 @@ const PARTIES: { id: Party; icon: string; name: string; people: number; kids: nu
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const { has: inCart } = useCart();
   const { prefs, setPrefs } = useTrip();
   const pickParty = (id: Party, people: number, kids: number) => setPrefs({ ...prefs, party: prefs.party === id ? undefined : id, people, kids });
   const { draft } = useDraft();
@@ -146,9 +147,7 @@ export default function HomePage() {
                     <div key={p.id} className="rail-card" onClick={() => navigate(`/place/${p.id}`)}>
                       <div className="rail-img">
                         {p.images[0] ? <img src={p.images[0]} alt="" loading="lazy" /> : <span>{categoryIcon(p.category)}</span>}
-                        <div className="rail-add">
-                          <AddButton place={p} />
-                        </div>
+                        {inCart(p.id) && <span className="in-cart-badge">✓ Trong lịch trình</span>}
                       </div>
                       <div className="rail-name">{p.name}</div>
                       <div className="rail-sub">{p.kind === "festival" && (p.season || p.months.length) ? p.season || `Tháng ${p.months.join(", ")}` : categoryName(p.category)}</div>

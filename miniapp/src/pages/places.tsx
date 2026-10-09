@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Button, useNavigate, useSearchParams, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
-import { AddButton } from "../components/add-button";
 import { PlaceCard } from "../components/place-card";
 import { api } from "../lib/api";
-import { directionsUrl } from "../lib/maps";
-import { openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
+import { useCart } from "../state/cart";
 import { PLACE_CATEGORIES, type Place } from "../types";
 import { findCollection } from "../lib/collections";
 
@@ -15,6 +13,7 @@ export default function PlacesPage() {
   const { openSnackbar } = useSnackbar();
   const [params, setParams] = useSearchParams();
   const { draft, addStop } = useDraft();
+  const { has: inCart } = useCart();
   const category = params.get("category") ?? "";
   const collection = findCollection(params.get("collection"));
   // Có ?day=N nghĩa là đang chọn điểm để thêm vào ngày N của lịch
@@ -98,8 +97,8 @@ export default function PlacesPage() {
             <PlaceCard
               key={p.id}
               place={p}
-              // Đang xem danh sách: chạm vào điểm là mở chỉ đường Google Maps; đang chọn điểm để thêm vào lịch thì mở chi tiết
-              onClick={() => (day ? navigate(`/place/${p.id}?day=${day}`) : openLink(directionsUrl(p)))}
+              // Chạm vào điểm là mở trang thông tin (có nút thêm vào lịch trình)
+              onClick={() => navigate(day ? `/place/${p.id}?day=${day}` : `/place/${p.id}`)}
               action={
                 day ? (
                   <div onClick={(e) => e.stopPropagation()} style={{ alignSelf: "center" }}>
@@ -107,21 +106,9 @@ export default function PlacesPage() {
                       {inDraft.has(p.id) ? "Đã có" : "Thêm"}
                     </Button>
                   </div>
-                ) : (
-                  <div className="row" style={{ gap: 8 }}>
-                    <AddButton place={p} />
-                    <button
-                    className="btn-round"
-                    aria-label={`Chi tiết ${p.name}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate(`/place/${p.id}`);
-                    }}
-                  >
-                    ⓘ
-                    </button>
-                  </div>
-                )
+                ) : inCart(p.id) ? (
+                  <span className="in-cart-badge static">✓ Đã thêm</span>
+                ) : undefined
               }
             />
           ))}
