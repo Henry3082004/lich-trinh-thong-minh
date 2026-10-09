@@ -1131,6 +1131,7 @@ html[data-layout="desktop"] .home {
   margin: 10px 0 0;
   font-size: 28px;
   font-weight: 800;
+  line-height: 1.25;
   color: var(--green-900);
 }
 .detail-addr {
@@ -2650,4 +2651,27 @@ html[data-layout="desktop"] .banner-dots {
   position: static;
   align-self: center;
   white-space: nowrap;
+}
+
+/* Nút giỏ "Lịch trình": góc trái dưới, đối xứng với linh vật bên phải (góc phải trên là cụm nút "… ✕" của Zalo) */
+.cart-fab,
+.cart-fab.with-bottom,
+html[data-layout] .cart-fab {
+  top: auto;
+  left: 12px;
+  right: auto;
+  bottom: calc(var(--bar-h, 0px) + 18px + env(safe-area-inset-bottom));
+  min-height: 46px;
+  padding: 0 14px 0 16px;
+  font-size: 14px;
+  box-shadow: 0 6px 16px rgba(27, 77, 32, 0.35);
+}
+.cart-fab b {
+  min-width: 22px;
+  height: 22px;
+  border-radius: 11px;
+}
+html[data-layout="tablet"] .cart-fab,
+html[data-layout="desktop"] .cart-fab {
+  left: max(16px, calc(50% - var(--page-max, 1120px) / 2 + 16px));
 }

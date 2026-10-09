@@ -1145,6 +1145,101 @@
     "approxLocation": true
   },
   {
+    "slug": "thac-bo-doi",
+    "name": "Thác Bộ Đội",
+    "category": "thien-nhien",
+    "description": "Thác nước giữa rừng ở Đắk Song, đường vào còn hoang sơ, hợp với người thích trekking và khám phá.",
+    "images": [
+      "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "trekking"
+    ],
+    "durationMin": 150,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Th%C3%A1c%20B%E1%BB%99%20%C4%90%E1%BB%99i%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "thac-gau",
+    "name": "Thác Gấu",
+    "category": "thien-nhien",
+    "description": "Thác nước nhiều tầng đá ở Đắk Song, nước chảy trắng xoá qua các ghềnh, là điểm dừng chân chụp ảnh đẹp.",
+    "images": [
+      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in",
+      "trekking"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Th%C3%A1c%20G%E1%BA%A5u%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "thac-lua",
+    "name": "Thác Lụa",
+    "category": "thien-nhien",
+    "description": "Thác nước ở Đắk Song, khu vực quanh thác thoáng đãng, được nhiều bạn trẻ chọn để cắm trại, ngắm bình minh và hoàng hôn.",
+    "images": [
+      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in",
+      "trekking"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Th%C3%A1c%20L%E1%BB%A5a%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
     "slug": "thac-luu-ly",
     "name": "Thác Lưu Ly",
     "category": "thien-nhien",

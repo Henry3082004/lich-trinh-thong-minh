@@ -49,11 +49,8 @@ export function ChatWidget() {
   // để nút giỏ và linh vật không đè lên nhau hay che nút hành động.
   useEffect(() => {
     const root = document.documentElement;
-    if (!enabled) {
-      root.style.setProperty("--mascot-h", "0px");
-      return;
-    }
-    root.style.setProperty("--mascot-h", "var(--mascot-size, 84px)");
+    // Đo thanh nút dưới cả khi tắt chat: nút giỏ cũng dựa vào --bar-h để không đè thanh
+    root.style.setProperty("--mascot-h", enabled ? "var(--mascot-size, 84px)" : "0px");
     let raf = 0;
     const measure = () => {
       cancelAnimationFrame(raf);
