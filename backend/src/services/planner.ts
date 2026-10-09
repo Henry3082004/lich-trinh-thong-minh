@@ -15,6 +15,7 @@ export const prefsSchema = z.object({
   transport: z.enum(["o-to", "xe-may", "xe-khach"]),
   pace: z.enum(["relaxed", "normal", "packed"]).default("normal"),
   party: z.enum(["solo", "couple", "friends", "family"]).optional(),
+  purposes: z.array(z.enum(["sightseeing", "nature"])).max(2).optional(),
 });
 export type Prefs = z.infer<typeof prefsSchema>;
 
@@ -221,12 +222,18 @@ const PARTY_HINT: Record<NonNullable<Prefs["party"]>, string> = {
   family: "Khách đi gia đình: ưu tiên điểm dễ đi, an toàn, phù hợp mọi lứa tuổi, không dồn lịch.",
 };
 
+const PURPOSE_HINT: Record<"sightseeing" | "nature", string> = {
+  sightseeing: "khám phá danh lam thắng cảnh và địa điểm văn hoá (ưu tiên nhóm van-hoa, le-hoi, điểm check-in nổi tiếng)",
+  nature: "trekking, khám phá tự do thiên nhiên (ưu tiên nhóm thien-nhien, trai-nghiem, các điểm có tag trekking; chừa thời gian đi bộ)",
+};
+
 export function plannerSystemPrompt(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[]): string {
   const candidates = all.filter((p) => !cart.some((c) => c.id === p.id) && p.category !== "luu-tru" && p.kind !== "festival");
   return [
     "Bạn là chuyên gia lên lịch trình du lịch Đắk Song (Đắk Nông, Việt Nam). Chỉ trả về JSON đúng schema, nội dung tiếng Việt.",
     `Thông tin chuyến đi: ${prefs.people} người (${prefs.kids} trẻ em), ngày đi ${prefs.startDate}, ${prefs.days} ngày, phương tiện: ${TRANSPORT_LABEL[prefs.transport]}, nhịp độ ${prefs.pace}.`,
     ...(prefs.party ? [PARTY_HINT[prefs.party]] : []),
+    ...(prefs.purposes?.length ? [`Mục đích chuyến đi: ${prefs.purposes.map((x) => PURPOSE_HINT[x]).join("; ")}. Khi thêm mục từ DANH SÁCH BỔ SUNG, ưu tiên mục hợp mục đích này.`] : []),
     "QUY TẮC:",
     "1. Chỉ dùng placeId có trong hai danh sách bên dưới, đúng từng ký tự. Không tạo id mới.",
     "2. Tất cả mục trong GIỎ KHÁCH CHỌN phải có mặt trong lịch (trừ khi không hợp lý, khi đó nêu lý do ở summary). Có thể thêm tối đa vài mục từ DANH SÁCH BỔ SUNG, chủ yếu quán ăn cho bữa trưa/tối nếu giỏ thiếu; bữa trưa khoảng 11:30-13:00.",
