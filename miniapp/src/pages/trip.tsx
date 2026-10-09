@@ -4,12 +4,16 @@ import { Screen } from "../components/layout";
 import { api } from "../lib/api";
 import { useCart } from "../state/cart";
 import { useTrip } from "../state/trip";
-import type { Pace, Transport } from "../types";
+import type { Pace, Purpose, Transport } from "../types";
 
 const TRANSPORTS: { id: Transport; icon: string; name: string; hint: string }[] = [
   { id: "o-to", icon: "🚗", name: "Ô tô", hint: "Tự lái / thuê xe" },
   { id: "xe-may", icon: "🏍️", name: "Xe máy", hint: "Tự đi" },
   { id: "xe-khach", icon: "🚌", name: "Xe khách", hint: "Kèm taxi/xe ôm" },
+];
+const PURPOSES: { id: Purpose; icon: string; name: string; hint: string }[] = [
+  { id: "sightseeing", icon: "🏛️", name: "Danh thắng & văn hoá", hint: "Thắng cảnh, di tích, lễ hội" },
+  { id: "nature", icon: "🥾", name: "Trekking & thiên nhiên", hint: "Khám phá tự do, rừng, thác" },
 ];
 const PACES: { id: Pace; name: string }[] = [
   { id: "relaxed", name: "Thư thả" },
@@ -100,6 +104,32 @@ export default function TripPage() {
           <div className="muted" style={{ textAlign: "center" }}>
             {prefs.days} ngày {prefs.days - 1} đêm
           </div>
+        </div>
+
+        <h2 className="q-title" style={{ marginTop: 10 }}>
+          Mục đích chuyến đi?
+        </h2>
+        <div className="transport-grid purpose-grid" role="group" aria-label="Mục đích chuyến đi">
+          {PURPOSES.map((t) => {
+            const on = (prefs.purposes ?? []).includes(t.id);
+            return (
+              <button
+                key={t.id}
+                aria-pressed={on}
+                className={`transport ${on ? "on" : ""}`}
+                onClick={() => set({ purposes: on ? (prefs.purposes ?? []).filter((x) => x !== t.id) : [...(prefs.purposes ?? []), t.id] })}
+              >
+                <span className="transport-icon" aria-hidden>
+                  {t.icon}
+                </span>
+                <b>{t.name}</b>
+                <small>{t.hint}</small>
+              </button>
+            );
+          })}
+        </div>
+        <div className="muted" style={{ textAlign: "center", marginTop: -4 }}>
+          Chọn một hoặc cả hai
         </div>
 
         <h2 className="q-title" style={{ marginTop: 10 }}>

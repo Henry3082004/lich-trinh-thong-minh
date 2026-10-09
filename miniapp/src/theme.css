@@ -2832,3 +2832,7 @@ html[data-layout="desktop"] .cart-fab {
   display: block;
   margin: 8px auto 4px;
 }
+
+.purpose-grid {
+  grid-template-columns: 1fr 1fr;
+}
