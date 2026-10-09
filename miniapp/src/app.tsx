@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { AnimationRoutes, App, Route, SnackbarProvider, useNavigate, ZMPRouter } from "zmp-ui";
 import { ErrorBoundary } from "./components/error-boundary";
+import { ChatWidget } from "./components/chat-widget";
 import { CartProvider } from "./state/cart";
 import { DraftProvider } from "./state/draft";
 import { TripProvider } from "./state/trip";
@@ -10,7 +11,6 @@ import EditorPage from "./pages/editor";
 import CartPage from "./pages/cart";
 import TripPage from "./pages/trip";
 import PlanPage from "./pages/plan";
-import ChatPage from "./pages/chat";
 import PlacesPage from "./pages/places";
 import PlaceDetailPage from "./pages/place-detail";
 import PosterPage from "./pages/poster";
@@ -45,9 +45,9 @@ export default function MyApp() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/trip" element={<TripPage />} />
               <Route path="/plan" element={<PlanPage />} />
-              <Route path="/chat" element={<ChatPage />} />
               <Route path="/my" element={<MyItinerariesPage />} />
             </AnimationRoutes>
+            <ChatWidget />
           </ZMPRouter>
         </DraftProvider>
         </TripProvider>
