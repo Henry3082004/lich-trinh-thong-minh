@@ -5,7 +5,7 @@ export const config = {
   // Danh sách origin cho phép, cách nhau bởi dấu phẩy. "*" = cho phép tất cả.
   corsOrigin: process.env.CORS_ORIGIN ?? "*",
   // Máy chủ ảnh được phép lấy qua /api/img (chống SSRF), cách nhau bởi dấu phẩy
-  imageHosts: (process.env.IMAGE_HOSTS ?? "static.dggv.edu.vn").split(",").map((h) => h.trim().toLowerCase()).filter(Boolean),
+  imageHosts: (process.env.IMAGE_HOSTS ?? "static.dggv.edu.vn,images.unsplash.com,web-production-79151.up.railway.app").split(",").map((h) => h.trim().toLowerCase()).filter(Boolean),
   // Địa chỉ công khai của API, dùng để tạo link ảnh poster. Bỏ trống thì suy ra từ request.
   publicBaseUrl: (process.env.PUBLIC_BASE_URL ?? "").replace(/\/$/, ""),
   posterTtlDays: Number(process.env.POSTER_TTL_DAYS ?? 30),
