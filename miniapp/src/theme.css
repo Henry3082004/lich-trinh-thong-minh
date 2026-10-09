@@ -2634,3 +2634,20 @@ html[data-layout="desktop"] .banner-dots {
 .collection-head b {
   font-size: 16px;
 }
+
+.in-cart-badge {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(46, 125, 50, 0.92);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+.in-cart-badge.static {
+  position: static;
+  align-self: center;
+  white-space: nowrap;
+}
