@@ -235,13 +235,16 @@ export function fillDays(prefs: Prefs, days: PlanPlace[][], cart: PlanPlace[], a
     while (day.length < target && pool.length > 0) {
       const prev = days.slice(0, i).reverse().find((d) => d.length > 0);
       const anchors = day.length ? day : prev ? [prev[prev.length - 1]] : seeds;
-      const hasFood = day.some((p) => p.category === "am-thuc");
+      // Mỗi ngày tối đa một bữa ăn (quán ăn/đặc sản) và một quán cà phê, còn lại ưu tiên điểm tham quan
+      const isFood = (p: PlanPlace) => p.category === "am-thuc" || p.category === "dac-san";
+      const hasFood = day.some(isFood);
       const hasCafe = day.some((p) => p.category === "ca-phe");
       const score = (p: PlanPlace) => {
         let s = anchors.length ? Math.min(...anchors.map((a) => haversineKm(a, p))) : 0;
         if (wanted.has(p.category)) s -= 5;
-        if (p.category === "am-thuc") s += hasFood ? 30 : day.length >= 1 ? -10 : 5;
-        if (p.category === "ca-phe" && hasCafe) s += 30;
+        if (isFood(p)) s += hasFood ? 100 : day.length >= 1 ? -10 : 5;
+        else if (p.category === "ca-phe") s += hasCafe ? 100 : 3;
+        else s -= 8;
         return s;
       };
       let best = 0;
