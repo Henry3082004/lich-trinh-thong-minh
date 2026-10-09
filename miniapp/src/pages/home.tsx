@@ -29,8 +29,8 @@ const RAILS = [
 ];
 
 const PARTIES: { id: Party; icon: string; name: string; people: number; kids: number }[] = [
-  { id: "solo", icon: "🧍", name: "Solo travel", people: 1, kids: 0 },
-  { id: "couple", icon: "💑", name: "Couple", people: 2, kids: 0 },
+  { id: "solo", icon: "🧍", name: "Một mình", people: 1, kids: 0 },
+  { id: "couple", icon: "💑", name: "Cặp đôi", people: 2, kids: 0 },
   { id: "friends", icon: "🧑‍🤝‍🧑", name: "Nhóm bạn", people: 4, kids: 0 },
   { id: "family", icon: "👨‍👩‍👧", name: "Gia đình", people: 4, kids: 1 },
 ];
@@ -65,10 +65,10 @@ export default function HomePage() {
           <div className="home-cta card-soft">
             <div className="party">
               <div className="party-head">
-                <div className="party-label">Bạn đi:</div>
+                <div className="party-label">Chuyến đi của bạn</div>
                 <CartButton inline />
               </div>
-              <div className="party-chips" data-tour="party" role="group" aria-label="Bạn đi cùng ai">
+              <div className="party-chips" data-tour="party" role="group" aria-label="Hình thức chuyến đi">
                 {PARTIES.map((x) => (
                   <button key={x.id} className={`party-chip${prefs.party === x.id ? " on" : ""}`} aria-pressed={prefs.party === x.id} onClick={() => pickParty(x.id, x.people, x.kids)}>
                     <span aria-hidden>{x.icon}</span> {x.name}

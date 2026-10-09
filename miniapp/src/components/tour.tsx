@@ -14,8 +14,8 @@ const STEPS: Step[] = [
   },
   {
     target: '[data-tour="party"]',
-    title: "Bạn đi với ai?",
-    text: "Bấm chọn để AI tự chọn địa điểm và lên lịch trình ngay. Muốn tự chọn từng chỗ thì bấm Tiếp.",
+    title: "Chuyến đi của bạn",
+    text: "Chọn hình thức chuyến đi, AI sẽ gợi ý địa điểm và lịch trình phù hợp cho bạn. Nếu muốn tự chọn từng địa điểm, hãy bấm Tiếp.",
     next: "Tiếp",
     endOnClick: true,
   },

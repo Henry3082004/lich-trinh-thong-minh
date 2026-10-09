@@ -7,18 +7,19 @@ import { useTrip } from "../state/trip";
 import type { Pace, Purpose, Transport } from "../types";
 
 const TRANSPORTS: { id: Transport; icon: string; name: string; hint: string }[] = [
-  { id: "o-to", icon: "🚗", name: "Ô tô", hint: "Tự lái / thuê xe" },
-  { id: "xe-may", icon: "🏍️", name: "Xe máy", hint: "Tự đi" },
-  { id: "xe-khach", icon: "🚌", name: "Xe khách", hint: "Kèm taxi/xe ôm" },
+  { id: "o-to", icon: "🚗", name: "Ô tô", hint: "Tự lái hoặc thuê xe" },
+  { id: "xe-may", icon: "🏍️", name: "Xe máy", hint: "Linh hoạt, dễ di chuyển" },
+  { id: "xe-khach", icon: "🚌", name: "Xe khách", hint: "Kết hợp taxi, xe ôm" },
 ];
 const PURPOSES: { id: Purpose; icon: string; name: string; hint: string }[] = [
   { id: "sightseeing", icon: "🏛️", name: "Danh thắng & văn hoá", hint: "Thắng cảnh, di tích, lễ hội" },
-  { id: "nature", icon: "🥾", name: "Trekking & thiên nhiên", hint: "Khám phá tự do, rừng, thác" },
+  { id: "nature", icon: "🥾", name: "Thiên nhiên & trekking", hint: "Rừng, thác, cung đường dã ngoại" },
 ];
+const dayLabel = (n: number) => (n === 1 ? "Đi về trong ngày" : `${n} ngày ${n - 1} đêm`);
 const PACES: { id: Pace; name: string }[] = [
-  { id: "relaxed", name: "Thư thả" },
+  { id: "relaxed", name: "Nhẹ nhàng" },
   { id: "normal", name: "Vừa phải" },
-  { id: "packed", name: "Dày đặc" },
+  { id: "packed", name: "Khám phá nhiều" },
 ];
 
 function Stepper({ label, value, min, max, onChange, unit }: { label: string; value: number; min: number; max: number; onChange: (n: number) => void; unit: string }) {
@@ -63,7 +64,7 @@ export default function TripPage() {
       setPlan(plan);
       navigate("/plan");
     } catch (e) {
-      openSnackbar({ text: (e as Error).message || "Không lên được lịch, bạn thử lại nhé", type: "error" });
+      openSnackbar({ text: (e as Error).message || "Chưa thể tạo lịch trình, bạn vui lòng thử lại nhé", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -71,46 +72,46 @@ export default function TripPage() {
 
   return (
     <Screen
-      title="Thông tin chuyến đi"
+      title="Lên kế hoạch chuyến đi"
       bottom={
         <div className="bottom-stack">
-          <div className="summary">{`${prefs.people} người · ${prefs.days} ngày ${prefs.days - 1} đêm · ${auto ? "AI tự chọn địa điểm" : `${count} mục đã chọn`}`}</div>
+          <div className="summary">{`${prefs.people} người · ${dayLabel(prefs.days)} · ${auto ? "AI gợi ý địa điểm" : `${count} địa điểm đã chọn`}`}</div>
           <button className="btn-primary btn-lg" disabled={loading} onClick={submit}>
-            {loading ? "AI đang lên lịch… (có thể mất vài giây)" : "✨ Lên lịch trình"}
+            {loading ? "Đang chuẩn bị lịch trình cho bạn…" : "✨ Tạo lịch trình"}
           </button>
         </div>
       }
     >
       <div className="content narrow create">
-        <h2 className="q-title">Đi mấy người?</h2>
+        <h2 className="q-title">Thành viên tham gia</h2>
         <div className="card stack" style={{ gap: 4 }}>
-          <Stepper label="Số người" unit="người" value={prefs.people} min={1} max={50} onChange={(n) => set({ people: n, kids: Math.min(prefs.kids, n) })} />
-          <Stepper label="Trẻ em" unit="bé" value={prefs.kids} min={0} max={prefs.people} onChange={(n) => set({ kids: n })} />
+          <Stepper label="Tổng số người" unit="người" value={prefs.people} min={1} max={50} onChange={(n) => set({ people: n, kids: Math.min(prefs.kids, n) })} />
+          <Stepper label="Trong đó trẻ em" unit="trẻ" value={prefs.kids} min={0} max={prefs.people} onChange={(n) => set({ kids: n })} />
         </div>
 
         <h2 className="q-title" style={{ marginTop: 10 }}>
-          Đi mấy ngày, mấy giờ?
+          Thời gian chuyến đi
         </h2>
         <div className="card stack" style={{ gap: 12 }}>
           <label className="field">
-            <span>Giờ xuất phát</span>
+            <span>Giờ khởi hành</span>
             <input type="time" value={prefs.startTime} onChange={(e) => e.target.value && set({ startTime: e.target.value })} />
           </label>
           <div className="day-picker" role="radiogroup" aria-label="Số ngày">
             {[1, 2, 3, 4, 5].map((n) => (
               <button key={n} role="radio" aria-checked={prefs.days === n} className={prefs.days === n ? "on" : ""} onClick={() => set({ days: n })}>
                 <b>{n}</b>
-                <span>{n} đêm</span>
+                <span>{n === 1 ? "Trong ngày" : `${n}N${n - 1}Đ`}</span>
               </button>
             ))}
           </div>
           <div className="muted" style={{ textAlign: "center" }}>
-            {prefs.days} ngày {prefs.days - 1} đêm
+            {dayLabel(prefs.days)}
           </div>
         </div>
 
         <h2 className="q-title" style={{ marginTop: 10 }}>
-          Mục đích chuyến đi?
+          Trải nghiệm bạn mong muốn
         </h2>
         <div className="transport-grid purpose-grid" role="group" aria-label="Mục đích chuyến đi">
           {PURPOSES.map((t) => {
@@ -132,11 +133,11 @@ export default function TripPage() {
           })}
         </div>
         <div className="muted" style={{ textAlign: "center", marginTop: -4 }}>
-          Chọn một hoặc cả hai
+          Có thể chọn một hoặc cả hai
         </div>
 
         <h2 className="q-title" style={{ marginTop: 10 }}>
-          Đi bằng gì?
+          Phương tiện di chuyển
         </h2>
         <div className="transport-grid" role="radiogroup" aria-label="Phương tiện">
           {TRANSPORTS.map((t) => (
@@ -151,7 +152,7 @@ export default function TripPage() {
         </div>
 
         <h2 className="q-title" style={{ marginTop: 10 }}>
-          Nhịp độ
+          Nhịp độ tham quan
         </h2>
         <div className="chips" role="radiogroup" aria-label="Nhịp độ">
           {PACES.map((p) => (
