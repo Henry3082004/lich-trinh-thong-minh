@@ -53,7 +53,7 @@ export default function HomePage() {
       <div className="home">
         <BannerCarousel
           banners={BANNERS}
-          onGo={(b) => navigate(b.to ?? (b.category && places.some((p) => p.category === b.category) ? `/places?category=${b.category}` : "/places"))}
+          onGo={(b) => navigate(b.collection ? `/places?collection=${b.collection}` : b.to ?? (b.category && places.some((p) => p.category === b.category) ? `/places?category=${b.category}` : "/places"))}
         />
 
         <div className="home-body">
