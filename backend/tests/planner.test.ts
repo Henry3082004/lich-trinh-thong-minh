@@ -111,6 +111,18 @@ describe("fallbackDraft", () => {
     expect(d.days).toHaveLength(2);
     expect(d.days.flatMap((x) => x.placeIds.map((p) => p.id)).sort()).toEqual(["a", "b", "food"]);
   });
+
+  it("giỏ ít điểm thì gợi ý thêm điểm gần đó cho đủ mỗi ngày, không thêm lưu trú/lễ hội", () => {
+    const extra = [mk("x1", { lat: 12.21, lng: 107.61 }), mk("x2", { lat: 12.22, lng: 107.6 }), mk("x3", { lat: 12.6, lng: 107.9 }), mk("x4", { lat: 12.23, lng: 107.62 }), mk("x5", { lat: 12.24, lng: 107.63 }), mk("x6", { lat: 12.2, lng: 107.64 }), mk("x7", { lat: 12.19, lng: 107.6 })];
+    const d = fallbackDraft(prefs, [A], [...ALL, ...extra]);
+    const all = d.days.flatMap((x) => x.placeIds.map((p) => p.id));
+    expect(all).toContain("a");
+    expect(all).not.toContain("hotel");
+    expect(all).not.toContain("fest");
+    expect(d.days.every((x) => x.placeIds.length === 4)).toBe(true);
+    expect(d.days[0].placeIds.map((p) => p.id)).toContain("food"); // có bữa trưa
+    expect(new Set(all).size).toBe(all.length);
+  });
 });
 
 // ---- API ----
@@ -174,7 +186,10 @@ describe("POST /api/plan", () => {
     const res = await request(app).post("/api/plan").set(alice).send(body);
     expect(res.status).toBe(200);
     expect(res.body.usedAi).toBe(false);
-    expect(res.body.days.flatMap((d: { stops: { placeId: string }[] }) => d.stops.map((s) => s.placeId)).sort()).toEqual([ids.a, ids.b].sort());
+    const stops = res.body.days.flatMap((d: { stops: { placeId: string; suggested: boolean }[] }) => d.stops);
+    expect(stops.map((s: { placeId: string }) => s.placeId)).toEqual(expect.arrayContaining([ids.a, ids.b]));
+    // Giỏ ít điểm: lịch dự phòng gợi ý thêm điểm khác (đánh dấu suggested)
+    expect(stops.filter((s: { suggested: boolean }) => s.suggested).map((s: { placeId: string }) => s.placeId)).toEqual([ids.food]);
     config.geminiApiKey = "";
     expect((await request(app).post("/api/plan").set(alice).send(body)).body.usedAi).toBe(false);
   });
