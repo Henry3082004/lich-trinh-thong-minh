@@ -1,6 +1,6 @@
 import React from "react";
 import { PlaceImg } from "../components/place-card";
-import { Button, useNavigate } from "zmp-ui";
+import { Button, useNavigate, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { dayRouteUrl, MAX_WAYPOINTS } from "../lib/maps";
 import { formatDuration } from "../lib/schedule";
@@ -11,6 +11,7 @@ import { IconChevronDown, IconChevronUp, IconNavigation, IconPlus, IconX } from 
 
 export default function EditorPage() {
   const navigate = useNavigate();
+  const { openSnackbar } = useSnackbar();
   const { draft, setTitle, moveStop, removeStop, addDay, removeDay } = useDraft();
 
   if (!draft) {
@@ -87,7 +88,7 @@ export default function EditorPage() {
                   Thêm điểm đến vào ngày {d.day}
                 </button>
                 {d.stops.length > 0 && (
-                  <button className="btn-text" onClick={() => openLink(dayRouteUrl(d.stops.map((s) => s.place))!)}>
+                  <button className="btn-text" onClick={() => openLink(dayRouteUrl(d.stops.map((s) => s.place))!).catch((e) => openSnackbar({ text: (e as Error).message, type: "error" }))}>
                     <IconNavigation size={18} stroke={2} aria-hidden />
                     Chỉ đường cả ngày {d.day}
                   </button>
