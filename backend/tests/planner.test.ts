@@ -123,6 +123,19 @@ describe("fallbackDraft", () => {
     expect(d.days[0].placeIds.map((p) => p.id)).toContain("food"); // có bữa trưa
     expect(new Set(all).size).toBe(all.length);
   });
+
+  it("gợi ý thêm không dồn quán ăn/cà phê: mỗi ngày tối đa một bữa ăn và một quán cà phê", () => {
+    const eat = ["e1", "e2", "e3"].map((id) => mk(id, { category: "am-thuc", lat: 12.2, lng: 107.6 }));
+    const cafe = ["c1", "c2", "c3"].map((id) => mk(id, { category: "ca-phe", lat: 12.2, lng: 107.6 }));
+    const sights = ["s1", "s2", "s3", "s4"].map((id, i) => mk(id, { lat: 12.3 + i * 0.01, lng: 107.7 }));
+    const d = fallbackDraft(prefs, [A], [A, ...eat, ...cafe, ...sights]);
+    const cat = new Map([A, ...eat, ...cafe, ...sights].map((p) => [p.id, p.category]));
+    for (const day of d.days) {
+      const cats = day.placeIds.map((p) => cat.get(p.id));
+      expect(cats.filter((c) => c === "am-thuc").length).toBeLessThanOrEqual(1);
+      expect(cats.filter((c) => c === "ca-phe").length).toBeLessThanOrEqual(1);
+    }
+  });
 });
 
 // ---- API ----
