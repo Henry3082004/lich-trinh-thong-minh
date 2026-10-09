@@ -1,5 +1,5 @@
 import request from "supertest";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { createApp } from "../src/app";
 import { prisma } from "../src/lib/prisma";
 
@@ -107,5 +107,37 @@ describe("API", () => {
       .set(alice)
       .send({ title: "x", days: 1, items: [{ day: 2, order: 1, placeId: placeIds[0] }] });
     expect(badDay.status).toBe(400);
+  });
+});
+
+describe("đăng nhập Zalo (chế độ dev/demo có dự phòng)", () => {
+  const zaloOk = () => new Response(JSON.stringify({ id: "z-123", name: "Khách Zalo" }), { status: 200 });
+  const zaloBad = () => new Response(JSON.stringify({ error: -216, message: "invalid token" }), { status: 200 });
+
+  it("thẻ Zalo hợp lệ thì dùng tài khoản Zalo thật, kể cả khi có kèm mã khách", async () => {
+    const fetchMock = vi.fn().mockResolvedValue(zaloOk());
+    vi.stubGlobal("fetch", fetchMock);
+    const res = await request(app).get("/api/cart").set({ Authorization: "Bearer tok-ok-1", "X-Dev-User": "zalo-abc" });
+    expect(res.status).toBe(200);
+    expect(await prisma.user.findUnique({ where: { zaloId: "z-123" } })).not.toBeNull();
+    expect(await prisma.user.findUnique({ where: { zaloId: "dev:zalo-abc" } })).toBeNull();
+    vi.unstubAllGlobals();
+  });
+
+  it("thẻ Zalo lỗi hoặc Zalo không trả lời thì dùng mã khách (không báo lỗi 401)", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(zaloBad()));
+    const bad = await request(app).get("/api/cart").set({ Authorization: "Bearer tok-bad-2", "X-Dev-User": "zalo-guest-1" });
+    expect(bad.status).toBe(200);
+    expect(await prisma.user.findUnique({ where: { zaloId: "dev:zalo-guest-1" } })).not.toBeNull();
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("mạng lỗi")));
+    const down = await request(app).get("/api/cart").set({ Authorization: "Bearer tok-down-3", "X-Dev-User": "zalo-guest-2" });
+    expect(down.status).toBe(200);
+    vi.unstubAllGlobals();
+  });
+
+  it("thẻ lỗi và không có mã khách thì vẫn 401", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(zaloBad()));
+    expect((await request(app).get("/api/cart").set({ Authorization: "Bearer tok-bad-4" })).status).toBe(401);
+    vi.unstubAllGlobals();
   });
 });

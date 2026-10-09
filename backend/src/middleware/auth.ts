@@ -46,13 +46,23 @@ async function fetchZaloProfile(accessToken: string): Promise<ZaloProfile> {
 }
 
 async function resolveProfile(req: Request): Promise<ZaloProfile> {
-  if (config.authMode === "dev") {
-    const devUser = req.header("x-dev-user");
-    if (devUser) return { id: `dev:${devUser}`, name: devUser };
-  }
-
+  const devUser = config.authMode === "dev" ? req.header("x-dev-user") : undefined;
   const auth = req.header("authorization");
   const token = auth?.startsWith("Bearer ") ? auth.slice(7).trim() : undefined;
+
+  if (devUser) {
+    // Chế độ dev/demo: có thẻ Zalo thì kiểm tra thật, thẻ lỗi hoặc Zalo không trả lời thì dùng mã khách theo máy.
+    // Không có thẻ (trình duyệt thường) thì dùng mã khách luôn.
+    if (token) {
+      try {
+        return await fetchZaloProfile(token);
+      } catch {
+        // rơi xuống mã khách bên dưới
+      }
+    }
+    return { id: `dev:${devUser}`, name: devUser };
+  }
+
   if (!token) throw new HttpError(401, "Thiếu access token");
   return fetchZaloProfile(token);
 }
