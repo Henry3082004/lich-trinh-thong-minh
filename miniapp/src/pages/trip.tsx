@@ -43,12 +43,16 @@ export default function TripPage() {
   const { prefs, setPrefs, setPlan } = useTrip();
   const [loading, setLoading] = useState(false);
   const set = (patch: Partial<typeof prefs>) => setPrefs({ ...prefs, ...patch });
-  const today = new Date().toISOString().slice(0, 10);
+  // Không hỏi ngày đi nữa: lấy hôm nay (ngày theo giờ máy)
+  const d = new Date();
+  const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 
   const submit = async () => {
     setLoading(true);
     try {
-      const plan = await api.plan(prefs);
+      const p = { ...prefs, startDate: today };
+      setPrefs(p);
+      const plan = await api.plan(p);
       setPlan(plan);
       navigate("/plan");
     } catch (e) {
@@ -78,13 +82,9 @@ export default function TripPage() {
         </div>
 
         <h2 className="q-title" style={{ marginTop: 10 }}>
-          Đi khi nào, mấy ngày?
+          Đi mấy ngày, mấy giờ?
         </h2>
         <div className="card stack" style={{ gap: 12 }}>
-          <label className="field">
-            <span>Ngày đi</span>
-            <input type="date" min={today} value={prefs.startDate} onChange={(e) => e.target.value && set({ startDate: e.target.value })} />
-          </label>
           <label className="field">
             <span>Giờ xuất phát</span>
             <input type="time" value={prefs.startTime} onChange={(e) => e.target.value && set({ startTime: e.target.value })} />
