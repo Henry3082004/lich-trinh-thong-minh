@@ -2717,3 +2717,118 @@ html[data-layout="desktop"] .cart-fab {
 .cart-inline.pop {
   animation: pop 0.45s ease;
 }
+
+/* Hướng dẫn sử dụng lần đầu */
+.tour-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+}
+.tour-dim {
+  background: rgba(10, 30, 14, 0.55);
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.tour-hole {
+  position: fixed;
+  border-radius: 16px;
+  box-shadow: 0 0 0 9999px rgba(10, 30, 14, 0.55), 0 0 0 3px #ffd54f;
+  transition: all 0.25s ease;
+  animation: tour-pulse 1.4s ease-in-out infinite;
+}
+@keyframes tour-pulse {
+  50% {
+    box-shadow: 0 0 0 9999px rgba(10, 30, 14, 0.55), 0 0 0 6px #ffd54f;
+  }
+}
+.tour-arrow {
+  position: fixed;
+  font-size: 28px;
+  line-height: 1;
+  animation: tour-bounce-up 0.9s ease-in-out infinite;
+}
+.tour-arrow.down {
+  animation-name: tour-bounce-down;
+}
+@keyframes tour-bounce-up {
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes tour-bounce-down {
+  50% {
+    transform: translateY(8px);
+  }
+}
+.tour-card {
+  position: fixed;
+  pointer-events: auto;
+  background: #fff;
+  color: var(--ink);
+  border-radius: 16px;
+  padding: 14px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+.tour-card.center {
+  position: static;
+  max-width: 340px;
+}
+.tour-card b {
+  display: block;
+  font-size: 16px;
+  color: var(--green-900);
+  margin-bottom: 4px;
+}
+.tour-card b small {
+  float: right;
+  color: var(--muted);
+  font-weight: 600;
+}
+.tour-card p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+}
+.tour-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 12px;
+}
+.tour-next {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 18px;
+  background: var(--green-700);
+  color: #fff;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+}
+.tour-skip {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.tour-skip.floating {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 56px);
+  left: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--green-900);
+  font-size: 13px;
+}
+.tour-replay {
+  display: block;
+  margin: 8px auto 4px;
+}

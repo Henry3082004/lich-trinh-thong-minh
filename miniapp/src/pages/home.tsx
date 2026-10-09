@@ -64,7 +64,7 @@ export default function HomePage() {
                 <div className="party-label">Bạn đi:</div>
                 <CartButton inline />
               </div>
-              <div className="party-chips" role="group" aria-label="Bạn đi cùng ai">
+              <div className="party-chips" data-tour="party" role="group" aria-label="Bạn đi cùng ai">
                 {PARTIES.map((x) => (
                   <button key={x.id} className={`party-chip${prefs.party === x.id ? " on" : ""}`} aria-pressed={prefs.party === x.id} onClick={() => pickParty(x.id, x.people, x.kids)}>
                     <span aria-hidden>{x.icon}</span> {x.name}
@@ -83,17 +83,7 @@ export default function HomePage() {
                 <b>Tham quan VR 3D</b>
                 <small>Dạo Đắk Song 360°</small>
               </button>
-              <button className="act" onClick={() => navigate("/my")}>
-                <span className="act-ico" aria-hidden>⬇️</span>
-                <b>Tải lịch trình</b>
-                <small>Ảnh lịch trình của bạn</small>
-              </button>
-              <button className="act" onClick={() => navigate("/create")}>
-                <span className="act-ico" aria-hidden>🖼️</span>
-                <b>Tạo ảnh nhanh</b>
-                <small>Tự nhập, không cần AI</small>
-              </button>
-              <button className="act" onClick={() => navigate("/places")}>
+              <button className="act" data-tour="explore" onClick={() => navigate("/places")}>
                 <span className="act-ico" aria-hidden>🗺️</span>
                 <b>Khám phá</b>
                 <small>Địa điểm, món ngon</small>
@@ -151,6 +141,10 @@ export default function HomePage() {
               </section>
             );
           })}
+
+          <button className="btn-text tour-replay" onClick={() => window.dispatchEvent(new Event("tour:start"))}>
+            ❓ Xem hướng dẫn sử dụng
+          </button>
 
           <button className="btn-outline" onClick={() => openPortal()}>
             Xem thêm trên cổng du lịch <span aria-hidden>↗</span>
