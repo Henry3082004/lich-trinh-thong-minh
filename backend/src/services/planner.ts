@@ -14,6 +14,7 @@ export const prefsSchema = z.object({
   days: z.number().int().min(1).max(7),
   transport: z.enum(["o-to", "xe-may", "xe-khach"]),
   pace: z.enum(["relaxed", "normal", "packed"]).default("normal"),
+  party: z.enum(["solo", "couple", "friends", "family"]).optional(),
 });
 export type Prefs = z.infer<typeof prefsSchema>;
 
@@ -213,11 +214,19 @@ const RESPONSE_SCHEMA = {
 const line = (p: PlanPlace) =>
   `${p.id} | ${p.name} | ${p.category} | ~${p.durationMin} phút${p.months.length ? ` | diễn ra tháng ${p.months.join(",")}` : ""}${p.address ? ` | ${p.address}` : ""}`;
 
+const PARTY_HINT: Record<NonNullable<Prefs["party"]>, string> = {
+  solo: "Khách đi một mình (solo travel): ưu tiên trải nghiệm tự do, chụp ảnh, quán cà phê yên tĩnh.",
+  couple: "Khách đi cặp đôi: ưu tiên điểm lãng mạn, view đẹp, quán cà phê, hoàng hôn.",
+  friends: "Khách đi nhóm bạn: ưu tiên trải nghiệm vui, check-in, ăn uống, hoạt động nhóm.",
+  family: "Khách đi gia đình: ưu tiên điểm dễ đi, an toàn, phù hợp mọi lứa tuổi, không dồn lịch.",
+};
+
 export function plannerSystemPrompt(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[]): string {
   const candidates = all.filter((p) => !cart.some((c) => c.id === p.id) && p.category !== "luu-tru" && p.kind !== "festival");
   return [
     "Bạn là chuyên gia lên lịch trình du lịch Đắk Song (Đắk Nông, Việt Nam). Chỉ trả về JSON đúng schema, nội dung tiếng Việt.",
     `Thông tin chuyến đi: ${prefs.people} người (${prefs.kids} trẻ em), ngày đi ${prefs.startDate}, ${prefs.days} ngày, phương tiện: ${TRANSPORT_LABEL[prefs.transport]}, nhịp độ ${prefs.pace}.`,
+    ...(prefs.party ? [PARTY_HINT[prefs.party]] : []),
     "QUY TẮC:",
     "1. Chỉ dùng placeId có trong hai danh sách bên dưới, đúng từng ký tự. Không tạo id mới.",
     "2. Tất cả mục trong GIỎ KHÁCH CHỌN phải có mặt trong lịch (trừ khi không hợp lý, khi đó nêu lý do ở summary). Có thể thêm tối đa vài mục từ DANH SÁCH BỔ SUNG, chủ yếu quán ăn cho bữa trưa/tối nếu giỏ thiếu; bữa trưa khoảng 11:30-13:00.",

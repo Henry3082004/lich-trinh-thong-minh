@@ -2593,3 +2593,29 @@ html[data-layout="desktop"] .banner-dots {
 .act-vr {
   background: linear-gradient(135deg, #0f5f73, #1e88a8);
 }
+
+.party-label {
+  font-weight: 700;
+  color: var(--green-900);
+  margin-bottom: 8px;
+}
+.party-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.party-chip {
+  padding: 9px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--green-900);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.party-chip.on {
+  background: var(--green-700);
+  border-color: var(--green-700);
+  color: #fff;
+}
