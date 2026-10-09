@@ -1,4 +1,5 @@
 import React from "react";
+import { PlaceImg } from "../components/place-card";
 import { useNavigate } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { useCart } from "../state/cart";
@@ -42,7 +43,7 @@ export default function CartPage() {
               {g.items.map((p) => (
                 <div key={p.id} className="edit-stop">
                   <div className="edit-thumb" onClick={() => navigate(`/place/${p.id}`)}>
-                    {p.images[0] ? <img src={p.images[0]} alt="" loading="lazy" /> : categoryIcon(p.category)}
+                    <PlaceImg place={p} fallback={categoryIcon(p.category)} />
                   </div>
                   <div className="edit-body" onClick={() => navigate(`/place/${p.id}`)}>
                     <div className="edit-name">{p.name}</div>

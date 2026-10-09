@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useSearchParams, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
 import { AddButton } from "../components/add-button";
-import { PlaceThumb } from "../components/place-card";
+import { PlaceThumb, PlaceImg } from "../components/place-card";
 import { api } from "../lib/api";
 import { formatDuration } from "../lib/schedule";
 import { directionsUrl } from "../lib/maps";
@@ -18,12 +18,10 @@ export default function PlaceDetailPage() {
   const { draft, addStop } = useDraft();
   const [place, setPlace] = useState<Place | null>(null);
   const [error, setError] = useState("");
-  const [imageFailed, setImageFailed] = useState(false);
   const [google, setGoogle] = useState<GoogleInfo | null>(null);
   const presetDay = Number(params.get("day")) || undefined;
 
   useEffect(() => {
-    setImageFailed(false);
     setGoogle(null);
     api.placeGoogle(id).then(setGoogle);
     api.place(id).then(setPlace).catch((e) => setError((e as Error).message));
@@ -38,7 +36,6 @@ export default function PlaceDetailPage() {
     else navigate("/editor");
   };
 
-  const heroOk = !!place && place.images.length > 0 && !imageFailed;
 
   return (
     <Screen
@@ -71,7 +68,7 @@ export default function PlaceDetailPage() {
       {place && (
         <div className="detail">
           <div className="detail-hero">
-            {heroOk ? <img src={place.images[0]} alt={place.name} onError={() => setImageFailed(true)} /> : <PlaceThumb place={place} />}
+            <PlaceImg key={place.id} place={place} alt={place.name} lazy={false} fallback={<PlaceThumb place={place} />} />
             <div className="detail-hero-shade" />
           </div>
           <div className="detail-sheet content narrow stack">

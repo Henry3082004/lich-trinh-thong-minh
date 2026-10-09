@@ -1,4 +1,5 @@
 import React from "react";
+import { PlaceImg } from "../components/place-card";
 import { Button, useNavigate } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { dayRouteUrl, MAX_WAYPOINTS } from "../lib/maps";
@@ -57,7 +58,7 @@ export default function EditorPage() {
                 {d.stops.map((s, i) => (
                   <div key={`${s.place.id}-${i}`} className="edit-stop">
                     <div className="edit-thumb" onClick={() => navigate(`/place/${s.place.id}`)}>
-                      {s.place.images[0] ? <img src={s.place.images[0]} alt="" loading="lazy" /> : categoryIcon(s.place.category)}
+                      <PlaceImg place={s.place} fallback={categoryIcon(s.place.category)} />
                     </div>
                     <div className="edit-body" onClick={() => navigate(`/place/${s.place.id}`)}>
                       <div className="row" style={{ gap: 6 }}>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PlaceImg } from "../components/place-card";
 import { useNavigate } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { BannerCarousel } from "../components/banner-carousel";
@@ -8,7 +9,6 @@ import { useTrip } from "../state/trip";
 import { useCart } from "../state/cart";
 import type { Party } from "../types";
 import { openPortal, openVr } from "../lib/zalo";
-import { useDraft } from "../state/draft";
 import { categoryIcon, categoryName, type Place } from "../types";
 
 // Ảnh bìa trang chủ: ảnh thật từ cổng du lịch, nền xanh phía sau đề phòng ảnh tải lỗi
@@ -39,7 +39,6 @@ export default function HomePage() {
   const { has: inCart } = useCart();
   const { prefs, setPrefs } = useTrip();
   const pickParty = (id: Party, people: number, kids: number) => setPrefs({ ...prefs, party: prefs.party === id ? undefined : id, people, kids });
-  const { draft } = useDraft();
   const [places, setPlaces] = useState<Place[]>([]);
   const [savedCount, setSavedCount] = useState<number | null>(null);
 
@@ -98,15 +97,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {draft && (
-            <button className="resume" onClick={() => navigate("/poster")}>
-              <div>
-                <div className="resume-title">Tiếp tục: {draft.title}</div>
-                <div className="muted">{draft.schedule.length} ngày · chưa xong thì làm tiếp</div>
-              </div>
-              <span aria-hidden>›</span>
-            </button>
-          )}
 
           <div className="home-tiles">
             <button className="tile tile-photo" onClick={() => navigate("/places")}>
@@ -146,7 +136,7 @@ export default function HomePage() {
                   {list.map((p) => (
                     <div key={p.id} className="rail-card" onClick={() => navigate(`/place/${p.id}`)}>
                       <div className="rail-img">
-                        {p.images[0] ? <img src={p.images[0]} alt="" loading="lazy" /> : <span>{categoryIcon(p.category)}</span>}
+                        <PlaceImg place={p} fallback={<span>{categoryIcon(p.category)}</span>} />
                         {inCart(p.id) && <span className="in-cart-badge">✓ Trong lịch trình</span>}
                       </div>
                       <div className="rail-name">{p.name}</div>

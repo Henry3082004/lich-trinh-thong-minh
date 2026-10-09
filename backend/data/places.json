@@ -224,7 +224,10 @@
     "name": "Canh thụt M'Nông",
     "category": "dac-san",
     "description": "Canh nấu trong ống tre với rau rừng, cá hoặc thịt, vị đậm đà đặc trưng của người M'Nông. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -241,7 +244,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 80.000–150.000đ/phần",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -310,7 +315,10 @@
     "name": "Đêm hội cồng chiêng Đắk Song",
     "category": "le-hoi",
     "description": "Đêm giao lưu cồng chiêng, múa xoang quanh lửa trại, du khách được cùng tham gia. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1475483768296-6163e08872a1?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -330,7 +338,9 @@
       1
     ],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -370,7 +380,10 @@
     "name": "Hồ tiêu Đắk Song",
     "category": "dac-san",
     "description": "Đắk Song nổi tiếng với các vườn hồ tiêu; hạt tiêu thơm cay, là món quà mang về được ưa chuộng. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1532336414038-cf19250c5757?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -387,7 +400,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 150.000–250.000đ/kg",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -396,7 +411,10 @@
     "name": "Homestay Đồi Thông",
     "category": "luu-tru",
     "description": "Homestay nhà gỗ giữa đồi thông, view săn mây buổi sáng, có khu nướng BBQ cho nhóm bạn và gia đình. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2831,
     "lng": 107.5902,
     "address": null,
@@ -412,7 +430,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 350.000–600.000đ/đêm",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -421,7 +441,10 @@
     "name": "Khách sạn Bình Minh Đắk Song",
     "category": "luu-tru",
     "description": "Khách sạn 3 sao gần trung tâm thị trấn, phòng sạch sẽ, có bữa sáng và bãi đỗ xe rộng. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2702,
     "lng": 107.6061,
     "address": null,
@@ -437,7 +460,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 450.000–700.000đ/đêm",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -446,7 +471,10 @@
     "name": "Lễ mừng lúa mới của người M'Nông",
     "category": "le-hoi",
     "description": "Lễ tạ ơn thần lúa sau mùa gặt với cồng chiêng, rượu cần và các món truyền thống của buôn làng. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -466,7 +494,9 @@
       12
     ],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -475,7 +505,10 @@
     "name": "Mùa hoa cà phê nở trắng đồi",
     "category": "le-hoi",
     "description": "Đầu năm, hoa cà phê nở trắng và thơm khắp các đồi, thích hợp dạo vườn và chụp ảnh. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -496,7 +529,9 @@
       3
     ],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -505,7 +540,10 @@
     "name": "Mùa hoa dã quỳ vàng rực",
     "category": "le-hoi",
     "description": "Cuối năm, dã quỳ nở vàng hai bên đường và sườn đồi, mùa săn ảnh đẹp nhất ở Đắk Song. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1470509037663-253afd7f0f51?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1597848212624-a19eb35e2651?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -526,7 +564,9 @@
       12
     ],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -535,7 +575,10 @@
     "name": "Ngày hội Văn hoá các dân tộc Đắk Song",
     "category": "le-hoi",
     "description": "Ngày hội với trình diễn trang phục, dệt thổ cẩm, ẩm thực và trò chơi dân gian các dân tộc. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -555,7 +598,9 @@
       4
     ],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -564,7 +609,10 @@
     "name": "Nhà nghỉ Xanh Cà Phê",
     "category": "luu-tru",
     "description": "Nhà nghỉ giá rẻ bao quanh vườn cà phê, yên tĩnh, phù hợp khách đi phượt và đi công tác. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2576,
     "lng": 107.5964,
     "address": null,
@@ -580,7 +628,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 200.000–320.000đ/đêm",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -589,7 +639,10 @@
     "name": "Nhà sàn Buôn Rơ",
     "category": "luu-tru",
     "description": "Lưu trú nhà sàn truyền thống, ngủ giữa không gian cồng chiêng, có đêm giao lưu văn hoá bản địa. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1464146072230-91cabc968266?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2915,
     "lng": 107.6188,
     "address": null,
@@ -606,7 +659,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 250.000–400.000đ/người",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -615,7 +670,10 @@
     "name": "Resort Suối Mơ",
     "category": "luu-tru",
     "description": "Resort nghỉ dưỡng bên suối, bungalow riêng tư, hồ bơi ngoài trời và nhà hàng đặc sản Tây Nguyên. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2488,
     "lng": 107.6325,
     "address": null,
@@ -631,7 +689,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 900.000–1.500.000đ/đêm",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -640,7 +700,10 @@
     "name": "Rượu cần",
     "category": "dac-san",
     "description": "Rượu ủ men lá rừng, uống bằng cần tre trong các dịp lễ hội và tiếp khách quý. (Thông tin mẫu phục vụ demo.)",
-    "images": [],
+    "images": [
+      "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=900&q=70"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -657,7 +720,9 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 200.000–400.000đ/ché nhỏ",
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -1069,6 +1134,101 @@
     "sourceUrl": null,
     "phone": null,
     "mapLink": "https://www.google.com/maps/search/?api=1&query=TH%20Coffee%20%26%20Milk%20Tea%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "thac-bo-doi",
+    "name": "Thác Bộ Đội",
+    "category": "thien-nhien",
+    "description": "Thác nước giữa rừng ở Đắk Song, đường vào còn hoang sơ, hợp với người thích trekking và khám phá.",
+    "images": [
+      "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "trekking"
+    ],
+    "durationMin": 150,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Th%C3%A1c%20B%E1%BB%99%20%C4%90%E1%BB%99i%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "thac-gau",
+    "name": "Thác Gấu",
+    "category": "thien-nhien",
+    "description": "Thác nước nhiều tầng đá ở Đắk Song, nước chảy trắng xoá qua các ghềnh, là điểm dừng chân chụp ảnh đẹp.",
+    "images": [
+      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in",
+      "trekking"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Th%C3%A1c%20G%E1%BA%A5u%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "thac-lua",
+    "name": "Thác Lụa",
+    "category": "thien-nhien",
+    "description": "Thác nước ở Đắk Song, khu vực quanh thác thoáng đãng, được nhiều bạn trẻ chọn để cắm trại, ngắm bình minh và hoàng hôn.",
+    "images": [
+      "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&w=900&q=70",
+      "https://images.unsplash.com/photo-1433086966358-54859d0ed716?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "check-in",
+      "trekking"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Th%C3%A1c%20L%E1%BB%A5a%20%C4%90%E1%BA%AFk%20Song",
     "kind": "place",
     "season": null,
     "months": [],
