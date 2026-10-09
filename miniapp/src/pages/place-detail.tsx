@@ -53,7 +53,7 @@ export default function PlaceDetailPage() {
               </div>
             </div>
           ) : (
-            <div className="bottom-stack">
+            <div className="bottom-stack" data-tour="add">
               <AddButton place={place} size="lg" />
             </div>
           )

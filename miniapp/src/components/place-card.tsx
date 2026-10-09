@@ -22,7 +22,7 @@ export function PlaceThumb({ place }: { place: Place }) {
 
 export function PlaceCard({ place, onClick, action }: { place: Place; onClick?: () => void; action?: React.ReactNode }) {
   return (
-    <div className="place-big" onClick={onClick}>
+    <div className="place-big" data-tour="place-card" onClick={onClick}>
       <div className="place-big-img">
         <PlaceImg place={place} fallback={<span>{categoryIcon(place.category)}</span>} />
       </div>

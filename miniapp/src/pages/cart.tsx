@@ -19,7 +19,7 @@ export default function CartPage() {
       bottom={
         <div className="bottom-stack">
           <div className="summary">{count > 0 ? `${count} mục đã chọn` : "Chưa chọn mục nào, AI sẽ chọn giúp các điểm nổi bật"}</div>
-          <button className="btn-primary btn-lg" onClick={() => navigate("/trip")}>
+          <button className="btn-primary btn-lg" data-tour="ai-plan" onClick={() => navigate("/trip")}>
             ✨ {count > 0 ? "Để AI lên lịch" : "Để AI chọn giúp"}
           </button>
         </div>

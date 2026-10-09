@@ -18,7 +18,7 @@ export function CartButton({ withBottom = false, inline = false }: { withBottom?
   // inline: nút nằm trong trang (trang chủ), luôn hiện để khách biết chỗ xem giỏ
   if (count === 0 && !inline) return null;
   return (
-    <button className={`${inline ? "cart-inline" : `cart-fab ${withBottom ? "with-bottom" : ""}`} ${pop ? "pop" : ""}`} onClick={() => navigate("/cart")} aria-label={`Lịch trình, ${count} mục`}>
+    <button data-tour="cart" className={`${inline ? "cart-inline" : `cart-fab ${withBottom ? "with-bottom" : ""}`} ${pop ? "pop" : ""}`} onClick={() => navigate("/cart")} aria-label={`Lịch trình, ${count} mục`}>
       <span aria-hidden>🧺</span> Lịch trình
       <b>{count}</b>
     </button>
