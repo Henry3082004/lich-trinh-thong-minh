@@ -24,9 +24,9 @@ export const COLLECTIONS: Collection[] = [
   {
     id: "le-hoi-sap-toi",
     icon: "🎊",
-    title: "Lễ hội & mùa đẹp sắp tới",
-    desc: "Xếp theo thời gian gần nhất kể từ tháng này.",
-    match: (p) => p.kind === "festival" || p.category === "le-hoi",
+    title: "Lễ hội sắp diễn ra",
+    desc: "Các lễ hội, mùa đẹp đang và sắp diễn ra trong 3 tháng tới.",
+    match: (p) => (p.kind === "festival" || p.category === "le-hoi") && (p.months.length === 0 || monthsUntil(p) <= 3),
     sort: (a, b) => monthsUntil(a) - monthsUntil(b),
   },
   {

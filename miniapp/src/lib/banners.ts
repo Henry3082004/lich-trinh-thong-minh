@@ -22,7 +22,7 @@ export const BANNERS: Banner[] = [
     title: "Lễ hội & mùa đẹp sắp tới",
     subtitle: "Mùa dã quỳ, lễ mừng lúa mới, đêm cồng chiêng: đừng bỏ lỡ dịp nào.",
     image: UNSPLASH("photo-1533174072545-7a4b6ad7a6c3"),
-    cta: "Xem lịch lễ hội",
+    cta: "Xem lễ hội sắp diễn ra",
     collection: "le-hoi-sap-toi",
   },
   {

@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import type { Place } from "../types";
 import { categoryIcon, categoryName } from "../types";
 import { formatDuration } from "../lib/schedule";
+import { monthsUntil } from "../lib/collections";
+
+// Lễ hội: "Đang diễn ra" / "Còn N tháng" để khách biết dịp nào sắp tới
+const festivalBadge = (p: Place) => {
+  if (!p.months.length) return "";
+  const m = monthsUntil(p);
+  return m === 0 ? "Đang diễn ra · " : `Còn ${m} tháng · `;
+};
 
 // Ảnh địa điểm: thử lần lượt từng ảnh trong danh sách, ảnh nào lỗi thì chuyển ảnh kế; hết ảnh thì hiện phần thay thế
 export function PlaceImg({ place, alt = "", fallback, lazy = true }: { place: Place; alt?: string; fallback: React.ReactNode; lazy?: boolean }) {
@@ -30,7 +38,7 @@ export function PlaceCard({ place, onClick, action }: { place: Place; onClick?: 
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="place-big-cat">{categoryName(place.category)}</div>
           <div className="place-big-name">{place.name}</div>
-          <div className="place-big-addr">{place.kind === "festival" && place.season ? `🗓 ${place.season}` : place.address || `~${formatDuration(place.durationMin)}`}</div>
+          <div className="place-big-addr">{place.kind === "festival" && place.season ? `${festivalBadge(place)}🗓 ${place.season}` : place.address || `~${formatDuration(place.durationMin)}`}</div>
         </div>
         {action}
       </div>
