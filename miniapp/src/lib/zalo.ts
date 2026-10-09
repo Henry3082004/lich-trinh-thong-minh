@@ -7,7 +7,7 @@ import { getAccessToken, openOutApp, openPhone, openShareSheet, openWebview, sav
 export const PORTAL_URL = (import.meta.env.VITE_PORTAL_URL as string | undefined) || "https://dulichdaksong.vnasw.vn";
 
 // Trang tham quan VR 3D của cổng du lịch Đắk Song (đổi bằng VITE_VR_URL khi có link chính thức)
-export const VR_URL = (import.meta.env.VITE_VR_URL as string | undefined) || PORTAL_URL;
+export const VR_URL = (import.meta.env.VITE_VR_URL as string | undefined) || "https://daksong-daknong.vnasw.vn/";
 
 export const isInZalo = () => /zalo/i.test(navigator.userAgent);
 
