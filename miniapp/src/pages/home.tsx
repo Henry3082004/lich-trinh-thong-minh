@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { PlaceImg } from "../components/place-card";
 import { useNavigate } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { BannerCarousel } from "../components/banner-carousel";
@@ -146,7 +147,7 @@ export default function HomePage() {
                   {list.map((p) => (
                     <div key={p.id} className="rail-card" onClick={() => navigate(`/place/${p.id}`)}>
                       <div className="rail-img">
-                        {p.images[0] ? <img src={p.images[0]} alt="" loading="lazy" /> : <span>{categoryIcon(p.category)}</span>}
+                        <PlaceImg place={p} fallback={<span>{categoryIcon(p.category)}</span>} />
                         {inCart(p.id) && <span className="in-cart-badge">✓ Trong lịch trình</span>}
                       </div>
                       <div className="rail-name">{p.name}</div>

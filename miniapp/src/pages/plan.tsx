@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { PlaceImg } from "../components/place-card";
 import { useNavigate, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { api } from "../lib/api";
@@ -119,7 +120,7 @@ export default function PlanPage() {
                   <div key={`${s.placeId}-${i}`}>
                     {s.travelMinFromPrev > 0 && <div className="travel">↓ khoảng {formatDuration(s.travelMinFromPrev)} di chuyển</div>}
                     <div className="edit-stop" onClick={() => navigate(`/place/${p.id}`)}>
-                      <div className="edit-thumb">{p.images[0] ? <img src={p.images[0]} alt="" loading="lazy" /> : categoryIcon(p.category)}</div>
+                      <div className="edit-thumb"><PlaceImg place={p} fallback={categoryIcon(p.category)} /></div>
                       <div className="edit-body">
                         <div className="row" style={{ gap: 6, flexWrap: "wrap" }}>
                           <span className="time-pill">{s.startTime}</span>
