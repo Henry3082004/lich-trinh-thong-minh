@@ -9,7 +9,6 @@ import { useTrip } from "../state/trip";
 import { useCart } from "../state/cart";
 import type { Party } from "../types";
 import { openPortal, openVr } from "../lib/zalo";
-import { useDraft } from "../state/draft";
 import { categoryIcon, categoryName, type Place } from "../types";
 
 // Ảnh bìa trang chủ: ảnh thật từ cổng du lịch, nền xanh phía sau đề phòng ảnh tải lỗi
@@ -40,7 +39,6 @@ export default function HomePage() {
   const { has: inCart } = useCart();
   const { prefs, setPrefs } = useTrip();
   const pickParty = (id: Party, people: number, kids: number) => setPrefs({ ...prefs, party: prefs.party === id ? undefined : id, people, kids });
-  const { draft } = useDraft();
   const [places, setPlaces] = useState<Place[]>([]);
   const [savedCount, setSavedCount] = useState<number | null>(null);
 
@@ -99,15 +97,6 @@ export default function HomePage() {
             </div>
           </div>
 
-          {draft && (
-            <button className="resume" onClick={() => navigate("/poster")}>
-              <div>
-                <div className="resume-title">Tiếp tục: {draft.title}</div>
-                <div className="muted">{draft.schedule.length} ngày · chưa xong thì làm tiếp</div>
-              </div>
-              <span aria-hidden>›</span>
-            </button>
-          )}
 
           <div className="home-tiles">
             <button className="tile tile-photo" onClick={() => navigate("/places")}>
