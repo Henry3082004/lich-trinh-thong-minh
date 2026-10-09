@@ -15,6 +15,17 @@ const GREET_MS = 2300; // vẫy tay chào "Xin chào!"
 const ASK_MS = 8000; // hỏi "Mình giúp gì được cho bạn?"
 const GREETING = "Xin chào, mình là chú voi con ở Đắk Song! Bạn cần hỗ trợ gì? Mình có thể gợi ý chỗ chơi, món ngon, quán cà phê và lễ hội.";
 
+const POS_KEY = "mascot-pos";
+type Pos = { x: number; y: number };
+const loadPos = (): Pos | null => {
+  try {
+    const v = JSON.parse(localStorage.getItem(POS_KEY) ?? "null");
+    return v && typeof v.x === "number" && typeof v.y === "number" ? v : null;
+  } catch {
+    return null;
+  }
+};
+
 const isTouch = () => {
   try {
     return matchMedia("(pointer: coarse)").matches;
@@ -40,6 +51,50 @@ export function ChatWidget() {
   const inputRef = useRef<HTMLInputElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const openedOnce = useRef(false);
+  // Kéo linh vật đi khắp màn hình cho đỡ vướng; vị trí (góc trên trái của dock) được nhớ trong máy
+  const dockRef = useRef<HTMLDivElement>(null);
+  const [pos, setPos] = useState<Pos | null>(loadPos);
+  const drag = useRef<{ dx: number; dy: number; sx: number; sy: number; moved: boolean } | null>(null);
+  const justDragged = useRef(false);
+  const clamp = (x: number, y: number): Pos => {
+    const el = dockRef.current;
+    const w = el?.offsetWidth ?? 104;
+    const h = el?.offsetHeight ?? 104;
+    return { x: Math.max(0, Math.min(window.innerWidth - w, x)), y: Math.max(0, Math.min(window.innerHeight - h, y)) };
+  };
+  const onDragStart = (e: React.PointerEvent) => {
+    const r = dockRef.current?.getBoundingClientRect();
+    if (!r) return;
+    drag.current = { dx: e.clientX - r.left, dy: e.clientY - r.top, sx: e.clientX, sy: e.clientY, moved: false };
+    (e.currentTarget as HTMLElement).setPointerCapture?.(e.pointerId);
+  };
+  const onDragMove = (e: React.PointerEvent) => {
+    const d = drag.current;
+    if (!d) return;
+    if (!d.moved && Math.hypot(e.clientX - d.sx, e.clientY - d.sy) < 8) return; // chạm nhẹ vẫn là bấm mở chat
+    d.moved = true;
+    setPos(clamp(e.clientX - d.dx, e.clientY - d.dy));
+  };
+  const onDragEnd = () => {
+    const d = drag.current;
+    drag.current = null;
+    if (!d?.moved) return;
+    justDragged.current = true;
+    setPos((p) => {
+      try {
+        if (p) localStorage.setItem(POS_KEY, JSON.stringify(p));
+      } catch {
+        /* bỏ qua */
+      }
+      return p;
+    });
+  };
+  // Xoay màn hình / đổi cỡ cửa sổ: giữ linh vật trong màn hình
+  useEffect(() => {
+    const fit = () => setPos((p) => (p ? clamp(p.x, p.y) : p));
+    window.addEventListener("resize", fit);
+    return () => window.removeEventListener("resize", fit);
+  }, []);
 
   useEffect(() => {
     api.chatEnabled().then(setEnabled);
@@ -129,6 +184,11 @@ export function ChatWidget() {
   };
 
   const openChat = () => {
+    // Vừa kéo xong thì không mở chat
+    if (justDragged.current) {
+      justDragged.current = false;
+      return;
+    }
     openedOnce.current = true;
     setPhase("idle");
     setWaving(false);
@@ -179,7 +239,11 @@ export function ChatWidget() {
   return (
     <div ref={rootRef} className="mascot-root">
       {!open && (
-        <div className={`mascot-dock ${phase === "fly" ? "fly" : ""}`}>
+        <div
+          ref={dockRef}
+          className={`mascot-dock ${phase === "fly" ? "fly" : ""} ${pos ? "moved" : ""}`}
+          style={pos ? { left: pos.x, top: pos.y, right: "auto", bottom: "auto" } : undefined}
+        >
           {(phase === "greet" || phase === "ask") && (
             <div className="mascot-bubble" role="status" key={phase}>
               <button className="mascot-bubble-text" onClick={openChat}>
@@ -196,7 +260,16 @@ export function ChatWidget() {
               </button>
             </div>
           )}
-          <button className="mascot-btn" aria-label="Mở chat hỏi trợ lý Đắk Song" aria-expanded={false} onClick={openChat}>
+          <button
+            className="mascot-btn"
+            aria-label="Mở chat hỏi trợ lý Đắk Song (giữ và kéo để di chuyển)"
+            aria-expanded={false}
+            onClick={openChat}
+            onPointerDown={onDragStart}
+            onPointerMove={onDragMove}
+            onPointerUp={onDragEnd}
+            onPointerCancel={onDragEnd}
+          >
             <Mascot waving={waving} flying={phase === "fly"} />
           </button>
         </div>

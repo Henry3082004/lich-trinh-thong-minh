@@ -10,9 +10,9 @@ const TEMPLATE_KEY = "poster-template";
 function loadTemplate(): TemplateId {
   try {
     const v = localStorage.getItem(TEMPLATE_KEY);
-    return isTemplateId(v) ? v : "nam-nung";
+    return isTemplateId(v) ? v : "forest";
   } catch {
-    return "nam-nung";
+    return "forest";
   }
 }
 

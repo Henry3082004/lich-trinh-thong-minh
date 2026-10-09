@@ -2100,7 +2100,6 @@ html[data-layout="desktop"] .poster-controls .pt-top > * {
   flex: none;
   min-height: 44px;
 }
-.pt-swatch { background-size: cover; background-position: center; }
 .pt-template { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 /* Nút thêm vào lịch trình ở góc phải trên ảnh (trang Điểm đến) */
 .p-card-corner { position: absolute; top: 10px; right: 10px; }
@@ -2111,3 +2110,7 @@ html[data-layout="desktop"] .poster-controls .pt-top > * {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
 }
 .p-card-corner .add-btn.on { background: var(--green-700); color: #fff; }
+/* Linh vật kéo được: không cuộn trang khi kéo, không bay lại khi đã đặt chỗ khác */
+.mascot-btn { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+.mascot-btn img, .mascot-btn svg { -webkit-user-drag: none; }
+.mascot-dock.moved.fly { animation: none; }
