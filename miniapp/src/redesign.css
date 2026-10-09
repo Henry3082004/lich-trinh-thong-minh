@@ -2102,3 +2102,12 @@ html[data-layout="desktop"] .poster-controls .pt-top > * {
 }
 .pt-swatch { background-size: cover; background-position: center; }
 .pt-template { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+/* Nút thêm vào lịch trình ở góc phải trên ảnh (trang Điểm đến) */
+.p-card-corner { position: absolute; top: 10px; right: 10px; }
+.p-card-corner .add-btn {
+  width: 44px; height: 44px; padding: 0; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; color: var(--green-700); border: none;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+}
+.p-card-corner .add-btn.on { background: var(--green-700); color: #fff; }

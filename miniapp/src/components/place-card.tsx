@@ -30,7 +30,8 @@ export function PlaceThumb({ place }: { place: Place }) {
   );
 }
 
-export function PlaceCard({ place, onClick, action, added = false }: { place: Place; onClick?: () => void; action?: React.ReactNode; added?: boolean }) {
+// corner: nút đặt ở góc phải trên ảnh (vd nút thêm vào lịch trình ở trang Điểm đến)
+export function PlaceCard({ place, onClick, action, corner, added = false }: { place: Place; onClick?: () => void; action?: React.ReactNode; corner?: React.ReactNode; added?: boolean }) {
   const festival = place.kind === "festival" && !!place.season;
   return (
     <div className="p-card" data-tour="place-card" onClick={onClick}>
@@ -42,6 +43,7 @@ export function PlaceCard({ place, onClick, action, added = false }: { place: Pl
             Đã thêm
           </span>
         )}
+        {corner && <div className="p-card-corner">{corner}</div>}
       </div>
       <div className="p-card-body">
         <div className="p-card-info">

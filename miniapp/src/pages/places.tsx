@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, useNavigate, useSearchParams, useSnackbar } from "zmp-ui";
 import { Loading, Screen } from "../components/layout";
 import { PlaceCard } from "../components/place-card";
+import { AddButton } from "../components/add-button";
 import { api } from "../lib/api";
 import { useDraft } from "../state/draft";
 import { useCart } from "../state/cart";
@@ -115,6 +116,7 @@ export default function PlacesPage() {
               key={p.id}
               place={p}
               added={!day && inCart(p.id)}
+              corner={day ? undefined : <AddButton place={p} />}
               // Chạm vào điểm là mở trang thông tin (có nút thêm vào lịch trình)
               onClick={() => navigate(day ? `/place/${p.id}?day=${day}` : `/place/${p.id}`)}
               action={
