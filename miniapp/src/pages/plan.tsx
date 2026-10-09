@@ -21,7 +21,6 @@ export default function PlanPage() {
   const { openSnackbar } = useSnackbar();
   const { prefs, plan, setPlan } = useTrip();
   const { fromPlan } = useDraft();
-  const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [thread, setThread] = useState<Turn[]>([]);
   const endRef = useRef<HTMLDivElement>(null);
@@ -41,7 +40,6 @@ export default function PlanPage() {
     if (!message || busy) return;
     setBusy(true);
     setThread((t) => [...t, { from: "me", text: message }]);
-    setInput("");
     try {
       const next = await api.revisePlan(prefs, plan, message);
       setPlan(next);
@@ -57,10 +55,6 @@ export default function PlanPage() {
     fromPlan(plan);
     navigate("/poster");
   };
-  const manual = () => {
-    fromPlan(plan);
-    navigate("/editor");
-  };
 
   const lodging = plan.lodgingIds.map((id) => byId.get(id)).filter((p): p is NonNullable<typeof p> => !!p);
 
@@ -69,26 +63,9 @@ export default function PlanPage() {
       title="Lịch AI đề xuất"
       bottom={
         <div className="bottom-stack">
-          <form
-            className="chat-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              revise(input);
-            }}
-          >
-            <input value={input} maxLength={500} onChange={(e) => setInput(e.target.value)} placeholder='Muốn chỉnh gì? vd "thêm quán cà phê buổi tối"' aria-label="Yêu cầu chỉnh lịch" />
-            <button className="btn-soft" type="submit" disabled={busy || !input.trim()}>
-              Gửi
-            </button>
-          </form>
-          <div className="action-row">
-            <button className="btn-soft btn-lg" disabled={busy} onClick={manual}>
-              Sửa tay
-            </button>
-            <button className="btn-primary btn-lg" disabled={busy} onClick={confirm}>
-              Chốt & tạo ảnh
-            </button>
-          </div>
+          <button className="btn-primary btn-lg" disabled={busy} onClick={confirm}>
+            Chốt & tạo ảnh
+          </button>
         </div>
       }
     >
