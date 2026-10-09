@@ -2,7 +2,7 @@ import { formatDuration, travelMinutes } from "../../lib/schedule";
 import type { Draft } from "../../types";
 import { categoryName } from "../../types";
 
-export type TemplateId = "nam-nung" | "luu-ly" | "rung-da";
+export type TemplateId = "forest" | "sunset" | "minimal";
 
 export type PosterStop = {
   time: string;
@@ -20,6 +20,8 @@ export type PosterData = {
   title: string;
   days: PosterDay[];
   totalStops: number;
+  heroPhoto: string | null;
+  heroName: string;
   // Lịch dài thì thu gọn (bỏ ảnh nhỏ) để poster không dài quá
   compact: boolean;
 };
@@ -38,7 +40,14 @@ export function photoUrlsOf(draft: Draft): string[] {
   return draft.schedule.flatMap((d) => d.stops.map((s) => s.place.images[0])).filter(Boolean);
 }
 
-export function buildPosterData(draft: Draft, photos: Map<string, string | null>): PosterData {
+// Địa chỉ ảnh dùng làm ảnh bìa: ưu tiên điểm tham quan (không phải quán ăn) đầu tiên có ảnh
+export function pickHeroUrl(draft: Draft): string | null {
+  const stops = draft.schedule.flatMap((d) => d.stops);
+  const withPhoto = stops.filter((s) => s.place.images[0]);
+  return (withPhoto.find((s) => s.place.category !== "am-thuc") ?? withPhoto[0])?.place.images[0] ?? null;
+}
+
+export function buildPosterData(draft: Draft, photos: Map<string, string | null>, heroPhoto: string | null): PosterData {
   const photoOf = (url?: string) => (url ? photos.get(url) ?? null : null);
 
   const days: PosterDay[] = draft.schedule.map((d) => {
@@ -60,6 +69,8 @@ export function buildPosterData(draft: Draft, photos: Map<string, string | null>
     title: draft.title,
     days,
     totalStops,
+    heroPhoto,
+    heroName: "",
     compact: totalStops > COMPACT_THRESHOLD,
   };
 }

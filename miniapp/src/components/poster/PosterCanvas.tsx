@@ -1,21 +1,21 @@
 import React, { forwardRef } from "react";
 import type { PosterData, TemplateId } from "./poster-data";
-import { PhotoPoster } from "./templates/photo";
-import namNung from "../../assets/poster/nam-nung.jpg";
-import luuLy from "../../assets/poster/luu-ly.jpg";
-import anh3 from "../../assets/poster/anh-3.jpg";
+import { ForestPoster } from "./templates/forest";
+import { MinimalPoster } from "./templates/minimal";
+import { SunsetPoster } from "./templates/sunset";
 
-// 3 nền ảnh thiên nhiên Đắk Song (ảnh đóng gói trong app nên chụp poster không bị chặn CORS)
-export const TEMPLATES: { id: TemplateId; name: string; photo: string }[] = [
-  { id: "nam-nung", name: "Nâm Nung", photo: namNung },
-  { id: "luu-ly", name: "Lưu Ly", photo: luuLy },
-  { id: "rung-da", name: "Rừng đá", photo: anh3 },
+export const TEMPLATES: { id: TemplateId; name: string; swatch: [string, string] }[] = [
+  { id: "forest", name: "Rừng xanh", swatch: ["#1b4d20", "#66bb6a"] },
+  { id: "sunset", name: "Hoàng hôn", swatch: ["#6d4c41", "#f6ecdc"] },
+  { id: "minimal", name: "Tối giản", swatch: ["#faf7f0", "#2e7d32"] },
 ];
 
 export const isTemplateId = (v: unknown): v is TemplateId => TEMPLATES.some((t) => t.id === v);
 
-// ref trỏ vào thẻ gốc của poster (để chụp ảnh); bg là ảnh nền đã tải thành data URL
-export const PosterCanvas = forwardRef<HTMLDivElement, { data: PosterData; bg: string | null }>(({ data, bg }, ref) => (
-  <PhotoPoster ref={ref} data={data} bg={bg} />
-));
+// Chọn mẫu theo id; ref trỏ vào thẻ gốc của poster (để chụp ảnh)
+export const PosterCanvas = forwardRef<HTMLDivElement, { data: PosterData; template: TemplateId }>(({ data, template }, ref) => {
+  if (template === "sunset") return <SunsetPoster ref={ref} data={data} />;
+  if (template === "minimal") return <MinimalPoster ref={ref} data={data} />;
+  return <ForestPoster ref={ref} data={data} />;
+});
 PosterCanvas.displayName = "PosterCanvas";
