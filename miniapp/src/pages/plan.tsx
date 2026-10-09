@@ -22,6 +22,7 @@ export default function PlanPage() {
   const { prefs, plan, setPlan } = useTrip();
   const { fromPlan } = useDraft();
   const [busy, setBusy] = useState(false);
+  const [input, setInput] = useState("");
   const [thread, setThread] = useState<Turn[]>([]);
   const endRef = useRef<HTMLDivElement>(null);
 
@@ -40,6 +41,7 @@ export default function PlanPage() {
     if (!message || busy) return;
     setBusy(true);
     setThread((t) => [...t, { from: "me", text: message }]);
+    setInput("");
     try {
       const next = await api.revisePlan(prefs, plan, message);
       setPlan(next);
@@ -63,6 +65,25 @@ export default function PlanPage() {
       title="Lịch AI đề xuất"
       bottom={
         <div className="bottom-stack">
+          <form
+            className="chat-form"
+            onSubmit={(e) => {
+              e.preventDefault();
+              revise(input);
+            }}
+          >
+            <input
+              value={input}
+              maxLength={500}
+              disabled={busy}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Nhắn AI để chỉnh lịch, vd: thêm quán cà phê buổi chiều"
+              aria-label="Nhắn AI để chỉnh lịch"
+            />
+            <button className="btn-soft" type="submit" aria-label="Gửi" disabled={busy || !input.trim()}>
+              ➤
+            </button>
+          </form>
           <button className="btn-primary btn-lg" disabled={busy} onClick={confirm}>
             Chốt & tạo ảnh
           </button>

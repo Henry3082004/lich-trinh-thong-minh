@@ -63,7 +63,7 @@ planRouter.post(
       draft = await reviseWithAi(prefs, cart, all, plan.days, message);
     } catch (e) {
       if (e instanceof HttpError && e.status === 503) throw e;
-      throw new HttpError(502, "Trợ lý chưa chỉnh được lịch, bạn thử nói lại hoặc dùng \"Sửa tay\" nhé");
+      throw new HttpError(502, "Trợ lý chưa chỉnh được lịch, bạn thử nói lại nhé");
     }
     res.json(await withPlaces(buildPlan(prefs, cart, all, draft)));
   }),
