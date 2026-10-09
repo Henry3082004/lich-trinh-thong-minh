@@ -6,6 +6,9 @@ import { getAccessToken, openOutApp, openPhone, openShareSheet, openWebview, sav
 // Trang chủ cổng du lịch Đắk Song, đổi được bằng biến VITE_PORTAL_URL
 export const PORTAL_URL = (import.meta.env.VITE_PORTAL_URL as string | undefined) || "https://dulichdaksong.vnasw.vn";
 
+// Trang tham quan VR 3D của cổng du lịch Đắk Song (đổi bằng VITE_VR_URL khi có link chính thức)
+export const VR_URL = (import.meta.env.VITE_VR_URL as string | undefined) || PORTAL_URL;
+
 export const isInZalo = () => /zalo/i.test(navigator.userAgent);
 
 // Mỗi trình duyệt một mã riêng để "Lịch của tôi" không bị lẫn giữa người dùng thử
@@ -68,6 +71,11 @@ export async function openPortal() {
   } else {
     window.open(PORTAL_URL, "_blank");
   }
+}
+
+export async function openVr() {
+  if (isInZalo()) await openWebview({ url: VR_URL });
+  else window.open(VR_URL, "_blank");
 }
 
 export async function callPhone(phoneNumber: string) {

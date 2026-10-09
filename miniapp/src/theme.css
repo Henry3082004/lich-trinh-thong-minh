@@ -2533,3 +2533,48 @@ html[data-layout="desktop"] .banner-dots {
     transition: none;
   }
 }
+
+/* Lưới nút chức năng ở thẻ đầu trang chủ */
+.home-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.act {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--green-100);
+  color: var(--green-900);
+  text-align: left;
+  cursor: pointer;
+  min-height: 84px;
+}
+.act:active {
+  transform: scale(0.98);
+}
+.act b {
+  font-size: 15px;
+}
+.act small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.act-ico {
+  font-size: 22px;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.act-vr {
+  background: linear-gradient(135deg, #1b4d20, #2e7d32 60%, #43a047);
+  border-color: transparent;
+  color: #fff;
+}
+.act-vr small {
+  color: rgba(255, 255, 255, 0.85);
+}

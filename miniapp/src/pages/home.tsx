@@ -5,7 +5,7 @@ import { AddButton } from "../components/add-button";
 import { BannerCarousel } from "../components/banner-carousel";
 import { BANNERS } from "../lib/banners";
 import { api, USE_MOCK } from "../lib/api";
-import { openPortal } from "../lib/zalo";
+import { openPortal, openVr } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { categoryIcon, categoryName, type Place } from "../types";
 
@@ -51,14 +51,28 @@ export default function HomePage() {
             <button className="btn-primary btn-lg" onClick={() => navigate("/cart")}>
               ✨ Để AI lên lịch trình
             </button>
-            <button className="btn-soft btn-lg" onClick={() => navigate("/create")}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <rect x="3" y="3" width="18" height="18" rx="4" />
-                <circle cx="9" cy="9" r="2" />
-                <path d="M21 15l-5-5L5 21" />
-              </svg>
-              Tạo ảnh lịch trình nhanh
-            </button>
+            <div className="home-actions">
+              <button className="act act-vr" onClick={() => openVr()}>
+                <span className="act-ico" aria-hidden>🥽</span>
+                <b>Tham quan VR 3D</b>
+                <small>Dạo Đắk Song 360°</small>
+              </button>
+              <button className="act" onClick={() => navigate("/my")}>
+                <span className="act-ico" aria-hidden>⬇️</span>
+                <b>Tải lịch trình</b>
+                <small>Ảnh lịch trình của bạn</small>
+              </button>
+              <button className="act" onClick={() => navigate("/create")}>
+                <span className="act-ico" aria-hidden>🖼️</span>
+                <b>Tạo ảnh nhanh</b>
+                <small>Tự nhập, không cần AI</small>
+              </button>
+              <button className="act" onClick={() => navigate("/places")}>
+                <span className="act-ico" aria-hidden>🗺️</span>
+                <b>Khám phá</b>
+                <small>Địa điểm, món ngon</small>
+              </button>
+            </div>
           </div>
 
           {draft && (
