@@ -24,12 +24,19 @@ function browserUserId() {
 }
 
 export async function authHeaders(): Promise<Record<string, string>> {
+  const guest = { "X-Dev-User": `${isInZalo() ? "zalo" : "web"}-${browserUserId()}` };
   if (!isInZalo()) {
     // Chỉ dùng được khi backend chạy AUTH_MODE=dev
-    return { "X-Dev-User": `web-${browserUserId()}` };
+    return guest;
   }
-  const token = await getAccessToken();
-  return { Authorization: `Bearer ${token}` };
+  try {
+    const token = await getAccessToken();
+    // Gửi kèm mã khách: backend dev/demo dùng nó khi thẻ Zalo không kiểm tra được; backend zalo (production) bỏ qua nó
+    return token ? { Authorization: `Bearer ${token}`, ...guest } : guest;
+  } catch {
+    // Chưa cấp quyền hoặc Zalo không trả thẻ: vẫn dùng được với mã khách (chỉ khi backend ở chế độ dev/demo)
+    return guest;
+  }
 }
 
 export async function saveImage(dataUrl: string, fileName: string) {
