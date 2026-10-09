@@ -90,9 +90,20 @@ Trang chi tiết điểm đến hiện điểm sao và tối đa 5 review của 
 
 Khách lướt trang chủ / Điểm đến, bấm "+ Thêm" vào **giỏ lịch trình** (lưu theo tài khoản), rồi "Để AI lên lịch trình": nhập số người, ngày đi, số ngày/đêm, phương tiện (ô tô / xe máy / xe khách), AI xếp lịch từ giỏ, khách chat để chỉnh hoặc "Sửa tay", rồi "Chốt & tạo ảnh". Cần `GEMINI_API_KEY` (không có thì dùng lịch dự phòng theo khoảng cách). Thời gian di chuyển hiện là **ước tính** (đường chim bay × hệ số, tốc độ theo phương tiện) ở `backend/src/services/travel.ts`; đó là chỗ duy nhất cần thay khi dùng dữ liệu đường đi thật.
 
+## Thêm địa điểm bằng bảng
+
+Dán bảng từ Google Sheets vào một file, cột cách nhau bằng Tab (hoặc dấu `|`): `Tên | Nhóm | Vị trí | Địa chỉ | Điện thoại | Giờ mở cửa | Giá | Mô tả | Tháng (lễ hội)`. Nhóm: thiên nhiên, văn hoá, quán ăn, cà phê, đặc sản, lễ hội, trải nghiệm, lưu trú. Vị trí là toạ độ (`12.27,107.61`) hoặc link Google Maps đầy đủ (link rút gọn `maps.app.goo.gl` không đọc được); để trống thì quán hiện với vị trí tạm và chỉ đường theo tên.
+
+```bash
+cd backend
+npm run add-places -- danh-sach.tsv --dry   # chỉ kiểm tra (toạ độ trong vùng Đắk Song, trùng tên, nhóm hợp lệ)
+npm run add-places -- danh-sach.tsv         # ghi vào data/places.json
+npm run seed                                 # nạp vào database
+```
+
 ## Chatbot hỏi đáp (tuỳ chọn)
 
-Nút "Hỏi đáp Đắk Song" ở trang chủ chỉ hiện khi backend có `GEMINI_API_KEY` (tạo ở Google AI Studio). Backend gửi danh sách điểm đến cho Gemini làm ngữ cảnh và yêu cầu chỉ trả lời theo dữ liệu đó. Model đổi bằng `GEMINI_MODEL` (mặc định `gemini-2.5-flash`, quá tải thì tự thử `GEMINI_FALLBACK_MODEL`), số câu hỏi mỗi người mỗi giờ bằng `CHAT_PER_HOUR`. Khoá đặt trên Railway, không đưa vào repo.
+Linh vật voi con vẫy tay ở góc màn hình (bấm vào mở cửa sổ chat "Trợ lý Đắk Song") chỉ hiện khi backend có `GEMINI_API_KEY` (tạo ở Google AI Studio). Backend gửi danh sách điểm đến cho Gemini làm ngữ cảnh và yêu cầu chỉ trả lời theo dữ liệu đó. Model đổi bằng `GEMINI_MODEL` (mặc định `gemini-2.5-flash`, quá tải thì tự thử `GEMINI_FALLBACK_MODEL`), số câu hỏi mỗi người mỗi giờ bằng `CHAT_PER_HOUR`. Khoá đặt trên Railway, không đưa vào repo.
 
 ## Deploy Railway
 

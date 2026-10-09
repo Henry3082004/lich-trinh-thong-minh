@@ -28,13 +28,11 @@ export default function HomePage() {
   const { draft } = useDraft();
   const [places, setPlaces] = useState<Place[]>([]);
   const [savedCount, setSavedCount] = useState<number | null>(null);
-  const [chatOn, setChatOn] = useState(false);
 
   // Số liệu nhỏ trên hai ô phụ; lỗi thì chỉ không hiện số, không ảnh hưởng gì khác
   useEffect(() => {
     api.places().then(setPlaces).catch(() => {});
     api.myItineraries().then((l) => setSavedCount(l.length)).catch(() => {});
-    api.chatEnabled().then(setChatOn);
   }, []);
 
   return (
@@ -98,18 +96,6 @@ export default function HomePage() {
               </span>
             </button>
           </div>
-
-          {chatOn && (
-            <button className="chat-entry" onClick={() => navigate("/chat")}>
-              <span className="chat-entry-icon" aria-hidden>
-                💬
-              </span>
-              <span>
-                <b>Hỏi đáp Đắk Song</b>
-                <small>Hỏi trợ lý về chỗ chơi, chỗ ăn, đi lại</small>
-              </span>
-            </button>
-          )}
 
           {RAILS.map((r) => {
             const list = places.filter((p) => p.category === r.id);
