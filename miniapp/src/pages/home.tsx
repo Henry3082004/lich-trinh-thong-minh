@@ -48,10 +48,12 @@ export default function HomePage() {
         <div className="home-body">
           <div className="home-cta card-soft">
             <p>Lướt xem chỗ chơi, món ngon, lễ hội, bấm "+ Thêm" những chỗ bạn thích rồi để AI xếp thành lịch trình và làm ảnh đẹp để gửi gia đình, bạn bè.</p>
-            <button className="btn-primary btn-lg" onClick={() => navigate("/cart")}>
-              ✨ Để AI lên lịch trình
-            </button>
             <div className="home-actions">
+              <button className="act act-ai" onClick={() => navigate("/cart")}>
+                <span className="act-ico" aria-hidden>✨</span>
+                <b>Để AI lên lịch trình</b>
+                <small>Chọn chỗ thích, AI xếp lịch cho bạn</small>
+              </button>
               <button className="act act-vr" onClick={() => openVr()}>
                 <span className="act-ico" aria-hidden>🥽</span>
                 <b>Tham quan VR 3D</b>
