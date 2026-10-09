@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useSnackbar } from "zmp-ui";
+import { useNavigate, useSearchParams, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { api } from "../lib/api";
 import { useCart } from "../state/cart";
@@ -44,6 +44,9 @@ export default function TripPage() {
   const navigate = useNavigate();
   const { openSnackbar } = useSnackbar();
   const { count } = useCart();
+  const [params] = useSearchParams();
+  // ?auto=1: vào từ nút "Bạn đi" ở trang chủ, AI tự chọn địa điểm; còn lại dùng các mục trong giỏ
+  const auto = params.get("auto") === "1";
   const { prefs, setPrefs, setPlan } = useTrip();
   const [loading, setLoading] = useState(false);
   const set = (patch: Partial<typeof prefs>) => setPrefs({ ...prefs, ...patch });
@@ -54,7 +57,7 @@ export default function TripPage() {
   const submit = async () => {
     setLoading(true);
     try {
-      const p = { ...prefs, startDate: today };
+      const p = { ...prefs, startDate: today, autoPick: auto };
       setPrefs(p);
       const plan = await api.plan(p);
       setPlan(plan);
@@ -71,7 +74,7 @@ export default function TripPage() {
       title="Thông tin chuyến đi"
       bottom={
         <div className="bottom-stack">
-          <div className="summary">{`${prefs.people} người · ${prefs.days} ngày ${prefs.days - 1} đêm · ${count} mục đã chọn`}</div>
+          <div className="summary">{`${prefs.people} người · ${prefs.days} ngày ${prefs.days - 1} đêm · ${auto ? "AI tự chọn địa điểm" : `${count} mục đã chọn`}`}</div>
           <button className="btn-primary btn-lg" disabled={loading} onClick={submit}>
             {loading ? "AI đang lên lịch… (có thể mất vài giây)" : "✨ Lên lịch trình"}
           </button>

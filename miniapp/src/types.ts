@@ -105,6 +105,7 @@ export type Purpose = "sightseeing" | "nature";
 export type TripPrefs = {
   party?: Party;
   purposes?: Purpose[];
+  autoPick?: boolean;
   people: number;
   kids: number;
   startDate: string; // YYYY-MM-DD
