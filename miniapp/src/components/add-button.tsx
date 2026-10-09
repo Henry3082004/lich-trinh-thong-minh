@@ -1,4 +1,5 @@
 import React from "react";
+import { IconCheck, IconPlus } from "@tabler/icons-react";
 import { useCart } from "../state/cart";
 import type { Place } from "../types";
 
@@ -16,7 +17,7 @@ export function AddButton({ place, size = "sm", label = false }: { place: Place;
         toggle(place);
       }}
     >
-      {on ? "✓" : "+"}
+      {on ? <IconCheck size={20} stroke={2.5} aria-hidden /> : <IconPlus size={20} stroke={2.5} aria-hidden />}
       {(label || size === "lg") && <span>{on ? "Đã thêm vào lịch trình" : "Thêm vào lịch trình"}</span>}
     </button>
   );

@@ -6,7 +6,8 @@ import { dayRouteUrl, MAX_WAYPOINTS } from "../lib/maps";
 import { formatDuration } from "../lib/schedule";
 import { openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
-import { categoryIcon } from "../types";
+import { ImgFallback } from "../components/icons";
+import { IconChevronDown, IconChevronUp, IconNavigation, IconPlus, IconX } from "@tabler/icons-react";
 
 export default function EditorPage() {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ export default function EditorPage() {
                 {d.stops.map((s, i) => (
                   <div key={`${s.place.id}-${i}`} className="edit-stop">
                     <div className="edit-thumb" onClick={() => navigate(`/place/${s.place.id}`)}>
-                      <PlaceImg place={s.place} fallback={categoryIcon(s.place.category)} />
+                      <PlaceImg place={s.place} fallback={<ImgFallback category={s.place.category} size={22} />} />
                     </div>
                     <div className="edit-body" onClick={() => navigate(`/place/${s.place.id}`)}>
                       <div className="row" style={{ gap: 6 }}>
@@ -70,23 +71,25 @@ export default function EditorPage() {
                     </div>
                     <div className="edit-arrows">
                       <button aria-label="Lên" disabled={i === 0} onClick={() => moveStop(d.day, i, -1)}>
-                        ▲
+                        <IconChevronUp size={18} stroke={2} />
                       </button>
                       <button aria-label="Xuống" disabled={i === d.stops.length - 1} onClick={() => moveStop(d.day, i, 1)}>
-                        ▼
+                        <IconChevronDown size={18} stroke={2} />
                       </button>
                     </div>
                     <button className="edit-remove" aria-label="Xoá" onClick={() => removeStop(d.day, i)}>
-                      ✕
+                      <IconX size={20} stroke={2} />
                     </button>
                   </div>
                 ))}
                 <button className="add-stop" onClick={() => navigate(`/places?day=${d.day}`)}>
-                  + Thêm điểm đến vào ngày {d.day}
+                  <IconPlus size={18} stroke={2} aria-hidden />
+                  Thêm điểm đến vào ngày {d.day}
                 </button>
                 {d.stops.length > 0 && (
                   <button className="btn-text" onClick={() => openLink(dayRouteUrl(d.stops.map((s) => s.place))!)}>
-                    🧭 Chỉ đường cả ngày {d.day}
+                    <IconNavigation size={18} stroke={2} aria-hidden />
+                    Chỉ đường cả ngày {d.day}
                   </button>
                 )}
                 {d.stops.length > MAX_WAYPOINTS + 1 && (

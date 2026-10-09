@@ -8,6 +8,7 @@ import { capturePoster, dataUrlToBlob } from "../lib/capture";
 import { loadPhoto, loadPhotos } from "../lib/images";
 import { isInZalo, saveImage, shareImage } from "../lib/zalo";
 import { useDraft } from "../state/draft";
+import { IconBookmark, IconDownload, IconListDetails, IconPencil, IconShare } from "@tabler/icons-react";
 
 const fileName = (title: string, ext: string) =>
   `${title
@@ -132,34 +133,22 @@ export default function PosterPage() {
       title="Ảnh lịch trình"
       bottom={
         <div className="bottom-stack">
-          <div className="link-row">
-            <button className="btn-text" onClick={() => navigate("/editor")}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden>
-                <path d="M4 6h10M4 12h16M4 18h7" />
-                <circle cx="18" cy="6" r="2" />
-                <circle cx="15" cy="18" r="2" />
-              </svg>
-              Chỉnh lịch
-            </button>
-            <button className="btn-text brown" disabled={busy === "keep"} onClick={onKeep}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" aria-hidden>
-                <path d="M6 3h12v18l-6-4-6 4z" />
-              </svg>
-              {busy === "keep" ? "Đang lưu…" : "Lưu vào Lịch của tôi"}
-            </button>
+          <div className="pt-templates" role="radiogroup" aria-label="Mẫu ảnh">
+            {TEMPLATES.map((t) => (
+              <button key={t.id} role="radio" aria-checked={template === t.id} className={`pt-template ${template === t.id ? "on" : ""}`} onClick={() => setTemplate(t.id)}>
+                <span className="pt-swatch" style={{ background: `linear-gradient(135deg, ${t.swatch[0]} 50%, ${t.swatch[1]} 50%)` }} />
+                {t.name}
+              </button>
+            ))}
           </div>
-          <div className="action-row">
-            <button className="btn-soft btn-lg" disabled={busy !== null} onClick={onSave}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M12 3v12M7 10l5 5 5-5M5 21h14" />
-              </svg>
-              {busy === "save" ? "Đang lưu…" : "Lưu ảnh"}
+          <div className="pt-actions">
+            <button className="btn-outline" disabled={busy !== null} onClick={onShare}>
+              <IconShare size={20} stroke={2} aria-hidden />
+              {busy === "share" ? "Đang gửi…" : isInZalo() ? "Gửi qua Zalo" : "Chia sẻ"}
             </button>
-            <button className="btn-primary btn-lg" disabled={busy !== null} onClick={onShare}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />
-              </svg>
-              {busy === "share" ? "Đang gửi…" : isInZalo() ? "Gửi qua Zalo" : "Chia sẻ ảnh"}
+            <button className="btn-primary btn-lg" disabled={busy !== null} onClick={onSave}>
+              <IconDownload size={20} stroke={2} aria-hidden />
+              {busy === "save" ? "Đang lưu…" : "Lưu ảnh"}
             </button>
           </div>
         </div>
@@ -167,35 +156,17 @@ export default function PosterPage() {
     >
       <div className="content poster-wrap">
         <div className="poster-controls">
-          <label className="title-field">
-            <input value={draft.title} maxLength={60} onChange={(e) => setTitle(e.target.value)} aria-label="Tên chuyến đi" />
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-              <path d="M12 20h9" />
-              <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z" />
-            </svg>
-          </label>
-
-          {notice && (
-            <div className="notice" style={{ marginTop: 10 }}>
-              {notice}
-            </div>
-          )}
-
-          <div className="template-row" role="radiogroup" aria-label="Mẫu ảnh">
-            {TEMPLATES.map((t) => (
-              <button
-                key={t.id}
-                role="radio"
-                aria-checked={template === t.id}
-                className={`template-chip ${template === t.id ? "active" : ""}`}
-                onClick={() => setTemplate(t.id)}
-              >
-                <span className="swatch" style={{ background: `linear-gradient(135deg, ${t.swatch[0]}, ${t.swatch[1]})` }} />
-                {t.name}
-              </button>
-            ))}
+          <div className="pt-top">
+            <label className="pt-title">
+              <IconPencil size={18} stroke={2} aria-hidden />
+              <input value={draft.title} maxLength={60} onChange={(e) => setTitle(e.target.value)} aria-label="Tên chuyến đi" />
+            </label>
+            <button className="pt-edit" onClick={() => navigate("/editor")}>
+              <IconListDetails size={18} stroke={2} aria-hidden />
+              Chỉnh lịch
+            </button>
           </div>
-
+          {notice && <div className="notice">{notice}</div>}
         </div>
         <div className="poster-stage">
           <div ref={frameRef} className="poster-preview" style={{ height: posterHeight * scale }}>
@@ -205,8 +176,12 @@ export default function PosterPage() {
             {loadingPhotos && <div className="poster-loading">Đang tải ảnh địa điểm…</div>}
           </div>
 
-          <div className="muted" style={{ textAlign: "center", marginTop: 10 }}>
-            Ảnh xuất ra rộng 1080 px · cuộn để xem hết
+          <div className="pt-foot">
+            <span className="muted">Ảnh rộng 1080 px · cuộn để xem hết</span>
+            <button className="btn-text" disabled={busy === "keep"} onClick={onKeep}>
+              <IconBookmark size={18} stroke={2} aria-hidden />
+              {busy === "keep" ? "Đang lưu…" : "Lưu vào Lịch của tôi"}
+            </button>
           </div>
         </div>
       </div>

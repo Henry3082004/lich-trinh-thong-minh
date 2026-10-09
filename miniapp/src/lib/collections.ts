@@ -1,9 +1,10 @@
+import { IconCamera, IconCoffee, IconConfetti, IconSoup, IconTrekking, type Icon } from "@tabler/icons-react";
 import type { Place } from "../types";
 
 // Bộ sưu tập mở từ banner trang chủ: /places?collection=<id>
 export type Collection = {
   id: string;
-  icon: string;
+  icon: Icon;
   title: string;
   desc: string;
   match: (p: Place) => boolean;
@@ -23,7 +24,7 @@ const viewFirst = (p: Place) => (hasTag(p, "check-in") || hasTag(p, "view-dep") 
 export const COLLECTIONS: Collection[] = [
   {
     id: "le-hoi-sap-toi",
-    icon: "🎊",
+    icon: IconConfetti,
     title: "Lễ hội sắp diễn ra",
     desc: "Các lễ hội, mùa đẹp đang và sắp diễn ra trong 3 tháng tới.",
     match: (p) => (p.kind === "festival" || p.category === "le-hoi") && (p.months.length === 0 || monthsUntil(p) <= 3),
@@ -31,21 +32,21 @@ export const COLLECTIONS: Collection[] = [
   },
   {
     id: "check-in",
-    icon: "📸",
+    icon: IconCamera,
     title: "Điểm check-in nổi tiếng",
     desc: "Những góc chụp ảnh đẹp nhất Đắk Song.",
     match: (p) => hasTag(p, "check-in") && p.kind !== "festival",
   },
   {
     id: "trekking",
-    icon: "🥾",
+    icon: IconTrekking,
     title: "Trekking & cắm trại",
     desc: "Cung đường rừng, thác và bãi cắm trại.",
     match: (p) => hasTag(p, "trekking"),
   },
   {
     id: "mon-ngon",
-    icon: "🍲",
+    icon: IconSoup,
     title: "Món ngon Đắk Song",
     desc: "Đặc sản nên thử và quán ăn ngon.",
     match: (p) => p.kind === "dish" || p.category === "dac-san" || p.category === "am-thuc",
@@ -53,7 +54,7 @@ export const COLLECTIONS: Collection[] = [
   },
   {
     id: "ca-phe-view",
-    icon: "☕",
+    icon: IconCoffee,
     title: "Cà phê view đẹp",
     desc: "Quán cà phê vườn, view đồi, sống ảo.",
     match: (p) => p.category === "ca-phe",

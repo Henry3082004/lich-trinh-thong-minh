@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import type { Place } from "../types";
-import { categoryIcon, categoryName } from "../types";
+import { categoryName } from "../types";
+import { IconCalendarEvent, IconCheck, IconClock, IconMapPin } from "@tabler/icons-react";
+import { CatIcon, ImgFallback } from "./icons";
 import { formatDuration } from "../lib/schedule";
 import { monthsUntil } from "../lib/collections";
 
@@ -20,25 +22,56 @@ export function PlaceImg({ place, alt = "", fallback, lazy = true }: { place: Pl
 }
 
 export function PlaceThumb({ place }: { place: Place }) {
-  // Ảnh lấy từ CDN của cổng: nếu tải lỗi thì hiện biểu tượng thay thế
+  // Ảnh lấy từ CDN của cổng: nếu tải lỗi thì hiện ô thay thế có icon nhóm
   return (
     <div className="thumb">
-      <PlaceImg place={place} fallback={categoryIcon(place.category)} />
+      <PlaceImg place={place} fallback={<ImgFallback category={place.category} />} />
     </div>
   );
 }
 
-export function PlaceCard({ place, onClick, action }: { place: Place; onClick?: () => void; action?: React.ReactNode }) {
+export function PlaceCard({ place, onClick, action, added = false }: { place: Place; onClick?: () => void; action?: React.ReactNode; added?: boolean }) {
+  const festival = place.kind === "festival" && !!place.season;
   return (
-    <div className="place-big" data-tour="place-card" onClick={onClick}>
-      <div className="place-big-img">
-        <PlaceImg place={place} fallback={<span>{categoryIcon(place.category)}</span>} />
+    <div className="p-card" data-tour="place-card" onClick={onClick}>
+      <div className="p-card-img">
+        <PlaceImg place={place} fallback={<ImgFallback category={place.category} size={36} />} />
+        {added && (
+          <span className="p-added">
+            <IconCheck size={16} stroke={2.5} aria-hidden />
+            Đã thêm
+          </span>
+        )}
       </div>
-      <div className="place-big-body">
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div className="place-big-cat">{categoryName(place.category)}</div>
-          <div className="place-big-name">{place.name}</div>
-          <div className="place-big-addr">{place.kind === "festival" && place.season ? `${festivalBadge(place)}🗓 ${place.season}` : place.address || `~${formatDuration(place.durationMin)}`}</div>
+      <div className="p-card-body">
+        <div className="p-card-info">
+          <span className="p-tag">
+            <CatIcon category={place.category} size={15} />
+            {categoryName(place.category)}
+          </span>
+          <b className="p-card-name">{place.name}</b>
+          <div className="p-meta">
+            {festival ? (
+              <span>
+                <IconCalendarEvent size={15} stroke={2} aria-hidden />
+                {festivalBadge(place)}
+                {place.season}
+              </span>
+            ) : (
+              <>
+                {place.address && (
+                  <span className="one-line">
+                    <IconMapPin size={15} stroke={2} aria-hidden />
+                    {place.address}
+                  </span>
+                )}
+                <span>
+                  <IconClock size={15} stroke={2} aria-hidden />
+                  Tham quan khoảng {formatDuration(place.durationMin)}
+                </span>
+              </>
+            )}
+          </div>
         </div>
         {action}
       </div>

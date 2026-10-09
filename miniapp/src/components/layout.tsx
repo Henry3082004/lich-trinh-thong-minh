@@ -1,5 +1,6 @@
 import React from "react";
 import { Page, Spinner, useNavigate } from "zmp-ui";
+import { IconChevronLeft } from "@tabler/icons-react";
 import { CartButton } from "./cart-button";
 
 export function Screen({
@@ -24,7 +25,7 @@ export function Screen({
           <div className="app-header-inner">
           {back && (
             <button className="header-back" aria-label="Quay lại" onClick={() => navigate(-1)}>
-              ‹
+              <IconChevronLeft size={24} stroke={2} />
             </button>
           )}
           <div className="header-title">{title}</div>

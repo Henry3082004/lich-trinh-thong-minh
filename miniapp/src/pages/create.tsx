@@ -3,6 +3,7 @@ import { useNavigate, useSnackbar } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { api } from "../lib/api";
 import { useDraft } from "../state/draft";
+import { IconCheck } from "@tabler/icons-react";
 
 const IMG = "https://static.dggv.edu.vn/360/";
 // Mỗi sở thích một ảnh thật; id trùng với category của điểm đến để thuật toán gợi ý chấm điểm
@@ -79,7 +80,7 @@ export default function CreatePage() {
                 <span className="interest-shade" />
                 <span className="interest-name">{c.name}</span>
                 <span className="interest-check" aria-hidden>
-                  {on ? "✓" : ""}
+                  {on ? <IconCheck size={16} stroke={3} /> : null}
                 </span>
               </button>
             );

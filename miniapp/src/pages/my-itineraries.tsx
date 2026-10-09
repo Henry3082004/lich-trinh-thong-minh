@@ -4,6 +4,7 @@ import { Loading, Screen } from "../components/layout";
 import { api } from "../lib/api";
 import { useDraft } from "../state/draft";
 import type { Itinerary } from "../types";
+import { IconMap, IconTrash } from "@tabler/icons-react";
 
 export default function MyItinerariesPage() {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ export default function MyItinerariesPage() {
         {list?.map((it) => (
           <div key={it.id} className="saved-card">
             <div className="saved-thumb" onClick={() => open(it)}>
-              {it.items[0]?.place.images[0] ? <img src={it.items[0].place.images[0]} alt="" loading="lazy" /> : "🗺️"}
+              {it.items[0]?.place.images[0] ? <img src={it.items[0].place.images[0]} alt="" loading="lazy" /> : <IconMap size={28} stroke={1.75} aria-hidden />}
             </div>
             <div className="saved-body">
               <div className="saved-title" onClick={() => open(it)}>
@@ -66,7 +67,7 @@ export default function MyItinerariesPage() {
                   Mở ảnh
                 </button>
                 <button className="btn-round" aria-label="Xoá" onClick={() => remove(it)}>
-                  🗑
+                  <IconTrash size={20} stroke={2} />
                 </button>
               </div>
             </div>
