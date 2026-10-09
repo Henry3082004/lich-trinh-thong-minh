@@ -82,11 +82,20 @@ describe("buildPlan", () => {
     expect(plan.days.flatMap((d) => d.stops.map((s) => s.placeId))).not.toContain("hotel");
   });
 
-  it("đi hôm nay thì bắt đầu từ giờ hiện tại (giờ VN) nếu đã quá giờ dự định", () => {
+  it("ngày đầu bắt đầu theo giờ khách chọn, không theo giờ hiện tại", () => {
     const at = new Date("2027-03-10T05:07:00Z"); // 12:07 giờ VN
     const plan = buildPlan({ ...prefs, startDate: "2027-03-10" }, [A], ALL, { days: [{ placeIds: [{ id: "a" }] }, { placeIds: [] }] }, at);
-    expect(plan.days[0].stops[0].startTime).toBe("12:15");
-    expect(plan.days[1].stops).toEqual([]);
+    expect(plan.days[0].stops[0].startTime).toBe("08:00");
+  });
+
+  it("ngày quá dày thì dời điểm dư sang ngày sau; ngày cuối thì bỏ điểm AI gợi ý thêm", () => {
+    const long = [1, 2, 3, 4, 5, 6].map((i) => mk(`x${i}`, { durationMin: 180 }));
+    const plan = buildPlan(prefs, [], long, { days: [{ placeIds: long.map((p) => ({ id: p.id })) }, { placeIds: [] }] }, NOW);
+    for (const d of plan.days) for (const s of d.stops) expect(Number(s.startTime.slice(0, 2))).toBeLessThan(21);
+    expect(plan.days[1].stops.length).toBeGreaterThan(0);
+    const one = buildPlan({ ...prefs, days: 1 }, [], long, { days: [{ placeIds: long.map((p) => ({ id: p.id })) }] }, NOW);
+    expect(one.days[0].stops.every((s) => Number(s.startTime.slice(0, 2)) < 21)).toBe(true);
+    expect(one.warnings.join(" ")).toContain("bớt");
   });
 
   it("cảnh báo khi một ngày kết thúc quá muộn", () => {

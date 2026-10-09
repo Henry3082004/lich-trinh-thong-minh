@@ -44,6 +44,8 @@ export type Plan = { days: PlanDay[]; lodgingIds: string[]; warnings: string[]; 
 
 const PACE_MAX_STOPS = { relaxed: 3, normal: 5, packed: 7 } as const;
 const DAY_END_MIN = 21 * 60;
+// Không bắt đầu một điểm sau giờ này: điểm dư dời sang ngày sau (hoặc bỏ nếu là điểm AI gợi ý thêm)
+const LAST_START_MIN = 20 * 60;
 const NEXT_DAY_START_MIN = 8 * 60;
 const FESTIVAL_DEFAULT_MIN = 180;
 
@@ -111,13 +113,9 @@ export function buildPlan(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[], dra
     place(dayIdx, p.id);
   }
 
-  // Giờ bắt đầu từng ngày
-  const today = vietnamNow(now);
-  const dayStart = (i: number) => {
-    let clock = i === 0 ? toMin(prefs.startTime) : NEXT_DAY_START_MIN;
-    if (i === 0 && addDays(prefs.startDate, 0) === today.date && today.minutes > clock) clock = Math.ceil(today.minutes / 15) * 15; // đi hôm nay: bắt đầu từ bây giờ
-    return clock;
-  };
+  // Giờ bắt đầu từng ngày: ngày đầu theo giờ khách chọn (app không hỏi ngày đi nên không lấy giờ hiện tại)
+  void now;
+  const dayStart = (i: number) => (i === 0 ? toMin(prefs.startTime) : NEXT_DAY_START_MIN);
 
   // AI không biết giờ nên hay xếp bữa ăn lệch giờ: đặt quán ăn vào vị trí có giờ đến gần 12:00 nhất
   const startsOf = (list: { id: string }[], from: number) => {
@@ -146,6 +144,22 @@ export function buildPlan(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[], dra
     }
     stops.splice(best, 0, food);
   });
+
+  // Ngày quá dày (điểm bắt đầu sau 20:00): dời phần dư sang ngày sau; ngày cuối thì bỏ điểm AI gợi ý thêm
+  for (let i = 0; i < days.length; i++) {
+    const starts = startsOf(days[i], dayStart(i));
+    const k = starts.findIndex((t) => t > LAST_START_MIN);
+    if (k <= 0) continue;
+    const overflow = days[i].splice(k);
+    if (i + 1 < days.length) {
+      days[i + 1].unshift(...overflow);
+      continue;
+    }
+    for (const s of overflow) {
+      if (inCart.has(s.id)) days[i].push(s);
+      else warnings.push(`Lịch hơi dày nên mình bớt ${byId.get(s.id)!.name}.`);
+    }
+  }
 
   // Tính giờ
 
