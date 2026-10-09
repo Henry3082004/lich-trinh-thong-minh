@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "zmp-ui";
 import { Screen } from "../components/layout";
 import { AddButton } from "../components/add-button";
+import { BannerCarousel } from "../components/banner-carousel";
+import { BANNERS } from "../lib/banners";
 import { api, USE_MOCK } from "../lib/api";
 import { openPortal } from "../lib/zalo";
 import { useDraft } from "../state/draft";
@@ -38,17 +40,12 @@ export default function HomePage() {
   return (
     <Screen back={false} cart>
       <div className="home">
-        <div className="home-hero">
-          <img src={HERO} alt="" />
-          <div className="home-hero-shade" />
-        </div>
+        <BannerCarousel
+          banners={BANNERS}
+          onGo={(b) => navigate(b.to ?? (b.category && places.some((p) => p.category === b.category) ? `/places?category=${b.category}` : "/places"))}
+        />
 
         <div className="home-body">
-          <div className="home-greeting">
-            <div className="eyebrow">Cổng du lịch Đắk Song</div>
-            <h1>Chào bạn, đi Đắk Song mấy ngày?</h1>
-          </div>
-
           <div className="home-cta card-soft">
             <p>Lướt xem chỗ chơi, món ngon, lễ hội, bấm "+ Thêm" những chỗ bạn thích rồi để AI xếp thành lịch trình và làm ảnh đẹp để gửi gia đình, bạn bè.</p>
             <button className="btn-primary btn-lg" onClick={() => navigate("/cart")}>

@@ -1913,7 +1913,7 @@ html[data-layout="tablet"] {
   --mascot-size: clamp(108px, 10vh, 132px);
 }
 html[data-layout="desktop"] {
-  --mascot-size: clamp(92px, 11vh, 150px);
+  --mascot-size: clamp(120px, 15vh, 190px);
 }
 html[data-layout="tablet"] {
   --mascot-right: max(10px, calc(50% - 512px + 10px));
@@ -2081,7 +2081,7 @@ html[data-layout="desktop"] {
 }
 /* Bay vào từ góc trên bên phải, vỗ tai, đáp xuống nảy nhẹ */
 .mascot-dock.fly {
-  animation: mascot-fly-in 1.4s cubic-bezier(0.22, 0.9, 0.3, 1.1) both;
+  animation: mascot-fly-in 2.2s cubic-bezier(0.22, 0.9, 0.3, 1.1) both;
 }
 @keyframes mascot-fly-in {
   0% {
@@ -2337,4 +2337,199 @@ html[data-layout] .cart-fab {
 .mascot-btn .mascot {
   width: var(--mascot-size, 104px);
   height: auto;
+}
+
+
+/* =====================================================================
+   Banner lớn đầu trang chủ (tự lướt, kéo thả qua lại)
+   ===================================================================== */
+.home-body {
+  padding-top: 18px;
+}
+html[data-layout="tablet"] .home-body,
+html[data-layout="desktop"] .home-body {
+  padding-top: 28px;
+}
+.banner {
+  position: relative;
+  overflow: hidden;
+  height: clamp(270px, 70vw, 340px);
+  background: var(--green-900);
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.banner:active {
+  cursor: grabbing;
+}
+.banner-slide {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+.banner-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.banner-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 36, 12, 0.12) 0%, rgba(8, 36, 12, 0.28) 45%, rgba(8, 36, 12, 0.82) 100%);
+  pointer-events: none;
+}
+.banner-text {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  bottom: 40px;
+  color: #fff;
+}
+.banner-text h2 {
+  margin: 0 0 6px;
+  font-size: 26px;
+  line-height: 1.15;
+  font-weight: 800;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+}
+.banner-text p {
+  margin: 0 0 14px;
+  max-width: 480px;
+  font-size: 14px;
+  line-height: 1.45;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+}
+.banner-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--green-900);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+.banner-cta:active {
+  background: var(--green-100);
+}
+.banner-dots {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 6px;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+.banner-dots button {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  position: relative;
+}
+.banner-dots button::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.55);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, background 0.3s;
+}
+.banner-dots button[aria-current="true"]::before {
+  width: 24px;
+  background: #fff;
+}
+.banner-arrow {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--green-900);
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  z-index: 3;
+}
+.banner-arrow.prev {
+  left: 16px;
+}
+.banner-arrow.next {
+  right: 16px;
+}
+
+html[data-layout="tablet"] .banner {
+  height: 400px;
+}
+html[data-layout="desktop"] .banner {
+  height: clamp(380px, 50vh, 580px);
+}
+html[data-layout="tablet"] .banner-text,
+html[data-layout="desktop"] .banner-text {
+  left: max(76px, calc(50% - var(--page-max, 960px) / 2 + 28px));
+  right: auto;
+  max-width: 600px;
+  bottom: 70px;
+}
+html[data-layout="tablet"] .banner-text h2 {
+  font-size: 36px;
+}
+html[data-layout="desktop"] .banner-text h2 {
+  font-size: clamp(36px, 4.2vw, 56px);
+}
+html[data-layout="tablet"] .banner-text p {
+  font-size: 17px;
+}
+html[data-layout="desktop"] .banner-text p {
+  font-size: 18px;
+  max-width: 560px;
+}
+html[data-layout="tablet"] .banner-shade,
+html[data-layout="desktop"] .banner-shade {
+  background: linear-gradient(90deg, rgba(8, 36, 12, 0.82) 0%, rgba(8, 36, 12, 0.42) 52%, rgba(8, 36, 12, 0.06) 100%);
+}
+html[data-layout="tablet"] .banner-cta,
+html[data-layout="desktop"] .banner-cta {
+  height: 50px;
+  padding: 0 28px;
+  font-size: 16px;
+}
+html[data-layout="tablet"] .banner-arrow,
+html[data-layout="desktop"] .banner-arrow {
+  display: block;
+}
+html[data-layout="desktop"] .banner-dots {
+  bottom: 14px;
+}
+@media (min-width: 601px) {
+  html[data-layout="phone"] .banner {
+    height: 340px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .banner-dots button::before {
+    transition: none;
+  }
 }
