@@ -7,6 +7,7 @@ import { BANNERS } from "../lib/banners";
 import { api, USE_MOCK } from "../lib/api";
 import { useTrip } from "../state/trip";
 import { useCart } from "../state/cart";
+import { CartButton } from "../components/cart-button";
 import type { Party } from "../types";
 import { openPortal, openVr } from "../lib/zalo";
 import { categoryIcon, categoryName, type Place } from "../types";
@@ -49,7 +50,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <Screen back={false} cart>
+    <Screen back={false}>
       <div className="home">
         <BannerCarousel
           banners={BANNERS}
@@ -59,7 +60,10 @@ export default function HomePage() {
         <div className="home-body">
           <div className="home-cta card-soft">
             <div className="party">
-              <div className="party-label">Bạn đi:</div>
+              <div className="party-head">
+                <div className="party-label">Bạn đi:</div>
+                <CartButton inline />
+              </div>
               <div className="party-chips" role="group" aria-label="Bạn đi cùng ai">
                 {PARTIES.map((x) => (
                   <button key={x.id} className={`party-chip${prefs.party === x.id ? " on" : ""}`} aria-pressed={prefs.party === x.id} onClick={() => pickParty(x.id, x.people, x.kids)}>

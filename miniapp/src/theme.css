@@ -2675,3 +2675,45 @@ html[data-layout="tablet"] .cart-fab,
 html[data-layout="desktop"] .cart-fab {
   left: max(16px, calc(50% - var(--page-max, 1120px) / 2 + 16px));
 }
+
+/* Trang chủ: nút "Lịch trình" nằm cạnh "Bạn đi:" thay cho nút nổi */
+.party-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.party-head .party-label {
+  margin-bottom: 0;
+}
+.cart-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 8px 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--green-700);
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(27, 77, 32, 0.28);
+  cursor: pointer;
+}
+.cart-inline b {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--green-900);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.cart-inline.pop {
+  animation: pop 0.45s ease;
+}
