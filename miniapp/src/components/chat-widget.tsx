@@ -9,6 +9,9 @@ type Msg = { role: "user" | "model"; text: string; placeIds?: string[]; error?: 
 const SUGGESTIONS = ["Ở Đắk Song có gì đẹp?", "Gợi ý chỗ ăn ngon", "Có quán cà phê nào không?", "Đi 1 ngày nên ghé đâu?"];
 const MAX_SENT = 10; // số tin gần nhất gửi kèm để trợ lý nhớ ngữ cảnh
 const BUBBLE_KEY = "mascot-bubble-off";
+const FLY_MS = 1400; // thời gian bay vào
+const GREET_MS = 2300; // vẫy tay chào "Xin chào!"
+const ASK_MS = 8000; // hỏi "Mình giúp gì được cho bạn?"
 const GREETING = "Xin chào, mình là chú voi con ở Đắk Song! Bạn cần hỗ trợ gì? Mình có thể gợi ý chỗ chơi, món ngon, quán cà phê và lễ hội.";
 
 const isTouch = () => {
@@ -25,7 +28,9 @@ export function ChatWidget() {
   const navigate = useNavigate();
   const [enabled, setEnabled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [bubble, setBubble] = useState(false);
+  // Giai đoạn linh vật: fly (bay vào) -> greet (vẫy tay chào) -> ask (hỏi) -> idle (đứng yên); ask lặp lại thỉnh thoảng
+  const [phase, setPhase] = useState<"hidden" | "fly" | "greet" | "ask" | "idle">("hidden");
+  const [waving, setWaving] = useState(false);
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -70,9 +75,16 @@ export function ChatWidget() {
     };
   }, [enabled]);
 
-  // Bóng thoại: hiện sau ~2 giây, tự ẩn sau ~9 giây, thỉnh thoảng hiện lại nếu chưa mở chat; ✕ để tắt hẳn trong phiên
+  // Mới mở web: linh vật bay vào, vẫy tay chào, rồi hỏi; sau đó thỉnh thoảng hỏi lại nếu bạn chưa mở chat
   useEffect(() => {
     if (!enabled) return;
+    const reduce = (() => {
+      try {
+        return matchMedia("(prefers-reduced-motion: reduce)").matches;
+      } catch {
+        return false;
+      }
+    })();
     const off = () => {
       try {
         return sessionStorage.getItem(BUBBLE_KEY) === "1";
@@ -80,24 +92,37 @@ export function ChatWidget() {
         return false;
       }
     };
-    let hide: ReturnType<typeof setTimeout>;
-    const show = () => {
-      if (off() || openedOnce.current) return;
-      setBubble(true);
-      clearTimeout(hide);
-      hide = setTimeout(() => setBubble(false), 9000);
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const later = (fn: () => void, ms: number) => timers.push(setTimeout(fn, ms));
+    const ask = () => {
+      if (openedOnce.current || off()) return;
+      setPhase("ask");
+      setWaving(true);
+      later(() => setWaving(false), 3200);
+      later(() => setPhase("idle"), ASK_MS);
     };
-    const first = setTimeout(show, 2000);
-    const again = setInterval(show, 90000);
+    if (reduce) {
+      later(ask, 800);
+    } else {
+      setPhase("fly");
+      setWaving(false);
+      later(() => {
+        if (off()) return setPhase("idle");
+        setPhase("greet");
+        setWaving(true);
+      }, FLY_MS);
+      later(ask, FLY_MS + GREET_MS);
+    }
+    const again = setInterval(ask, 90000);
     return () => {
-      clearTimeout(first);
-      clearTimeout(hide);
+      timers.forEach(clearTimeout);
       clearInterval(again);
     };
   }, [enabled]);
 
   const dismissBubble = () => {
-    setBubble(false);
+    setPhase("idle");
+    setWaving(false);
     try {
       sessionStorage.setItem(BUBBLE_KEY, "1");
     } catch {
@@ -107,7 +132,8 @@ export function ChatWidget() {
 
   const openChat = () => {
     openedOnce.current = true;
-    setBubble(false);
+    setPhase("idle");
+    setWaving(false);
     setOpen(true);
   };
   const close = useCallback(() => setOpen(false), []);
@@ -155,11 +181,17 @@ export function ChatWidget() {
   return (
     <div ref={rootRef} className="mascot-root">
       {!open && (
-        <>
-          {bubble && (
-            <div className="mascot-bubble" role="status">
+        <div className={`mascot-dock ${phase === "fly" ? "fly" : ""}`}>
+          {(phase === "greet" || phase === "ask") && (
+            <div className="mascot-bubble" role="status" key={phase}>
               <button className="mascot-bubble-text" onClick={openChat}>
-                Bạn cần hỗ trợ gì? <span aria-hidden>👋</span>
+                {phase === "greet" ? (
+                  <>
+                    Xin chào! <span aria-hidden>👋</span>
+                  </>
+                ) : (
+                  <>Mình giúp gì được cho bạn?</>
+                )}
               </button>
               <button className="mascot-bubble-x" aria-label="Tắt lời chào" onClick={dismissBubble}>
                 ✕
@@ -167,9 +199,9 @@ export function ChatWidget() {
             </div>
           )}
           <button className="mascot-btn" aria-label="Mở chat hỏi trợ lý Đắk Song" aria-expanded={false} onClick={openChat}>
-            <Mascot waving={bubble || undefined} />
+            <Mascot waving={waving} flying={phase === "fly"} />
           </button>
-        </>
+        </div>
       )}
 
       {open && (
@@ -178,7 +210,7 @@ export function ChatWidget() {
           <section className="chat-panel" role="dialog" aria-label="Trợ lý Đắk Song" aria-modal="true">
             <header className="chat-head">
               <div className="chat-avatar">
-                <Mascot size={44} happy />
+                <Mascot size={46} happy face />
               </div>
               <div className="chat-head-text">
                 <b>Trợ lý Đắk Song</b>
