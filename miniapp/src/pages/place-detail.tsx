@@ -9,6 +9,20 @@ import { directionsUrl } from "../lib/maps";
 import { callPhone, openLink } from "../lib/zalo";
 import { useDraft } from "../state/draft";
 import { categoryName, type GoogleInfo, type Place } from "../types";
+import { CatIcon } from "../components/icons";
+import {
+  IconCalendarEvent,
+  IconCalendarTime,
+  IconChevronLeft,
+  IconClock,
+  IconExternalLink,
+  IconInfoCircle,
+  IconMap2,
+  IconMapPin,
+  IconNavigation,
+  IconPhone,
+  IconWallet,
+} from "@tabler/icons-react";
 
 export default function PlaceDetailPage() {
   const { id = "" } = useParams();
@@ -61,7 +75,7 @@ export default function PlaceDetailPage() {
       }
     >
       <button className="round-back" aria-label="Quay lại" onClick={() => navigate(-1)}>
-        ‹
+        <IconChevronLeft size={24} stroke={2} />
       </button>
       {error && <div className="empty">{error}</div>}
       {!place && !error && <Loading />}
@@ -72,38 +86,85 @@ export default function PlaceDetailPage() {
             <div className="detail-hero-shade" />
           </div>
           <div className="detail-sheet content narrow stack">
-            <div>
-              <span className="badge-green">
-                {categoryName(place.category)} · ~{formatDuration(place.durationMin)}
+            <div className="d-tags">
+              <span className="p-tag d-tag">
+                <CatIcon category={place.category} size={16} />
+                {categoryName(place.category)}
               </span>
-              <h2 className="detail-name">{place.name}</h2>
-              {place.address && <div className="detail-addr">{place.address}</div>}
+              <span className="d-tag earth">
+                <IconClock size={16} stroke={2} aria-hidden />
+                khoảng {formatDuration(place.durationMin)}
+              </span>
             </div>
-            {(place.season || place.months.length > 0 || place.priceNote) && (
-              <div className="card stack" style={{ gap: 6 }}>
-                {(place.season || place.months.length > 0) && <div>🎊 Diễn ra: {place.season || `tháng ${place.months.join(", ")}`}</div>}
-                {place.priceNote && <div>💰 {place.priceNote}</div>}
+            <div className="d-title">
+              <h2 className="detail-name">{place.name}</h2>
+              {place.address && (
+                <div className="detail-addr">
+                  <IconMapPin size={18} stroke={2} aria-hidden />
+                  {place.address}
+                </div>
+              )}
+            </div>
+            <div className="d-facts">
+              {(place.season || place.months.length > 0) && (
+                <div className="d-fact">
+                  <span className="d-fact-ico">
+                    <IconCalendarEvent size={20} stroke={2} />
+                  </span>
+                  <div>
+                    <span>Thời gian diễn ra</span>
+                    <b>{place.season || `Tháng ${place.months.join(", ")}`}</b>
+                  </div>
+                </div>
+              )}
+              <div className="d-fact">
+                <span className="d-fact-ico">
+                  <IconWallet size={20} stroke={2} />
+                </span>
+                <div>
+                  <span>Giá tham khảo</span>
+                  <b>{place.priceNote || "Đang cập nhật"}</b>
+                </div>
               </div>
-            )}
-            <div className="detail-desc">{place.description}</div>
+              <div className="d-fact">
+                <span className="d-fact-ico">
+                  <IconCalendarTime size={20} stroke={2} />
+                </span>
+                <div>
+                  <span>Giờ mở cửa</span>
+                  <b>{place.openHours || "Đang cập nhật"}</b>
+                </div>
+              </div>
+            </div>
+            <div className="d-intro">
+              <h3>Giới thiệu</h3>
+              <p className="detail-desc">{place.description}</p>
+            </div>
             <div className="detail-actions">
               {place.phone && (
-                <button className="btn-outline" onClick={() => callPhone(place.phone!)}>
+                <button className="btn-outline d-wide" onClick={() => callPhone(place.phone!)}>
+                  <IconPhone size={20} stroke={2} aria-hidden />
                   Gọi {place.phone}
                 </button>
               )}
               <button className="btn-outline" onClick={() => openLink(directionsUrl(place))}>
+                <IconNavigation size={20} stroke={2} aria-hidden />
                 Chỉ đường
               </button>
               {place.mapLink && (
-                <button className="btn-outline brown" onClick={() => openLink(place.mapLink!)}>
-                  Xem địa điểm trên Google Maps ↗
+                <button className="btn-outline" onClick={() => openLink(place.mapLink!)}>
+                  <IconMap2 size={20} stroke={2} aria-hidden />
+                  Xem trên Google Maps
                 </button>
               )}
             </div>
-            {place.approxLocation && <div className="muted">📍 Chỉ đường sẽ tìm theo tên quán trên Google Maps.</div>}
-            {place.openHours && <div className="muted">🕒 {place.openHours}</div>}
-            {place.imageCredits.length > 0 && <div className="muted" style={{ fontSize: 12 }}>Ảnh: {place.imageCredits.join("; ")}</div>}
+            {place.approxLocation && (
+              <div className="muted d-note">
+                <IconInfoCircle size={16} stroke={2} aria-hidden />
+                Chỉ đường sẽ tìm theo tên địa điểm trên Google Maps.
+              </div>
+            )}
+            {place.imageCredits.length > 0 && <div className="muted" style={{ fontSize: 13 }}>Ảnh: {place.imageCredits.join("; ")}</div>}
 
             {google && (google.rating !== null || google.reviews.length > 0) && (
               <div className="g-reviews">
@@ -114,9 +175,7 @@ export default function PlaceDetailPage() {
                       <span>{google.ratingCount.toLocaleString("vi-VN")} đánh giá trên Google</span>
                     </>
                   )}
-                  <span className="g-go" aria-hidden>
-                    ↗
-                  </span>
+                  <IconExternalLink className="g-go" size={18} stroke={2} aria-hidden />
                 </button>
                 {google.reviews.map((r, i) => (
                   <div key={i} className="g-review">
@@ -131,7 +190,8 @@ export default function PlaceDetailPage() {
                   </div>
                 ))}
                 <button className="btn-outline" onClick={() => openLink(google.reviewsUrl)}>
-                  Xem tất cả đánh giá trên Google Maps ↗
+                  Xem tất cả đánh giá trên Google Maps
+                  <IconExternalLink size={18} stroke={2} aria-hidden />
                 </button>
                 <div className="muted" style={{ textAlign: "center", fontSize: 12 }}>
                   Nguồn: {google.source}

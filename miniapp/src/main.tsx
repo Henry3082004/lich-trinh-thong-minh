@@ -1,7 +1,13 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "zmp-ui/zaui.css";
+import "@fontsource/be-vietnam-pro/400.css";
+import "@fontsource/be-vietnam-pro/500.css";
+import "@fontsource/be-vietnam-pro/600.css";
+import "@fontsource/be-vietnam-pro/700.css";
+import "@fontsource/be-vietnam-pro/800.css";
 import "./theme.css";
+import "./redesign.css";
 import MyApp from "./app";
 
 // Lỗi ngoài React (promise bị từ chối, script lỗi) cũng hiện lên màn hình để dễ báo lỗi.

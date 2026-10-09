@@ -1,3 +1,4 @@
+import { CatIcon } from "../../icons";
 import React from "react";
 import { POSTER_MIN_HEIGHT, type PosterData, type PosterStop } from "../poster-data";
 
@@ -35,7 +36,7 @@ export function Thumb({
   radius,
   tint,
 }: {
-  stop: Pick<PosterStop, "photo" | "icon">;
+  stop: Pick<PosterStop, "photo" | "category">;
   size: number;
   radius: number;
   tint: string;
@@ -53,10 +54,10 @@ export function Thumb({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        fontSize: size * 0.5,
+        color: "rgba(27,77,32,0.75)",
       }}
     >
-      {stop.icon}
+      <CatIcon category={stop.category} size={Math.round(size * 0.5)} />
     </div>
   );
 }

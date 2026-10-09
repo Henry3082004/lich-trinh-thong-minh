@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { IconArrowBigUpFilled, IconArrowRight, IconX } from "@tabler/icons-react";
 
 // Hướng dẫn sử dụng lần đầu: làm tối màn hình, khoanh vùng nút cần bấm, mũi tên chỉ vào.
 // Khách bấm đúng nút thì sang bước kế; bước nào chưa thấy nút (đang ở trang khác) thì chờ.
@@ -8,7 +9,7 @@ type Step = { target?: string; title: string; text: string; next?: string; endOn
 
 const STEPS: Step[] = [
   {
-    title: "Chào bạn 👋",
+    title: "Chào bạn",
     text: "App giúp bạn chọn chỗ chơi ở Đắk Song, để AI xếp lịch trình rồi tải ảnh lịch trình đẹp về máy. Mình chỉ bạn cách làm trong vài bước nhé!",
     next: "Bắt đầu",
   },
@@ -26,7 +27,7 @@ const STEPS: Step[] = [
   {
     target: '[data-tour="ai-plan"]',
     title: "Để AI lên lịch",
-    text: "Bấm để AI xếp lịch trình. Xong bạn bấm “Lưu ảnh” là tải ngay ảnh lịch trình về máy 📥",
+    text: "Bấm để AI xếp lịch trình. Xong bạn bấm “Lưu ảnh” là tải ngay ảnh lịch trình về máy.",
   },
 ];
 
@@ -120,6 +121,7 @@ export function Tour() {
             </button>
             <button className="tour-next" onClick={next}>
               {cur.next ?? "Tiếp"}
+              <IconArrowRight size={18} stroke={2} aria-hidden />
             </button>
           </div>
         </div>
@@ -129,7 +131,8 @@ export function Tour() {
 
   const skip = (
     <button className="tour-skip floating" onClick={finish}>
-      Bỏ qua hướng dẫn ✕
+      Bỏ qua
+      <IconX size={16} stroke={2} aria-hidden />
     </button>
   );
   // Chưa thấy nút (đang ở trang khác): chỉ hiện nút bỏ qua
@@ -154,20 +157,29 @@ export function Tour() {
         style={{ top: rect.top - pad, left: rect.left - pad, width: rect.width + pad * 2, height: rect.height + pad * 2 }}
       />
       <div className={`tour-arrow ${below ? "up" : "down"}`} style={arrowStyle} aria-hidden>
-        {below ? "👆" : "👇"}
+        <IconArrowBigUpFilled size={28} />
       </div>
       <div className="tour-card" style={cardStyle} role="dialog" aria-label="Hướng dẫn sử dụng">
-        <b>
-          {cur.title} <small>{step}/{STEPS.length - 1}</small>
-        </b>
+        <div className="tour-card-head">
+          <b>{cur.title}</b>
+          <small>
+            {step}/{STEPS.length - 1}
+          </small>
+        </div>
         <p>{cur.text}</p>
-        {cur.next && (
-          <div className="tour-actions">
+        <div className="tour-actions">
+          <div className="tour-dots" aria-hidden>
+            {STEPS.slice(1).map((_, i) => (
+              <span key={i} className={i + 1 === step ? "on" : ""} />
+            ))}
+          </div>
+          {cur.next && (
             <button className="tour-next" onClick={next}>
               {cur.next}
+              <IconArrowRight size={18} stroke={2} aria-hidden />
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       {skip}
     </div>

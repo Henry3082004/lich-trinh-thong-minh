@@ -1,6 +1,6 @@
 import { formatDuration, travelMinutes } from "../../lib/schedule";
 import type { Draft } from "../../types";
-import { categoryIcon, categoryName } from "../../types";
+import { categoryName } from "../../types";
 
 export type TemplateId = "forest" | "sunset" | "minimal";
 
@@ -9,7 +9,6 @@ export type PosterStop = {
   name: string;
   category: string;
   categoryLabel: string;
-  icon: string;
   photo: string | null; // data URL, null nếu không có hoặc tải lỗi
   travelMin: number; // thời gian di chuyển từ điểm trước (0 với điểm đầu ngày)
   duration: string; // vd "1 giờ 30 phút"
@@ -57,7 +56,6 @@ export function buildPosterData(draft: Draft, photos: Map<string, string | null>
       name: s.place.name,
       category: s.place.category,
       categoryLabel: categoryName(s.place.category),
-      icon: categoryIcon(s.place.category),
       photo: photoOf(s.place.images[0]),
       travelMin: i > 0 ? travelMinutes(d.stops[i - 1].place, s.place) : 0,
       duration: formatDuration(s.place.durationMin),

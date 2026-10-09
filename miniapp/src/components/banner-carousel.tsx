@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { IconArrowRight, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
 import type { Banner } from "../lib/banners";
 
 const AUTOPLAY_MS = 3200;
@@ -132,10 +133,14 @@ export function BannerCarousel({ banners, onGo }: { banners: Banner[]; onGo: (b:
             <img src={b.image} alt="" draggable={false} decoding="async" loading={i === 0 ? "eager" : "lazy"} {...(i === 0 ? { fetchpriority: "high" } : {})} />
             <div className="banner-shade" />
             <div className="banner-text">
+              <span className="banner-tag">
+                <b.icon size={16} stroke={2} aria-hidden />
+                {b.tag}
+              </span>
               <h2>{b.title}</h2>
               <p>{b.subtitle}</p>
               <button className="banner-cta" tabIndex={active ? 0 : -1} onClick={() => onGo(b)}>
-                {b.cta} <span aria-hidden>›</span>
+                {b.cta} <IconArrowRight size={16} stroke={2} aria-hidden />
               </button>
             </div>
           </div>
@@ -143,10 +148,10 @@ export function BannerCarousel({ banners, onGo }: { banners: Banner[]; onGo: (b:
       })}
 
       <button className="banner-arrow prev" aria-label="Banner trước" onClick={() => go(-1)}>
-        ‹
+        <IconChevronLeft size={22} stroke={2} />
       </button>
       <button className="banner-arrow next" aria-label="Banner kế tiếp" onClick={() => go(1)}>
-        ›
+        <IconChevronRight size={22} stroke={2} />
       </button>
       <div className="banner-dots">
         {banners.map((b, i) => (

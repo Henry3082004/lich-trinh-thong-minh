@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "zmp-ui";
+import { IconListCheck } from "@tabler/icons-react";
 import { useCart } from "../state/cart";
 
-// Nút giỏ nổi "🧺 Lịch trình (N)": chỉ hiện khi giỏ có mục, nảy lên mỗi lần thêm
+// Nút giỏ nổi "Lịch trình (N)": chỉ hiện khi giỏ có mục, nảy lên mỗi lần thêm
 export function CartButton({ withBottom = false, inline = false }: { withBottom?: boolean; inline?: boolean }) {
   const navigate = useNavigate();
   const { count, bump } = useCart();
@@ -19,7 +20,7 @@ export function CartButton({ withBottom = false, inline = false }: { withBottom?
   if (count === 0 && !inline) return null;
   return (
     <button data-tour="cart" className={`${inline ? "cart-inline" : `cart-fab ${withBottom ? "with-bottom" : ""}`} ${pop ? "pop" : ""}`} onClick={() => navigate("/cart")} aria-label={`Lịch trình, ${count} mục`}>
-      <span aria-hidden>🧺</span> Lịch trình
+      <IconListCheck size={18} stroke={2} className="cart-ico" aria-hidden /> Lịch trình
       <b>{count}</b>
     </button>
   );

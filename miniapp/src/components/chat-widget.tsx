@@ -1,3 +1,4 @@
+import { IconMapPin, IconRefresh, IconSend, IconX } from "@tabler/icons-react";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "zmp-ui";
 import { api } from "../lib/api";
@@ -184,14 +185,14 @@ export function ChatWidget() {
               <button className="mascot-bubble-text" onClick={openChat}>
                 {phase === "greet" ? (
                   <>
-                    Xin chào! <span aria-hidden>👋</span>
+                    Xin chào!
                   </>
                 ) : (
                   <>Mình giúp gì được cho bạn?</>
                 )}
               </button>
               <button className="mascot-bubble-x" aria-label="Tắt lời chào" onClick={dismissBubble}>
-                ✕
+                <IconX size={16} stroke={2} />
               </button>
             </div>
           )}
@@ -211,13 +212,16 @@ export function ChatWidget() {
               </div>
               <div className="chat-head-text">
                 <b>Trợ lý Đắk Song</b>
-                <small>Hỏi về địa điểm, món ăn, lễ hội</small>
+                <small>
+                  <span className="chat-online" aria-hidden />
+                  Hỏi về địa điểm, món ăn, lễ hội
+                </small>
               </div>
               <button className="chat-head-btn" aria-label="Làm mới cuộc trò chuyện" disabled={msgs.length === 0 || busy} onClick={() => setMsgs([])}>
-                ↻
+                <IconRefresh size={22} stroke={2} />
               </button>
-              <button className="chat-head-btn" aria-label="Đóng chat" onClick={close}>
-                ✕
+              <button className="chat-head-btn close" aria-label="Đóng chat" onClick={close}>
+                <IconX size={22} stroke={2} />
               </button>
             </header>
 
@@ -228,7 +232,7 @@ export function ChatWidget() {
               {msgs.length === 0 && (
                 <div className="chat-suggest">
                   {SUGGESTIONS.map((s) => (
-                    <button key={s} className="chip" onClick={() => send(s)}>
+                    <button key={s} className="ai-chip" onClick={() => send(s)}>
                       {s}
                     </button>
                   ))}
@@ -238,20 +242,21 @@ export function ChatWidget() {
                 <div key={i} className={`bubble-row ${m.role}`}>
                   <div className={`bubble ${m.role} ${m.error ? "error" : ""}`}>{m.text}</div>
                   {m.placeIds && m.placeIds.length > 0 && (
-                    <div className="chips" style={{ marginTop: 6 }}>
+                    <div className="chat-places">
                       {m.placeIds
                         .map((id) => places.get(id))
                         .filter((p): p is Place => !!p)
                         .map((p) => (
                           <button
                             key={p.id}
-                            className="chip"
+                            className="chat-place"
                             onClick={() => {
                               setOpen(false);
                               navigate(`/place/${p.id}`);
                             }}
                           >
-                            📍 {p.name}
+                            <IconMapPin size={16} stroke={2} aria-hidden />
+                            {p.name}
                           </button>
                         ))}
                     </div>
@@ -279,8 +284,8 @@ export function ChatWidget() {
               }}
             >
               <input ref={inputRef} value={input} maxLength={500} onChange={(e) => setInput(e.target.value)} placeholder="Nhập câu hỏi về Đắk Song…" aria-label="Câu hỏi" />
-              <button className="btn-primary" type="submit" disabled={busy || !input.trim()} aria-label="Gửi">
-                Gửi
+              <button className="chat-send" type="submit" disabled={busy || !input.trim()} aria-label="Gửi">
+                <IconSend size={22} stroke={2} />
               </button>
             </form>
           </section>
