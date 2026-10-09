@@ -26,7 +26,7 @@ export function PlaceCard({ place, onClick, action }: { place: Place; onClick?: 
         <div style={{ flex: 1, minWidth: 0 }}>
           <div className="place-big-cat">{categoryName(place.category)}</div>
           <div className="place-big-name">{place.name}</div>
-          <div className="place-big-addr">{place.address || `~${formatDuration(place.durationMin)}`}</div>
+          <div className="place-big-addr">{place.kind === "festival" && place.season ? `🗓 ${place.season}` : place.address || `~${formatDuration(place.durationMin)}`}</div>
         </div>
         {action}
       </div>

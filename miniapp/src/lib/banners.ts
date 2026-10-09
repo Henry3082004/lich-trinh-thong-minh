@@ -11,55 +11,50 @@ export type Banner = {
   cta: string;
   to?: string;
   category?: string;
+  collection?: string; // mở danh sách theo bộ sưu tập (lib/collections.ts)
 };
+
+const UNSPLASH = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=70`;
 
 export const BANNERS: Banner[] = [
   {
-    id: "ai-plan",
-    title: "Chào bạn, đi Đắk Song mấy ngày?",
-    subtitle: "Chọn chỗ bạn thích, AI xếp lịch trình và làm ảnh đẹp để gửi gia đình, bạn bè.",
-    image: IMG + "1679365017974_123201-nam-nung-4.jpg",
-    cta: "Để AI lên lịch trình",
-    to: "/cart",
+    id: "le-hoi",
+    title: "Lễ hội & mùa đẹp sắp tới",
+    subtitle: "Mùa dã quỳ, lễ mừng lúa mới, đêm cồng chiêng: đừng bỏ lỡ dịp nào.",
+    image: UNSPLASH("photo-1533174072545-7a4b6ad7a6c3"),
+    cta: "Xem lịch lễ hội",
+    collection: "le-hoi-sap-toi",
   },
   {
-    id: "le-hoi",
-    title: "Lễ hội và văn hoá Tây Nguyên",
-    subtitle: "Cồng chiêng, nhà dài, những mùa lễ hội đậm bản sắc của người M'Nông.",
-    image: IMG + "1679364818513_thien-vien-truc-lam-dao-nguyen-5.jpg",
-    cta: "Khám phá lễ hội",
-    category: "le-hoi",
+    id: "check-in",
+    title: "Điểm check-in nổi tiếng",
+    subtitle: "Thác Lưu Ly, đồi thông săn mây, thiền viện giữa rừng.",
+    image: IMG + "1679365135640_daknong-thac-luu-ly.jpg",
+    cta: "Xem điểm check-in",
+    collection: "check-in",
   },
   {
     id: "trekking",
-    title: "Trekking, cắm trại giữa đại ngàn",
-    subtitle: "Băng rừng Nâm Nung, ngắm thác, cắm trại trên thảo nguyên.",
+    title: "Trekking giữa đại ngàn",
+    subtitle: "Băng rừng Nâm Nung, men suối đá, cắm trại trên thảo nguyên.",
     image: IMG + "1679365017974_123201-nam-nung-4.jpg",
-    cta: "Xem điểm thiên nhiên",
-    category: "thien-nhien",
+    cta: "Xem cung trekking",
+    collection: "trekking",
   },
   {
-    id: "thac",
-    title: "Thác nước xanh mát",
-    subtitle: "Thác Lưu Ly và những điểm check-in giữa rừng.",
-    image: IMG + "1679365135640_daknong-thac-luu-ly.jpg",
-    cta: "Xem điểm đến",
-    category: "thien-nhien",
+    id: "mon-ngon",
+    title: "Món ngon phải thử ở Đắk Song",
+    subtitle: "Cơm lam gà nướng, canh thụt, rượu cần, hồ tiêu và cà phê đất đỏ.",
+    image: UNSPLASH("photo-1555939594-58d7cb561ad1"),
+    cta: "Xem món ngon",
+    collection: "mon-ngon",
   },
   {
     id: "ca-phe",
-    title: "Cà phê và món ngon địa phương",
-    subtitle: "Quán cà phê view đẹp, ăn gì ở Đắk Song.",
-    image: IMG + "1682415746498_2022-04-21.jpg",
-    cta: "Xem quán cà phê",
-    category: "ca-phe",
-  },
-  {
-    id: "anh-nhanh",
-    title: "2 chạm có ngay ảnh lịch trình",
-    subtitle: "Chọn số ngày, nhận tấm ảnh đẹp để lưu về hoặc gửi qua Zalo.",
+    title: "Cà phê view đồi, chill cả ngày",
+    subtitle: "Quán vườn, quán đồi, góc sống ảo cho chuyến đi.",
     image: IMG + "1681379418700_330464010_1349343925899736_2201816785743800654_n.jpg",
-    cta: "Tạo ảnh ngay",
-    to: "/create",
+    cta: "Xem quán cà phê",
+    collection: "ca-phe-view",
   },
 ];

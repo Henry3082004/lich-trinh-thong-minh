@@ -140,7 +140,8 @@
     "address": null,
     "tags": [
       "ca-phe",
-      "view-dep"
+      "view-dep",
+      "check-in"
     ],
     "durationMin": 75,
     "openHours": "06:30 - 21:30",
@@ -170,7 +171,8 @@
     "address": null,
     "tags": [
       "ca-phe",
-      "song-ao"
+      "song-ao",
+      "check-in"
     ],
     "durationMin": 60,
     "openHours": "07:00 - 22:00",
@@ -184,6 +186,208 @@
     "imageCredits": [
       "Ảnh minh hoạ: Unsplash"
     ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-ca-phe-robusta",
+    "name": "Cà phê Robusta Đắk Song",
+    "category": "dac-san",
+    "description": "Cà phê Robusta trồng trên đất đỏ bazan, vị đậm, có thể mua rang xay tại vườn làm quà. (Thông tin mẫu phục vụ demo.)",
+    "images": [
+      "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "dac-san",
+      "qua-tang"
+    ],
+    "durationMin": 30,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=C%C3%A0%20ph%C3%AA%20Robusta%20%C4%90%E1%BA%AFk%20Song%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "dish",
+    "season": null,
+    "months": [],
+    "priceNote": "Khoảng 180.000–300.000đ/kg",
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-canh-thut",
+    "name": "Canh thụt M'Nông",
+    "category": "dac-san",
+    "description": "Canh nấu trong ống tre với rau rừng, cá hoặc thịt, vị đậm đà đặc trưng của người M'Nông. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "dac-san",
+      "am-thuc"
+    ],
+    "durationMin": 45,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Canh%20th%E1%BB%A5t%20M%27N%C3%B4ng%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "dish",
+    "season": null,
+    "months": [],
+    "priceNote": "Khoảng 80.000–150.000đ/phần",
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-com-lam-ga-nuong",
+    "name": "Cơm lam gà nướng",
+    "category": "dac-san",
+    "description": "Cơm nấu trong ống tre ăn kèm gà nướng mắc khén, chấm muối é – món phải thử khi lên Tây Nguyên. (Thông tin mẫu phục vụ demo.)",
+    "images": [
+      "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "dac-san",
+      "am-thuc"
+    ],
+    "durationMin": 60,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=C%C6%A1m%20lam%20g%C3%A0%20n%C6%B0%E1%BB%9Bng%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "dish",
+    "season": null,
+    "months": [],
+    "priceNote": "Khoảng 150.000–250.000đ/phần",
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-cung-rung-gia",
+    "name": "Cung trekking rừng già suối đá",
+    "category": "thien-nhien",
+    "description": "Cung trekking xuyên rừng già dọc suối đá khoảng 6 km, nên đi cùng người dẫn đường địa phương. (Thông tin mẫu phục vụ demo.)",
+    "images": [
+      "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.25,
+    "lng": 107.58,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "trekking"
+    ],
+    "durationMin": 300,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Cung%20trekking%20r%E1%BB%ABng%20gi%C3%A0%20su%E1%BB%91i%20%C4%91%C3%A1%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-dem-cong-chieng",
+    "name": "Đêm hội cồng chiêng Đắk Song",
+    "category": "le-hoi",
+    "description": "Đêm giao lưu cồng chiêng, múa xoang quanh lửa trại, du khách được cùng tham gia. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "le-hoi",
+      "van-hoa"
+    ],
+    "durationMin": 150,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=%C4%90%C3%AAm%20h%E1%BB%99i%20c%E1%BB%93ng%20chi%C3%AAng%20%C4%90%E1%BA%AFk%20Song%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "festival",
+    "season": "Tháng 12 – tháng 1",
+    "months": [
+      12,
+      1
+    ],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-doi-thong-san-may",
+    "name": "Đồi thông săn mây",
+    "category": "thien-nhien",
+    "description": "Đồi thông yên bình, sáng sớm có biển mây; cung đi bộ nhẹ khoảng 2 km, hợp người mới trekking. (Thông tin mẫu phục vụ demo.)",
+    "images": [
+      "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.29,
+    "lng": 107.585,
+    "address": null,
+    "tags": [
+      "thien-nhien",
+      "trekking",
+      "check-in"
+    ],
+    "durationMin": 150,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=%C4%90%E1%BB%93i%20th%C3%B4ng%20s%C4%83n%20m%C3%A2y%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": null,
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-ho-tieu-dak-song",
+    "name": "Hồ tiêu Đắk Song",
+    "category": "dac-san",
+    "description": "Đắk Song nổi tiếng với các vườn hồ tiêu; hạt tiêu thơm cay, là món quà mang về được ưa chuộng. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "dac-san",
+      "qua-tang"
+    ],
+    "durationMin": 30,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=H%E1%BB%93%20ti%C3%AAu%20%C4%90%E1%BA%AFk%20Song%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "dish",
+    "season": null,
+    "months": [],
+    "priceNote": "Khoảng 150.000–250.000đ/kg",
+    "imageCredits": [],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -233,6 +437,124 @@
     "season": null,
     "months": [],
     "priceNote": "Khoảng 450.000–700.000đ/đêm",
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-le-mung-lua-moi",
+    "name": "Lễ mừng lúa mới của người M'Nông",
+    "category": "le-hoi",
+    "description": "Lễ tạ ơn thần lúa sau mùa gặt với cồng chiêng, rượu cần và các món truyền thống của buôn làng. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "le-hoi",
+      "van-hoa"
+    ],
+    "durationMin": 180,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=L%E1%BB%85%20m%E1%BB%ABng%20l%C3%BAa%20m%E1%BB%9Bi%20c%E1%BB%A7a%20ng%C6%B0%E1%BB%9Di%20M%27N%C3%B4ng%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "festival",
+    "season": "Tháng 11 – 12 (sau mùa gặt)",
+    "months": [
+      11,
+      12
+    ],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-mua-hoa-ca-phe",
+    "name": "Mùa hoa cà phê nở trắng đồi",
+    "category": "le-hoi",
+    "description": "Đầu năm, hoa cà phê nở trắng và thơm khắp các đồi, thích hợp dạo vườn và chụp ảnh. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "le-hoi",
+      "check-in"
+    ],
+    "durationMin": 90,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=M%C3%B9a%20hoa%20c%C3%A0%20ph%C3%AA%20n%E1%BB%9F%20tr%E1%BA%AFng%20%C4%91%E1%BB%93i%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "festival",
+    "season": "Tháng 1 – 3",
+    "months": [
+      1,
+      2,
+      3
+    ],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-mua-hoa-da-quy",
+    "name": "Mùa hoa dã quỳ vàng rực",
+    "category": "le-hoi",
+    "description": "Cuối năm, dã quỳ nở vàng hai bên đường và sườn đồi, mùa săn ảnh đẹp nhất ở Đắk Song. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "le-hoi",
+      "check-in"
+    ],
+    "durationMin": 120,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=M%C3%B9a%20hoa%20d%C3%A3%20qu%E1%BB%B3%20v%C3%A0ng%20r%E1%BB%B1c%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "festival",
+    "season": "Tháng 10 – 12",
+    "months": [
+      10,
+      11,
+      12
+    ],
+    "priceNote": null,
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-ngay-hoi-van-hoa",
+    "name": "Ngày hội Văn hoá các dân tộc Đắk Song",
+    "category": "le-hoi",
+    "description": "Ngày hội với trình diễn trang phục, dệt thổ cẩm, ẩm thực và trò chơi dân gian các dân tộc. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "le-hoi",
+      "van-hoa"
+    ],
+    "durationMin": 180,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Ng%C3%A0y%20h%E1%BB%99i%20V%C4%83n%20ho%C3%A1%20c%C3%A1c%20d%C3%A2n%20t%E1%BB%99c%20%C4%90%E1%BA%AFk%20Song%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "festival",
+    "season": "Tháng 3 – 4",
+    "months": [
+      3,
+      4
+    ],
+    "priceNote": null,
     "imageCredits": [],
     "sourceUrls": [],
     "approxLocation": true
@@ -310,6 +632,63 @@
     "months": [],
     "priceNote": "Khoảng 900.000–1.500.000đ/đêm",
     "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-ruou-can",
+    "name": "Rượu cần",
+    "category": "dac-san",
+    "description": "Rượu ủ men lá rừng, uống bằng cần tre trong các dịp lễ hội và tiếp khách quý. (Thông tin mẫu phục vụ demo.)",
+    "images": [],
+    "lat": 12.2659,
+    "lng": 107.609,
+    "address": null,
+    "tags": [
+      "dac-san",
+      "van-hoa"
+    ],
+    "durationMin": 45,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=R%C6%B0%E1%BB%A3u%20c%E1%BA%A7n%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "dish",
+    "season": null,
+    "months": [],
+    "priceNote": "Khoảng 200.000–400.000đ/ché nhỏ",
+    "imageCredits": [],
+    "sourceUrls": [],
+    "approxLocation": true
+  },
+  {
+    "slug": "demo-thao-nguyen-cam-trai",
+    "name": "Thảo nguyên cắm trại Đắk Song",
+    "category": "trai-nghiem",
+    "description": "Bãi cỏ rộng để cắm trại, nướng BBQ, ngắm sao; có cho thuê lều và dụng cụ. (Thông tin mẫu phục vụ demo.)",
+    "images": [
+      "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=900&q=70"
+    ],
+    "lat": 12.3,
+    "lng": 107.62,
+    "address": null,
+    "tags": [
+      "trai-nghiem",
+      "trekking",
+      "check-in"
+    ],
+    "durationMin": 600,
+    "openHours": null,
+    "sourceUrl": null,
+    "phone": null,
+    "mapLink": "https://www.google.com/maps/search/?api=1&query=Th%E1%BA%A3o%20nguy%C3%AAn%20c%E1%BA%AFm%20tr%E1%BA%A1i%20%C4%90%E1%BA%AFk%20Song%20%C4%90%E1%BA%AFk%20Song",
+    "kind": "place",
+    "season": null,
+    "months": [],
+    "priceNote": "Thuê lều khoảng 150.000–300.000đ/đêm",
+    "imageCredits": [
+      "Ảnh minh hoạ: Unsplash"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
@@ -435,7 +814,8 @@
     "address": "TL 686, Xã Nâm N'Jang, Huyện Đắk Song, Tỉnh Đắk Nông",
     "tags": [
       "thien-nhien",
-      "check-in"
+      "check-in",
+      "trekking"
     ],
     "durationMin": 120,
     "openHours": null,
@@ -712,7 +1092,8 @@
     "address": "Đường Tỉnh Lộ 686 Nâm N'Jang Đắk Nông",
     "tags": [
       "thien-nhien",
-      "check-in"
+      "check-in",
+      "trekking"
     ],
     "durationMin": 120,
     "openHours": null,
@@ -732,7 +1113,8 @@
     "lng": 107.70470029448451,
     "address": "huyện Đắk Song, Tỉnh Đắk Nông",
     "tags": [
-      "van-hoa"
+      "van-hoa",
+      "check-in"
     ],
     "durationMin": 90,
     "openHours": null,

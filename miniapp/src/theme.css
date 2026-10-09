@@ -2619,3 +2619,18 @@ html[data-layout="desktop"] .banner-dots {
   border-color: var(--green-700);
   color: #fff;
 }
+
+.collection-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  margin: 4px 0 12px;
+  border-radius: var(--radius);
+  background: var(--green-100);
+  color: var(--green-900);
+}
+.collection-head b {
+  font-size: 16px;
+}
