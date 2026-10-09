@@ -893,7 +893,9 @@
     "name": "Lễ bỏ mả (lễ Pơ Thi)",
     "category": "le-hoi",
     "description": "Lễ bỏ mả (còn gọi là lễ Pơ Thi) là lễ hội mang đậm sắc thái văn hoá của đồng bào các dân tộc Tây Nguyên, có truyền thống lâu đời và màu sắc tâm linh, tín ngưỡng độc đáo. Đồng bào tin rằng người chết không đi về thế giới bên kia mà quay lại dương thế nhập vào cơ thể trẻ em, vì vậy cần làm lễ bỏ mả để tiễn đưa linh hồn về với tổ tiên ông bà. Lễ thường có cồng chiêng, tượng gỗ nhà mồ, rượu cần và các nghi thức cúng truyền thống.",
-    "images": [],
+    "images": [
+      "https://web-production-79151.up.railway.app/img/le-bo-ma.jpg"
+    ],
     "lat": 12.2659,
     "lng": 107.609,
     "address": null,
@@ -916,7 +918,9 @@
       4
     ],
     "priceNote": null,
-    "imageCredits": [],
+    "imageCredits": [
+      "Ảnh: VHTT huyện Đắk Song"
+    ],
     "sourceUrls": [],
     "approxLocation": true
   },
