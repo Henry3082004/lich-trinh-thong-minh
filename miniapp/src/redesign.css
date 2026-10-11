@@ -620,19 +620,37 @@ html[data-layout="tablet"] .h-trip {
 html[data-layout="tablet"] .h-tiles {
   width: 100%;
 }
-html[data-layout="tablet"] .h-rail-head,
+/* Màn rộng: dải địa điểm thành lưới 4 cột nằm gọn trong khung 720px, thẳng hàng với tiêu đề
+   (cuộn ngang trên màn rộng làm ảnh dính sát mép / bị cắt) */
+html[data-layout="tablet"] .h-rail {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+html[data-layout="tablet"] .h-rail-head {
+  padding: 0;
+}
 html[data-layout="tablet"] .h-rail-list {
-  padding-left: max(16px, calc(50% - 360px));
-  padding-right: max(16px, calc(50% - 360px));
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  overflow: visible;
+  padding: 0;
 }
 html[data-layout="tablet"] .h-card {
-  width: 180px;
+  width: auto;
+}
+html[data-layout="tablet"] .h-card:nth-child(n + 5) {
+  display: none;
 }
 html[data-layout="tablet"] .h-card-img {
   height: 132px;
 }
 html[data-layout="tablet"] .h2 .banner-text {
-  left: max(24px, calc(50% - 360px));
+  left: max(72px, calc(50% - 360px)); /* chừa chỗ nút mũi tên trái */
   max-width: 600px;
 }
 html[data-layout="tablet"] .h2 .banner-arrow {
