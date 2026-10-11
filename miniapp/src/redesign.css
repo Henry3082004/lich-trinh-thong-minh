@@ -2143,3 +2143,238 @@ html[data-layout="desktop"] .poster-controls .pt-top > * {
 }
 .h-tile.photo.earth svg { color: #ffe0b2; }
 .h-tile.photo.earth .h-tile-go { color: #fff; }
+
+/* ---------- Banner giới thiệu tính năng AI (trang đầu) ---------- */
+.bn-ai .banner-shade {
+  background: linear-gradient(160deg, rgba(14, 46, 18, 0.92) 0%, rgba(20, 64, 26, 0.78) 55%, rgba(14, 40, 16, 0.92) 100%);
+}
+.bn-ai .banner-tag {
+  background: #ffd54f;
+  color: #3e2723;
+}
+.bn-ai .banner-text h2 {
+  max-width: 62%;
+}
+.bn-ai .banner-text p {
+  display: none; /* điện thoại: thay bằng 3 bước cho gọn */
+}
+.bn-steps {
+  list-style: none;
+  margin: 2px 0 2px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.bn-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px 0 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 12.5px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.bn-steps li b {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--green-900);
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.bn-ai .banner-cta {
+  background: #ffd54f;
+  color: #3e2723;
+}
+/* Ảnh lịch trình mẫu */
+.bn-sample {
+  position: absolute;
+  top: 46px;
+  right: 16px;
+  width: 118px;
+  transform: rotate(5deg);
+  pointer-events: none;
+}
+.bn-sample-card {
+  background: #faf7f0;
+  color: var(--ink);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  font-size: 8.5px;
+  line-height: 1.25;
+}
+.bn-sample-head {
+  background: linear-gradient(135deg, var(--green-900), var(--green-700));
+  color: #fff;
+  padding: 7px 8px 6px;
+  display: flex;
+  flex-direction: column;
+}
+.bn-sample-head small {
+  font-size: 7.5px;
+  opacity: 0.85;
+}
+.bn-sample-head b {
+  font-size: 11px;
+}
+.bn-sample-card ul {
+  list-style: none;
+  margin: 0;
+  padding: 4px 7px;
+}
+.bn-sample-card li {
+  display: flex;
+  gap: 5px;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--line-soft);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.bn-sample-card li:last-child {
+  border-bottom: none;
+}
+.bn-sample-card li span {
+  color: var(--green-700);
+  font-weight: 700;
+}
+.bn-sample-card li.meal {
+  color: var(--earth-700);
+}
+.bn-sample-foot {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 7px 6px;
+  color: var(--green-700);
+  font-weight: 700;
+  font-size: 8px;
+}
+.bn-sample-dl {
+  position: absolute;
+  left: -14px;
+  bottom: -12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #ffd54f;
+  color: #3e2723;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+  transform: rotate(-5deg);
+}
+/* Máy tính bảng / máy tính: hiện cả mô tả, ảnh mẫu to hơn */
+html[data-layout="tablet"] .bn-ai .banner-text p,
+html[data-layout="desktop"] .bn-ai .banner-text p {
+  display: block;
+  max-width: 62%;
+}
+html[data-layout="tablet"] .bn-sample {
+  top: 40px;
+  right: max(40px, calc(50% - 340px));
+  width: 190px;
+}
+html[data-layout="desktop"] .bn-sample {
+  top: 44px;
+  right: 56px;
+  width: 210px;
+}
+html[data-layout="tablet"] .bn-sample-card,
+html[data-layout="desktop"] .bn-sample-card {
+  font-size: 13px;
+  border-radius: 16px;
+}
+html[data-layout="tablet"] .bn-sample-head small,
+html[data-layout="desktop"] .bn-sample-head small {
+  font-size: 11px;
+}
+html[data-layout="tablet"] .bn-sample-head b,
+html[data-layout="desktop"] .bn-sample-head b {
+  font-size: 17px;
+}
+html[data-layout="tablet"] .bn-sample-head,
+html[data-layout="desktop"] .bn-sample-head {
+  padding: 12px 14px 10px;
+}
+html[data-layout="tablet"] .bn-sample-card ul,
+html[data-layout="desktop"] .bn-sample-card ul {
+  padding: 6px 12px;
+}
+html[data-layout="tablet"] .bn-sample-card li,
+html[data-layout="desktop"] .bn-sample-card li {
+  padding: 6px 0;
+  gap: 8px;
+}
+html[data-layout="tablet"] .bn-sample-foot,
+html[data-layout="desktop"] .bn-sample-foot {
+  font-size: 12px;
+  padding: 6px 12px 10px;
+}
+html[data-layout="tablet"] .bn-sample-dl,
+html[data-layout="desktop"] .bn-sample-dl {
+  height: 34px;
+  font-size: 14px;
+  padding: 0 14px;
+  left: -24px;
+  bottom: -16px;
+}
+html[data-layout="desktop"] .bn-steps li {
+  height: 34px;
+  font-size: 14px;
+  padding: 0 14px 0 5px;
+}
+html[data-layout="desktop"] .bn-steps li b {
+  width: 24px;
+  height: 24px;
+  font-size: 13px;
+}
+/* Chỉnh vị trí: điện thoại ẩn nút "Tải ảnh" (đã có bước 3), ảnh mẫu không chạm mép; màn rộng đặt nút ở góc phải dưới ảnh mẫu */
+.bn-sample {
+  right: 20px;
+  width: 108px;
+}
+.bn-sample-dl {
+  display: none;
+}
+html[data-layout="tablet"] .bn-sample-dl,
+html[data-layout="desktop"] .bn-sample-dl {
+  display: inline-flex;
+  left: auto;
+  right: -14px;
+  bottom: -16px;
+}
+html[data-layout="desktop"] .bn-ai .banner-text {
+  max-width: 470px;
+}
+html[data-layout="desktop"] .bn-ai .banner-text p,
+html[data-layout="tablet"] .bn-ai .banner-text p {
+  max-width: 100%;
+}
+html[data-layout="tablet"] .bn-ai .banner-text {
+  max-width: min(440px, calc(100% - 300px));
+}
+html[data-layout="tablet"] .bn-ai .banner-text h2 {
+  line-height: 1.2;
+  max-width: 100%;
+}
+html[data-layout="desktop"] .bn-ai .banner-text h2 {
+  max-width: 100%;
+}
+html[data-layout="desktop"] .bn-sample {
+  right: 48px;
+  width: 200px;
+}
+html[data-layout="desktop"] .bn-ai .banner-text {
+  max-width: 370px;
+}

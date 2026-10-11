@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { IconArrowRight, IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import { IconArrowRight, IconChevronLeft, IconChevronRight, IconDownload, IconSparkles } from "@tabler/icons-react";
 import type { Banner } from "../lib/banners";
 
 const AUTOPLAY_MS = 3200;
@@ -34,9 +34,9 @@ export function BannerCarousel({ banners, onGo }: { banners: Banner[]; onGo: (b:
     if (n < 2 || hover || dragging || reduced.current) return;
     const t = setTimeout(() => {
       if (!document.hidden) go(1);
-    }, AUTOPLAY_MS);
+    }, banners[pos]?.holdMs ?? AUTOPLAY_MS);
     return () => clearTimeout(t);
-  }, [pos, hover, dragging, n, go]);
+  }, [pos, hover, dragging, n, go, banners]);
 
   // Dùng ref cho logic kéo (không phụ thuộc lần render) và state chỉ để vẽ
   const dragRef = useRef(0);
@@ -119,7 +119,7 @@ export function BannerCarousel({ banners, onGo }: { banners: Banner[]; onGo: (b:
         return (
           <div
             key={b.id}
-            className="banner-slide"
+            className={`banner-slide ${b.feature ? `bn-${b.feature}` : ""}`}
             role="group"
             aria-roledescription="slide"
             aria-label={`${i + 1} trên ${n}`}
@@ -132,6 +132,7 @@ export function BannerCarousel({ banners, onGo }: { banners: Banner[]; onGo: (b:
           >
             <img src={b.image} alt="" draggable={false} decoding="async" loading={i === 0 ? "eager" : "lazy"} {...(i === 0 ? { fetchpriority: "high" } : {})} />
             <div className="banner-shade" />
+            {b.feature === "ai" && <SamplePlan />}
             <div className="banner-text">
               <span className="banner-tag">
                 <b.icon size={16} stroke={2} aria-hidden />
@@ -139,6 +140,16 @@ export function BannerCarousel({ banners, onGo }: { banners: Banner[]; onGo: (b:
               </span>
               <h2>{b.title}</h2>
               <p>{b.subtitle}</p>
+              {b.steps && (
+                <ol className="bn-steps">
+                  {b.steps.map((s, k) => (
+                    <li key={s}>
+                      <b>{k + 1}</b>
+                      {s}
+                    </li>
+                  ))}
+                </ol>
+              )}
               <button className="banner-cta" tabIndex={active ? 0 : -1} onClick={() => onGo(b)}>
                 {b.cta} <IconArrowRight size={16} stroke={2} aria-hidden />
               </button>
@@ -159,5 +170,42 @@ export function BannerCarousel({ banners, onGo }: { banners: Banner[]; onGo: (b:
         ))}
       </div>
     </section>
+  );
+}
+
+// Ảnh lịch trình mẫu (vẽ bằng CSS) cho trang giới thiệu tính năng AI
+function SamplePlan() {
+  const rows: [string, string, boolean?][] = [
+    ["07:00", "Ăn sáng · Phở bò", true],
+    ["08:15", "Thác Lưu Ly"],
+    ["12:00", "Ăn trưa · Cơm lam", true],
+    ["13:30", "Đồi thông săn mây"],
+    ["18:00", "Ăn tối · Hải sản", true],
+  ];
+  return (
+    <div className="bn-sample" aria-hidden>
+      <div className="bn-sample-card">
+        <div className="bn-sample-head">
+          <small>Đắk Song · 2 ngày</small>
+          <b>Ngày 1</b>
+        </div>
+        <ul>
+          {rows.map(([t, name, meal]) => (
+            <li key={t} className={meal ? "meal" : ""}>
+              <span>{t}</span>
+              {name}
+            </li>
+          ))}
+        </ul>
+        <div className="bn-sample-foot">
+          <IconSparkles size={12} stroke={2} />
+          AI gợi ý
+        </div>
+      </div>
+      <span className="bn-sample-dl">
+        <IconDownload size={14} stroke={2.2} />
+        Tải ảnh
+      </span>
+    </div>
   );
 }
