@@ -38,13 +38,25 @@ export type PlanPlace = {
 
 export type Draft = { days: { placeIds: { id: string; note?: string }[] }[]; summary?: string; questions?: string[] };
 
-export type PlanStop = { placeId: string; startTime: string; travelMinFromPrev: number; note: string | null; suggested: boolean };
+export type Meal = "sang" | "trua" | "toi";
+export type PlanStop = { placeId: string; startTime: string; travelMinFromPrev: number; note: string | null; suggested: boolean; meal: Meal | null };
 export type PlanDay = { day: number; date: string; stops: PlanStop[] };
 export type Plan = { days: PlanDay[]; lodgingIds: string[]; warnings: string[]; summary: string; questions: string[] };
 
 const PACE_MAX_STOPS = { relaxed: 3, normal: 5, packed: 7 } as const;
 // Số điểm nên có mỗi ngày: khách chọn ít thì gợi ý thêm cho đủ
-const PACE_TARGET_STOPS = { relaxed: 3, normal: 4, packed: 6 } as const;
+// (chưa kể 3 bữa ăn, do bước xếp bữa ăn tự thêm)
+const PACE_TARGET_STOPS = { relaxed: 2, normal: 3, packed: 4 } as const;
+// Bữa ăn: giờ sớm nhất của từng bữa (đến sớm thì chờ, coi như thời gian tự do), giờ bắt đầu ngày có bữa sáng
+const MEAL_NOT_BEFORE: Record<Meal, number> = { sang: 0, trua: 11 * 60, toi: 17 * 60 + 30 };
+const MEAL_NOTE: Record<Meal, string> = { sang: "Ăn sáng", trua: "Ăn trưa", toi: "Ăn tối" };
+const BREAKFAST_START_MIN = 7 * 60;
+const LUNCH_TARGET_MIN = 12 * 60;
+// Ngày 1 khởi hành muộn thì bỏ các bữa đã qua
+const BREAKFAST_LATEST_MIN = 9 * 60;
+const LUNCH_LATEST_MIN = 13 * 60;
+const DINNER_LATEST_MIN = 19 * 60 + 30;
+const BREAKFAST_NAME = /phở|bún|bánh|bakery|hotdog/i;
 const PURPOSE_CATEGORIES: Record<"sightseeing" | "nature", string[]> = {
   sightseeing: ["van-hoa", "le-hoi"],
   nature: ["thien-nhien", "trai-nghiem"],
@@ -79,7 +91,7 @@ function stayMinutes(p: PlanPlace, kids: number): number {
   return kids > 0 ? Math.round((base * 1.2) / 5) * 5 : base;
 }
 
-export function buildPlan(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[], draft: Draft, now = new Date()): Plan {
+export function buildPlan(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[], draft: Draft, _now = new Date()): Plan {
   const byId = new Map(all.concat(cart).map((p) => [p.id, p]));
   const inCart = new Set(cart.map((p) => p.id));
   const warnings: string[] = [];
@@ -90,7 +102,7 @@ export function buildPlan(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[], dra
 
   const placed = new Set<string>();
   const lodging: string[] = [];
-  const days: { id: string; note?: string }[][] = Array.from({ length: prefs.days }, () => []);
+  const days: { id: string; note?: string; meal?: Meal }[][] = Array.from({ length: prefs.days }, () => []);
 
   const place = (dayIdx: number, id: string, note?: string): boolean => {
     const p = byId.get(id);
@@ -119,68 +131,162 @@ export function buildPlan(prefs: Prefs, cart: PlanPlace[], all: PlanPlace[], dra
     place(dayIdx, p.id);
   }
 
-  // Giờ bắt đầu từng ngày: ngày đầu theo giờ khách chọn (app không hỏi ngày đi nên không lấy giờ hiện tại)
-  void now;
-  const dayStart = (i: number) => (i === 0 ? toMin(prefs.startTime) : NEXT_DAY_START_MIN);
-
-  // AI không biết giờ nên hay xếp bữa ăn lệch giờ: đặt quán ăn vào vị trí có giờ đến gần 12:00 nhất
-  const startsOf = (list: { id: string }[], from: number) => {
+  // ---- Bữa ăn: mỗi ngày đủ sáng / trưa / tối (code tự thêm nếu AI hay khách chưa chọn quán) ----
+  type Slot = { id: string; note?: string; meal?: Meal };
+  const slots: Slot[][] = days;
+  const firstStart = toMin(prefs.startTime);
+  // Ngày 1 theo giờ khách chọn; các ngày sau 07:00 nếu mở đầu bằng bữa sáng, không thì 08:00
+  const dayStart = (i: number, list: Slot[]) => (i === 0 ? firstStart : list[0]?.meal === "sang" ? BREAKFAST_START_MIN : NEXT_DAY_START_MIN);
+  const startsOf = (list: Slot[], from: number) => {
     let clock = from;
     return list.map((s, j) => {
       if (j > 0) clock += travelMinutes(byId.get(list[j - 1].id)!, byId.get(s.id)!, prefs.transport);
+      if (s.meal) clock = Math.max(clock, MEAL_NOT_BEFORE[s.meal]);
       const at = clock;
       clock += stayMinutes(byId.get(s.id)!, prefs.kids);
       return at;
     });
   };
-  days.forEach((stops, i) => {
-    if (stops.length < 3) return;
-    const k = stops.findIndex((s) => byId.get(s.id)!.category === "am-thuc");
-    if (k < 0) return;
-    const [food] = stops.splice(k, 1);
-    let best = k;
-    let bestGap = Infinity;
-    for (let pos = 0; pos <= stops.length; pos++) {
-      const trial = [...stops.slice(0, pos), food, ...stops.slice(pos)];
-      const gap = Math.abs(startsOf(trial, dayStart(i))[pos] - 12 * 60);
-      if (gap < bestGap) {
-        bestGap = gap;
-        best = pos;
+  const dropped: string[] = [];
+  const usedMeals = new Map<string, number>(); // quán -> số lần đã dùng (cho phép lặp ở ngày khác khi ít quán)
+  const pickMeal = (meal: Meal, day: Slot[], near: PlanPlace | undefined): string | null => {
+    const inDay = new Set(day.map((s) => s.id));
+    const ok = (p: PlanPlace) => (meal === "sang" ? p.category === "am-thuc" || p.category === "ca-phe" : p.category === "am-thuc");
+    let best: PlanPlace | null = null;
+    let bestScore = Infinity;
+    for (const p of all) {
+      if (!ok(p) || inDay.has(p.id)) continue;
+      let s = near ? haversineKm(near, p) : 0;
+      s += (usedMeals.get(p.id) ?? 0) * 50; // ưu tiên quán chưa dùng
+      if (inCart.has(p.id)) s -= 20;
+      if (meal === "sang" && BREAKFAST_NAME.test(p.name)) s -= 3;
+      if (meal === "sang" && p.category === "ca-phe") s += 2;
+      if (s < bestScore) {
+        bestScore = s;
+        best = p;
       }
     }
-    stops.splice(best, 0, food);
-  });
+    return best?.id ?? null;
+  };
 
-  // Ngày quá dày (điểm bắt đầu sau 20:00): dời phần dư sang ngày sau; ngày cuối thì bỏ điểm AI gợi ý thêm
-  for (let i = 0; i < days.length; i++) {
-    const starts = startsOf(days[i], dayStart(i));
-    const k = starts.findIndex((t) => t > LAST_START_MIN);
-    if (k <= 0) continue;
-    const overflow = days[i].splice(k);
-    if (i + 1 < days.length) {
-      days[i + 1].unshift(...overflow);
-      continue;
+  for (let i = 0; i < slots.length; i++) {
+    const begin = i === 0 ? firstStart : BREAKFAST_START_MIN;
+    const need: Meal[] = [];
+    if (begin <= BREAKFAST_LATEST_MIN) need.push("sang");
+    if (begin < LUNCH_LATEST_MIN) need.push("trua");
+    if (begin < DINNER_LATEST_MIN) need.push("toi");
+
+    // Quán ăn có sẵn trong ngày (AI hoặc khách chọn) được dùng cho các bữa trước
+    const own = slots[i].filter((s) => byId.get(s.id)!.category === "am-thuc");
+    const sights = slots[i].filter((s) => byId.get(s.id)!.category !== "am-thuc");
+    const meals = new Map<Meal, Slot>();
+    // Quán có sẵn: theo ghi chú ("Ăn sáng/trưa/tối") nếu có, không thì theo vị trí (đứng đầu ngày là bữa sáng, còn lại trưa rồi tối)
+    const firstSight = slots[i].findIndex((s) => byId.get(s.id)!.category !== "am-thuc");
+    for (const s of [...own]) {
+      const pos = slots[i].indexOf(s);
+      const byNote = /sáng/i.test(s.note ?? "") ? "sang" : /trưa/i.test(s.note ?? "") ? "trua" : /tối/i.test(s.note ?? "") ? "toi" : null;
+      const byPos: Meal[] = firstSight >= 0 && pos < firstSight ? ["sang", "trua", "toi"] : ["trua", "toi", "sang"];
+      const m = (byNote && need.includes(byNote) && !meals.has(byNote) ? byNote : byPos.find((x) => need.includes(x) && !meals.has(x))) as Meal | undefined;
+      if (!m) continue;
+      own.splice(own.indexOf(s), 1);
+      meals.set(m, { ...s, meal: m });
     }
-    for (const s of overflow) {
-      if (inCart.has(s.id)) days[i].push(s);
-      else warnings.push(`Lịch hơi dày nên mình bớt ${byId.get(s.id)!.name}.`);
+    for (const m of need) {
+      if (meals.has(m)) continue;
+      const near = m === "sang" ? sights[0] : m === "trua" ? sights[Math.floor(sights.length / 2)] : sights[sights.length - 1];
+      const id = pickMeal(m, [...sights, ...[...meals.values()]], near && byId.get(near.id));
+      if (id) meals.set(m, { id, meal: m });
     }
+    sights.push(...own); // quán ăn dư (hiếm) giữ như một điểm thường
+
+    // Ghép: sáng + tham quan (chèn bữa trưa ở chỗ có giờ gần 12:00 nhất) + tối
+    const assemble = () => {
+      const head = meals.has("sang") ? [meals.get("sang")!] : [];
+      const tail = meals.has("toi") ? [meals.get("toi")!] : [];
+      let body = [...sights];
+      const lunch = meals.get("trua");
+      if (lunch) {
+        let bestPos = 0;
+        let bestGap = Infinity;
+        for (let pos = 0; pos <= body.length; pos++) {
+          const trial = [...head, ...body.slice(0, pos), lunch, ...body.slice(pos), ...tail];
+          const gap = Math.abs(startsOf(trial, dayStart(i, trial))[head.length + pos] - LUNCH_TARGET_MIN);
+          // Bằng nhau thì chọn vị trí sau (đi chơi thêm trước khi ăn thay vì ngồi chờ)
+          if (gap <= bestGap) {
+            bestGap = gap;
+            bestPos = pos;
+          }
+        }
+        body = [...body.slice(0, bestPos), lunch, ...body.slice(bestPos)];
+      }
+      return [...head, ...body, ...tail];
+    };
+    let list = assemble();
+    const dayDropped: Slot[] = [];
+    const fits = () => {
+      const trial = assemble();
+      return !startsOf(trial, dayStart(i, trial)).some((t) => t > LAST_START_MIN);
+    };
+
+    // Ngày quá dày (có điểm bắt đầu sau 20:00): dời điểm tham quan cuối sang ngày sau; ngày cuối thì bỏ điểm AI gợi ý thêm
+    for (;;) {
+      const starts = startsOf(list, dayStart(i, list));
+      if (!starts.some((t) => t > LAST_START_MIN) || sights.length === 0) break;
+      // Thử dời điểm cuối lên chỗ trống buổi sáng (trước bữa trưa) trước khi dời sang ngày sau / bỏ
+      const lastSight = sights.pop()!;
+      let fitted = false;
+      for (let pos = 0; pos < sights.length && !fitted; pos++) {
+        sights.splice(pos, 0, lastSight);
+        const trial = assemble();
+        if (!startsOf(trial, dayStart(i, trial)).some((t) => t > LAST_START_MIN)) fitted = true;
+        else sights.splice(pos, 1);
+      }
+      if (fitted) {
+        list = assemble();
+        continue;
+      }
+      sights.push(lastSight);
+      let k = sights.length - 1;
+      if (i + 1 >= slots.length) {
+        while (k >= 0 && inCart.has(sights[k].id)) k--;
+        if (k < 0) break; // chỉ còn điểm khách chọn: giữ, báo muộn ở dưới
+        dayDropped.push(...sights.splice(k, 1));
+      } else {
+        slots[i + 1].unshift(...sights.splice(k, 1));
+      }
+      list = assemble();
+    }
+    // Điểm vừa bị bớt: thử chen lại vào chỗ còn trống (vd buổi sáng trước bữa trưa)
+    for (const d of dayDropped) {
+      let ok = false;
+      for (let pos = 0; pos <= sights.length && !ok; pos++) {
+        sights.splice(pos, 0, d);
+        if (fits()) ok = true;
+        else sights.splice(pos, 1);
+      }
+      if (!ok) dropped.push(byId.get(d.id)!.name);
+    }
+    list = assemble();
+    for (const s of list) if (s.meal) usedMeals.set(s.id, (usedMeals.get(s.id) ?? 0) + 1);
+    slots[i] = list;
   }
 
-  // Tính giờ
+  if (dropped.length) warnings.push(`Lịch hơi dày nên mình bớt ${dropped.join(", ")}.`);
 
-  const result: PlanDay[] = days.map((stops, i) => {
+  // Tính giờ
+  const result: PlanDay[] = slots.map((stops, i) => {
     const date = addDays(prefs.startDate, i);
-    let clock = dayStart(i);
-    const out: PlanStop[] = [];
-    stops.forEach((s, j) => {
+    const starts = startsOf(stops, dayStart(i, stops));
+    const out: PlanStop[] = stops.map((s, j) => {
       const p = byId.get(s.id)!;
-      if (j > 0) clock += travelMinutes(byId.get(stops[j - 1].id)!, p, prefs.transport);
-      out.push({ placeId: p.id, startTime: formatTime(clock), travelMinFromPrev: j > 0 ? travelMinutes(byId.get(stops[j - 1].id)!, p, prefs.transport) : 0, note: s.note ?? null, suggested: !inCart.has(p.id) });
-      clock += stayMinutes(p, prefs.kids);
+      const travel = j > 0 ? travelMinutes(byId.get(stops[j - 1].id)!, p, prefs.transport) : 0;
+      return { placeId: p.id, startTime: formatTime(starts[j]), travelMinFromPrev: travel, note: s.note ?? (s.meal ? MEAL_NOTE[s.meal] : null), suggested: !inCart.has(p.id), meal: s.meal ?? null };
     });
-    if (stops.length > 0 && clock > DAY_END_MIN) warnings.push(`Ngày ${i + 1} kết thúc khoảng ${formatTime(clock)}, khá muộn. Bạn có thể bỏ bớt một điểm hoặc thêm ngày.`);
-    if (stops.length > PACE_MAX_STOPS[prefs.pace]) warnings.push(`Ngày ${i + 1} có ${stops.length} điểm, nhiều hơn nhịp độ bạn chọn.`);
+    const last = stops[stops.length - 1];
+    const end = last ? starts[starts.length - 1] + stayMinutes(byId.get(last.id)!, prefs.kids) : 0;
+    if (stops.length > 0 && end > DAY_END_MIN) warnings.push(`Ngày ${i + 1} kết thúc khoảng ${formatTime(end)}, khá muộn. Bạn có thể bỏ bớt một điểm hoặc thêm ngày.`);
+    const visits = stops.filter((s) => !s.meal).length;
+    if (visits > PACE_MAX_STOPS[prefs.pace]) warnings.push(`Ngày ${i + 1} có ${visits} điểm tham quan, nhiều hơn nhịp độ bạn chọn.`);
     return { day: i + 1, date, stops: out };
   });
 
@@ -226,23 +332,24 @@ function nearestChain(list: PlanPlace[]): PlanPlace[] {
 // cho đến khi mỗi ngày đủ số điểm theo nhịp độ. Không thêm lưu trú và lễ hội. Trả về số điểm đã thêm.
 export function fillDays(prefs: Prefs, days: PlanPlace[][], cart: PlanPlace[], all: PlanPlace[]): number {
   const used = new Set([...cart, ...days.flat()].map((p) => p.id));
-  const pool = all.filter((p) => !used.has(p.id) && p.category !== "luu-tru" && p.kind !== "festival");
+  // Quán ăn do bước xếp bữa ăn (buildPlan) lo, ở đây chỉ thêm điểm tham quan / cà phê / đặc sản
+  const pool = all.filter((p) => !used.has(p.id) && p.category !== "luu-tru" && p.kind !== "festival" && p.category !== "am-thuc");
   const wanted = new Set((prefs.purposes ?? []).flatMap((x) => PURPOSE_CATEGORIES[x]));
   const target = PACE_TARGET_STOPS[prefs.pace];
   const seeds = cart.filter((p) => p.category !== "luu-tru");
   let added = 0;
   days.forEach((day, i) => {
-    while (day.length < target && pool.length > 0) {
+    while (day.filter((p) => p.category !== "am-thuc").length < target && pool.length > 0) {
       const prev = days.slice(0, i).reverse().find((d) => d.length > 0);
       const anchors = day.length ? day : prev ? [prev[prev.length - 1]] : seeds;
-      // Mỗi ngày tối đa một bữa ăn (quán ăn/đặc sản) và một quán cà phê, còn lại ưu tiên điểm tham quan
-      const isFood = (p: PlanPlace) => p.category === "am-thuc" || p.category === "dac-san";
+      // Mỗi ngày tối đa một món đặc sản và một quán cà phê, còn lại ưu tiên điểm tham quan
+      const isFood = (p: PlanPlace) => p.category === "dac-san";
       const hasFood = day.some(isFood);
       const hasCafe = day.some((p) => p.category === "ca-phe");
       const score = (p: PlanPlace) => {
         let s = anchors.length ? Math.min(...anchors.map((a) => haversineKm(a, p))) : 0;
         if (wanted.has(p.category)) s -= 5;
-        if (isFood(p)) s += hasFood ? 100 : day.length >= 1 ? -10 : 5;
+        if (isFood(p)) s += hasFood ? 100 : 3;
         else if (p.category === "ca-phe") s += hasCafe ? 100 : 3;
         else s -= 8;
         return s;
@@ -302,8 +409,9 @@ export function plannerSystemPrompt(prefs: Prefs, cart: PlanPlace[], all: PlanPl
     ...(prefs.purposes?.length ? [`Mục đích chuyến đi: ${prefs.purposes.map((x) => PURPOSE_HINT[x]).join("; ")}. Khi thêm mục từ DANH SÁCH BỔ SUNG, ưu tiên mục hợp mục đích này.`] : []),
     "QUY TẮC:",
     "1. Chỉ dùng placeId có trong hai danh sách bên dưới, đúng từng ký tự. Không tạo id mới.",
-    `2. Tất cả mục trong GIỎ KHÁCH CHỌN phải có mặt trong lịch (trừ khi không hợp lý, khi đó nêu lý do ở summary). Nếu giỏ ít điểm, hãy gợi ý thêm từ DANH SÁCH BỔ SUNG để MỖI NGÀY có khoảng ${PACE_TARGET_STOPS[prefs.pace]} điểm (kể cả ngày không có mục nào trong giỏ): chọn điểm gần các điểm khách đã chọn, hợp mục đích chuyến đi, mỗi ngày có một quán ăn cho bữa trưa (khoảng 11:30-13:00). Không để ngày nào trống.`,
-    "3. Gom các điểm gần nhau trong cùng một ngày, đi theo thứ tự hợp lý, không đi vòng. Mỗi ngày tối đa " + PACE_MAX_STOPS[prefs.pace] + " điểm.",
+    `2. Tất cả mục trong GIỎ KHÁCH CHỌN phải có mặt trong lịch (trừ khi không hợp lý, khi đó nêu lý do ở summary). Nếu giỏ ít điểm, hãy gợi ý thêm từ DANH SÁCH BỔ SUNG để MỖI NGÀY có khoảng ${PACE_TARGET_STOPS[prefs.pace]} điểm tham quan (kể cả ngày không có mục nào trong giỏ): chọn điểm gần các điểm khách đã chọn, hợp mục đích chuyến đi. Không để ngày nào trống.`,
+    "2b. MỖI NGÀY phải có đủ 3 bữa: ăn sáng (đầu ngày), ăn trưa (khoảng 11:30-13:00), ăn tối (cuối ngày, khoảng 18:00-19:30). Dùng quán thuộc nhóm am-thuc (bữa sáng có thể dùng quán cà phê có đồ ăn); chọn quán gần các điểm trước/sau; một quán có thể dùng lại ở ngày khác nếu ít quán. Ghi note là \"Ăn sáng\", \"Ăn trưa\" hoặc \"Ăn tối\".",
+    "3. Gom các điểm gần nhau trong cùng một ngày, đi theo thứ tự hợp lý, không đi vòng. Mỗi ngày tối đa " + PACE_MAX_STOPS[prefs.pace] + " điểm tham quan (không tính bữa ăn).",
     "4. Không ghi giờ cụ thể; hệ thống tự tính giờ. Trường note là ghi chú ngắn (dưới 15 từ) tuỳ chọn, ví dụ mẹo đi lại hoặc lý do xếp.",
     prefs.kids > 0 ? "5. Có trẻ em: tránh dồn quá nhiều điểm, ưu tiên điểm dễ đi." : "5. Ưu tiên trải nghiệm đa dạng.",
     "6. summary: 2-3 câu tóm tắt lịch. questions: 1-2 câu hỏi ngắn hỏi khách có muốn chỉnh gì không (ví dụ thêm quán cà phê buổi tối).",

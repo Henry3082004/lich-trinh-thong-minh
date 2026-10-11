@@ -1,6 +1,6 @@
-import { formatDuration, travelMinutes } from "../../lib/schedule";
+import { formatDuration, mealOf, travelMinutes } from "../../lib/schedule";
 import type { Draft } from "../../types";
-import { categoryName } from "../../types";
+import { categoryName, MEAL_LABEL } from "../../types";
 
 export type TemplateId = "forest" | "sunset" | "minimal";
 
@@ -55,7 +55,10 @@ export function buildPosterData(draft: Draft, photos: Map<string, string | null>
       time: s.startTime ?? "",
       name: s.place.name,
       category: s.place.category,
-      categoryLabel: categoryName(s.place.category),
+      categoryLabel: (() => {
+        const meal = mealOf(s);
+        return meal ? MEAL_LABEL[meal] : categoryName(s.place.category);
+      })(),
       photo: photoOf(s.place.images[0]),
       travelMin: i > 0 ? travelMinutes(d.stops[i - 1].place, s.place) : 0,
       duration: formatDuration(s.place.durationMin),

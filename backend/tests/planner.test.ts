@@ -16,6 +16,8 @@ const HOTEL = mk("hotel", { category: "luu-tru" });
 const ALL = [A, B, FOOD, FEST, HOTEL];
 const prefs: Prefs = { people: 4, kids: 0, startDate: "2027-03-10", startTime: "08:00", days: 2, transport: "o-to", pace: "normal" };
 const NOW = new Date("2027-03-01T00:00:00Z");
+// Các điểm tham quan (bỏ bữa ăn do code tự thêm)
+const visits = (d: { stops: { placeId: string; meal: string | null }[] }) => d.stops.filter((s) => !s.meal).map((s) => s.placeId);
 
 describe("buildPlan", () => {
   it("bỏ id AI bịa và điểm trùng, giữ mục trong giỏ AI bỏ sót, đánh dấu mục AI thêm", () => {
@@ -30,7 +32,7 @@ describe("buildPlan", () => {
   });
 
   it("giờ do code tính: điểm đầu đúng giờ bắt đầu, các điểm sau cộng thời lượng + di chuyển", () => {
-    const plan = buildPlan(prefs, [A, B], ALL, { days: [{ placeIds: [{ id: "a" }, { id: "b" }] }, { placeIds: [] }] }, NOW);
+    const plan = buildPlan(prefs, [A, B], [A, B], { days: [{ placeIds: [{ id: "a" }, { id: "b" }] }, { placeIds: [] }] }, NOW);
     const [s1, s2] = plan.days[0].stops;
     expect(s1.startTime).toBe("08:00");
     const travel = travelMinutes(A, B, "o-to");
@@ -62,18 +64,42 @@ describe("buildPlan", () => {
     expect(out.days.flatMap((d) => d.stops.map((s) => s.placeId))).not.toContain("fest");
     expect(out.warnings.join(" ")).toContain("tháng 3");
     const ok = buildPlan(prefs, [FEST], ALL, { days: [{ placeIds: [{ id: "fest" }] }, { placeIds: [] }] }, NOW);
-    expect(ok.days[0].stops.map((s) => s.placeId)).toEqual(["fest"]);
+    expect(visits(ok.days[0])).toEqual(["fest"]);
   });
 
-  it("bữa ăn được đặt vào vị trí có giờ gần 12:00 nhất", () => {
+  it("mỗi ngày đủ bữa sáng, trưa, tối đúng khung giờ; không lặp quán trong ngày", () => {
     const S1 = mk("s1", { durationMin: 120 }), S2 = mk("s2", { durationMin: 120 }), S3 = mk("s3", { durationMin: 120 });
-    const all = [S1, S2, S3, FOOD];
-    // AI xếp quán ăn cuối ngày: sau 3 điểm 2 giờ thì đã quá trưa rất xa
-    const plan = buildPlan({ ...prefs, days: 1 }, [S1, S2, S3, FOOD], all, { days: [{ placeIds: ["s1", "s2", "s3", "food"].map((id) => ({ id })) }] }, NOW);
-    const stops = plan.days[0].stops;
-    // Các điểm cùng toạ độ (không tốn thời gian đi): 08:00 và 10:00 mỗi điểm 2 giờ, nên bữa ăn vào đúng 12:00
-    expect(stops.map((s) => s.placeId)).toEqual(["s1", "s2", "food", "s3"]);
-    expect(stops[2].startTime).toBe("12:00");
+    const R = ["r1", "r2", "r3"].map((id) => mk(id, { category: "am-thuc" }));
+    const all = [S1, S2, S3, ...R];
+    const plan = buildPlan(prefs, [S1, S2, S3], all, { days: [{ placeIds: ["s1", "s2", "s3"].map((id) => ({ id })) }, { placeIds: [] }] }, NOW);
+    const min = (t: string) => Number(t.slice(0, 2)) * 60 + Number(t.slice(3, 5));
+    for (const d of plan.days) {
+      const meals = d.stops.filter((s) => s.meal);
+      expect(meals.map((s) => s.meal)).toEqual(["sang", "trua", "toi"]);
+      const at = (m: string) => min(meals.find((s) => s.meal === m)!.startTime);
+      expect(at("sang")).toBeLessThanOrEqual(9 * 60);
+      expect(at("trua")).toBeGreaterThanOrEqual(11 * 60);
+      expect(at("trua")).toBeLessThanOrEqual(13 * 60 + 30);
+      expect(at("toi")).toBeGreaterThanOrEqual(17 * 60 + 30);
+      expect(new Set(meals.map((s) => s.placeId)).size).toBe(3);
+      expect(meals.every((s) => s.note?.startsWith("Ăn"))).toBe(true);
+    }
+    expect(visits(plan.days[0])).toEqual(["s1", "s2", "s3"]);
+    expect(plan.days[1].stops[0].startTime).toBe("07:00"); // ngày sau mở đầu bằng bữa sáng
+  });
+
+  it("khởi hành buổi chiều thì ngày đầu chỉ còn bữa tối; ít quán thì dùng lại quán ở ngày khác", () => {
+    const one = mk("r1", { category: "am-thuc" });
+    const plan = buildPlan({ ...prefs, startTime: "14:00" }, [A], [A, one], { days: [{ placeIds: [{ id: "a" }] }, { placeIds: [] }] }, NOW);
+    expect(plan.days[0].stops.filter((s) => s.meal).map((s) => s.meal)).toEqual(["toi"]);
+    expect(plan.days[1].stops.filter((s) => s.meal).length).toBeGreaterThan(0); // quán r1 dùng lại ngày 2
+  });
+
+  it("quán khách/AI đã chọn được dùng cho bữa ăn theo ghi chú hoặc vị trí", () => {
+    const R = ["r1", "r2"].map((id) => mk(id, { category: "am-thuc" }));
+    const plan = buildPlan({ ...prefs, days: 1 }, [A, FOOD], [A, FOOD, ...R], { days: [{ placeIds: [{ id: "a" }, { id: "food", note: "Ăn tối" }] }] }, NOW);
+    expect(plan.days[0].stops.find((s) => s.placeId === "food")!.meal).toBe("toi");
+    expect(plan.days[0].stops.at(-1)!.placeId).toBe("food");
   });
 
   it("lưu trú không thành điểm dừng mà đi vào lodgingIds", () => {
@@ -119,8 +145,8 @@ describe("fallbackDraft", () => {
     expect(all).toContain("a");
     expect(all).not.toContain("hotel");
     expect(all).not.toContain("fest");
-    expect(d.days.every((x) => x.placeIds.length === 4)).toBe(true);
-    expect(d.days[0].placeIds.map((p) => p.id)).toContain("food"); // có bữa trưa
+    expect(d.days.every((x) => x.placeIds.length === 3)).toBe(true); // nhịp vừa: 3 điểm tham quan, bữa ăn do buildPlan thêm
+    expect(all).not.toContain("food");
     expect(new Set(all).size).toBe(all.length);
   });
 
@@ -181,8 +207,9 @@ describe("POST /api/plan", () => {
     expect(res.body.summary).toBe("Lịch 2 ngày gọn gàng.");
     expect(res.body.questions).toHaveLength(1);
     expect(res.body.days[0].stops.map((s: { placeId: string }) => s.placeId)).toEqual([ids.a, ids.food]);
-    expect(res.body.days[0].stops[0]).toMatchObject({ startTime: "08:00", note: "đi sớm", suggested: false });
-    expect(res.body.days[0].stops[1].suggested).toBe(true); // quán ăn do AI thêm, không có trong giỏ
+    expect(res.body.days[0].stops[0]).toMatchObject({ startTime: "08:00", note: "đi sớm", suggested: false, meal: null });
+    // quán ăn AI xếp sau điểm tham quan thành bữa trưa (không sớm hơn 11:00), không có trong giỏ
+    expect(res.body.days[0].stops[1]).toMatchObject({ suggested: true, meal: "trua", startTime: "11:00" });
     expect(res.body.places.map((p: { id: string }) => p.id).sort()).toEqual([ids.a, ids.b, ids.food].sort());
     // Lời nhắc gửi đi có thông tin chuyến đi và giỏ
     const sent = JSON.parse((fetchMock.mock.calls[0][1] as RequestInit).body as string);
@@ -202,7 +229,9 @@ describe("POST /api/plan", () => {
     const stops = res.body.days.flatMap((d: { stops: { placeId: string; suggested: boolean }[] }) => d.stops);
     expect(stops.map((s: { placeId: string }) => s.placeId)).toEqual(expect.arrayContaining([ids.a, ids.b]));
     // Giỏ ít điểm: lịch dự phòng gợi ý thêm điểm khác (đánh dấu suggested)
-    expect(stops.filter((s: { suggested: boolean }) => s.suggested).map((s: { placeId: string }) => s.placeId)).toEqual([ids.food]);
+    const extra = stops.filter((s: { suggested: boolean }) => s.suggested);
+    expect([...new Set(extra.map((s: { placeId: string }) => s.placeId))]).toEqual([ids.food]);
+    expect(extra.every((s: { meal: string | null }) => s.meal)).toBe(true); // quán ăn thêm vào làm bữa ăn
     config.geminiApiKey = "";
     expect((await request(app).post("/api/plan").set(alice).send(body)).body.usedAi).toBe(false);
   });
@@ -217,7 +246,7 @@ describe("POST /api/plan/revise", () => {
     const res = await request(app).post("/api/plan/revise").set(alice).send({ ...body, plan: { days: [{ stops: [{ placeId: ids.a }] }, { stops: [] }] }, message: "thêm quán ăn ngày 2" });
     expect(res.status).toBe(200);
     expect(res.body.summary).toBe("Đã thêm quán ăn.");
-    expect(res.body.days[0].stops.map((s: { placeId: string }) => s.placeId)).toEqual([ids.a]); // id bịa bị bỏ
+    expect(visits(res.body.days[0])).toEqual([ids.a]); // id bịa bị bỏ
     expect(res.body.days[1].stops.map((s: { placeId: string }) => s.placeId)).toEqual([ids.food]);
     const sent = JSON.parse((fetchMock.mock.calls[0][1] as RequestInit).body as string);
     expect(sent.systemInstruction.parts[0].text).toContain("LỊCH HIỆN TẠI");
