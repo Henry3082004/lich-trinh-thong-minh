@@ -1,7 +1,7 @@
 // Banner lớn đầu trang chủ. Chỉ cần thêm/sửa/xoá phần tử trong danh sách này (hoặc sau này lấy từ backend).
 // category: nếu có điểm đến thuộc nhóm đó thì nút bấm mở danh sách nhóm; chưa có dữ liệu thì mở danh sách chung.
 // to: đường dẫn trong app (ưu tiên hơn category).
-import { IconCamera, IconCoffee, IconConfetti, IconSoup, IconTrekking, type Icon } from "@tabler/icons-react";
+import { IconCamera, IconCoffee, IconConfetti, IconSoup, IconSparkles, IconTrekking, type Icon } from "@tabler/icons-react";
 
 const IMG = "https://static.dggv.edu.vn/360/";
 
@@ -16,11 +16,28 @@ export type Banner = {
   collection?: string; // mở danh sách theo bộ sưu tập (lib/collections.ts)
   tag: string; // nhãn nhỏ trên tiêu đề
   icon: Icon;
+  feature?: "ai"; // trang giới thiệu tính năng: có các bước + ảnh lịch trình mẫu
+  steps?: string[];
+  holdMs?: number; // thời gian dừng ở trang này trước khi tự lướt (mặc định 3,2 giây)
 };
 
 const UNSPLASH = (id: string) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=70`;
 
 export const BANNERS: Banner[] = [
+  // Trang đầu: giới thiệu tính năng chính để ai mở link cũng thấy ngay
+  {
+    id: "ai",
+    feature: "ai",
+    tag: "Tính năng nổi bật",
+    icon: IconSparkles,
+    title: "Lịch trình thông minh bằng AI",
+    subtitle: "Chọn kiểu chuyến đi, AI tự xếp điểm đến, giờ giấc và bữa ăn, rồi tải ảnh lịch trình đẹp về máy.",
+    steps: ["Chọn kiểu đi", "AI xếp lịch", "Tải ảnh"],
+    image: IMG + "1679365135640_daknong-thac-luu-ly.jpg",
+    cta: "Thử tạo lịch trình",
+    to: "/trip?auto=1",
+    holdMs: 7000,
+  },
   {
     id: "le-hoi",
     tag: "Lễ hội",
