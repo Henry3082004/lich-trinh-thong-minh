@@ -120,7 +120,7 @@ export function DraftProvider({ children }: { children: React.ReactNode }) {
             day: d.day,
             stops: d.stops
               .filter((s) => byId.has(s.placeId))
-              .map((s) => ({ place: byId.get(s.placeId)!, startTime: s.startTime, note: s.note ?? undefined })),
+              .map((s) => ({ place: byId.get(s.placeId)!, startTime: s.startTime, note: s.note ?? undefined, meal: s.meal ?? undefined })),
           })),
         });
         setNotice(null);

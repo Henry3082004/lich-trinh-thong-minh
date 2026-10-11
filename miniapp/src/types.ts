@@ -70,7 +70,10 @@ export type Itinerary = {
 };
 
 // Lịch đang chỉnh trên máy (chưa chắc đã lưu lên server)
-export type DraftStop = { place: Place; startTime?: string; note?: string };
+// Bữa ăn do lịch AI tự thêm: sáng / trưa / tối
+export type Meal = "sang" | "trua" | "toi";
+export const MEAL_LABEL: Record<Meal, string> = { sang: "Ăn sáng", trua: "Ăn trưa", toi: "Ăn tối" };
+export type DraftStop = { place: Place; startTime?: string; note?: string; meal?: Meal };
 export type DraftDay = { day: number; stops: DraftStop[] };
 export type Draft = {
   id?: string; // có id = đã lưu trên server
@@ -114,7 +117,7 @@ export type TripPrefs = {
   transport: Transport;
   pace: Pace;
 };
-export type PlanStop = { placeId: string; startTime: string; travelMinFromPrev: number; note: string | null; suggested: boolean };
+export type PlanStop = { placeId: string; startTime: string; travelMinFromPrev: number; note: string | null; suggested: boolean; meal?: Meal | null };
 export type PlanResponse = {
   days: { day: number; date: string; stops: PlanStop[] }[];
   lodgingIds: string[];

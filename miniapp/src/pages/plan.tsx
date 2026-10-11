@@ -6,10 +6,10 @@ import { api } from "../lib/api";
 import { formatDuration } from "../lib/schedule";
 import { useDraft } from "../state/draft";
 import { useTrip } from "../state/trip";
-import { categoryName } from "../types";
+import { categoryName, MEAL_LABEL } from "../types";
 import { ImgFallback } from "../components/icons";
 import { Mascot } from "../components/mascot";
-import { IconBed, IconBus, IconCar, IconMotorbike, IconPhotoCheck, IconSend, IconSparkles } from "@tabler/icons-react";
+import { IconBed, IconBus, IconCar, IconMotorbike, IconPhotoCheck, IconSend, IconSparkles, IconToolsKitchen2 } from "@tabler/icons-react";
 
 type Turn = { from: "me" | "ai"; text: string };
 
@@ -163,7 +163,12 @@ export default function PlanPage() {
                         <div className="ai-stop-tags">
                           <span className="ai-time">{s.startTime}</span>
                           <span className="muted">{formatDuration(p.durationMin)}</span>
-                          {s.suggested && (
+                          {s.meal ? (
+                            <span className="ai-badge ai-meal">
+                              <IconToolsKitchen2 size={14} stroke={2} aria-hidden />
+                              {MEAL_LABEL[s.meal]}
+                            </span>
+                          ) : s.suggested && (
                             <span className="ai-badge">
                               <IconSparkles size={14} stroke={2} aria-hidden />
                               AI gợi ý thêm
@@ -171,7 +176,7 @@ export default function PlanPage() {
                           )}
                         </div>
                         <b className="ai-name">{p.name}</b>
-                        <span className="muted">{[categoryName(p.category), s.note].filter(Boolean).join(" · ")}</span>
+                        <span className="muted">{[categoryName(p.category), s.meal ? null : s.note].filter(Boolean).join(" · ")}</span>
                       </div>
                     </div>
                   </div>

@@ -2114,3 +2114,5 @@ html[data-layout="desktop"] .poster-controls .pt-top > * {
 .mascot-btn { touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 .mascot-btn img, .mascot-btn svg { -webkit-user-drag: none; }
 .mascot-dock.moved.fly { animation: none; }
+/* Nhãn bữa ăn trong lịch AI */
+.ai-badge.ai-meal { background: var(--earth-100); color: var(--earth-700); }
