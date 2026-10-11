@@ -2116,3 +2116,12 @@ html[data-layout="desktop"] .poster-controls .pt-top > * {
 .mascot-dock.moved.fly { animation: none; }
 /* Nhãn bữa ăn trong lịch AI */
 .ai-badge.ai-meal { background: var(--earth-100); color: var(--earth-700); }
+/* Ô "Lịch của tôi": ảnh thác Nâm Nung phủ lớp nâu đất ấm (cặp với ô Điểm đến xanh rừng) */
+.h-tile.photo.earth {
+  background: linear-gradient(135deg, #8d6e63, #4e342e);
+}
+.h-tile.photo.earth .h-tile-shade {
+  background: linear-gradient(90deg, rgba(62, 39, 35, 0.86), rgba(109, 76, 65, 0.25));
+}
+.h-tile.photo.earth svg { color: #ffe0b2; }
+.h-tile.photo.earth .h-tile-go { color: #fff; }
