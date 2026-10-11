@@ -36,6 +36,8 @@ import {
 } from "@tabler/icons-react";
 
 const PLACES_TILE = "https://static.dggv.edu.vn/360/1679364818513_thien-vien-truc-lam-dao-nguyen-5.jpg";
+// Ảnh nền ô "Lịch của tôi": thác ở khu bảo tồn Nâm Nung (ảnh lỗi thì còn nền nâu chuyển màu)
+const MY_TILE = "https://static.dggv.edu.vn/360/1679365017974_123201-nam-nung-4.jpg";
 
 // Các dải nội dung trên trang chủ (chỉ hiện dải có dữ liệu)
 const RAILS = [
@@ -191,7 +193,9 @@ export default function HomePage() {
               {places.length > 0 && <small>{places.length} mục</small>}
             </span>
           </button>
-          <button className="h-tile sand" onClick={() => navigate("/my")}>
+          <button className="h-tile photo earth" onClick={() => navigate("/my")}>
+            <img src={MY_TILE} alt="" onError={(e) => (e.currentTarget.style.display = "none")} />
+            <span className="h-tile-shade" />
             <span className="h-tile-text">
               <IconCalendar size={20} stroke={2} aria-hidden />
               <b>Lịch của tôi</b>
